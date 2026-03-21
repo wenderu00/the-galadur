@@ -5,7 +5,6 @@ import './index.css';
 
 const rootElement = document.getElementById('root');
 
-// Falha explícita em vez de non-null assertion — facilita debug.
 if (rootElement === null) {
   throw new Error('Elemento #root não encontrado no DOM. Verifique o index.html.');
 }

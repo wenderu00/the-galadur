@@ -181,7 +181,15 @@ Ative `strict: true` no `tsconfig.json`. Nunca desative regras de strictness.
 
 ---
 
-## 9. Linting
+## 9. Comentários
+
+Proibido usar comentários no código — nem `//`, nem `/* */`, nem JSDoc `/** */`.
+
+O código deve ser autoexplicativo: nomes de variáveis, funções e tipos descrevem a intenção. Se um trecho parece precisar de comentário, refatore-o para ficar claro sem explicação.
+
+---
+
+## 10. Linting
 
 ```bash
 npm run lint       # ESLint em todo o projeto
