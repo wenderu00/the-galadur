@@ -5,6 +5,24 @@ export default {
   theme: {
     extend: {
       colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+        popover: { DEFAULT: 'var(--popover)', foreground: 'var(--popover-foreground)' },
+        primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+        secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+        muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+        accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+        destructive: { DEFAULT: 'var(--destructive)' },
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        sidebar: {
+          DEFAULT: 'var(--sidebar)',
+          foreground: 'var(--sidebar-foreground)',
+          border: 'var(--sidebar-border)',
+          ring: 'var(--sidebar-ring)',
+        },
         realm: {
           950: '#080e1a',
           900: '#0f1729',
@@ -20,6 +38,9 @@ export default {
           600: '#b8860b',
           700: '#8b6914',
         },
+      },
+      borderRadius: {
+        DEFAULT: 'var(--radius)',
       },
       fontFamily: {
         medieval: ['"Cinzel"', 'Georgia', 'serif'],

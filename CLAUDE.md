@@ -6,17 +6,17 @@ Decisões técnicas e convenções deste projeto. Leia antes de contribuir.
 
 ## 1. Stack & Ferramentas
 
-| Ferramenta     | Versão mínima | Função                    |
-|----------------|---------------|---------------------------|
-| React          | 18            | UI                        |
-| Vite           | 5             | Build / dev server        |
-| TypeScript     | 5             | Tipagem estática          |
-| Tailwind CSS   | 3             | Estilização               |
-| shadcn/ui      | —             | Componentes base          |
-| Jotai          | 2             | Estado global             |
-| Wouter         | 3             | Roteamento                |
-| ESLint         | 9             | Linting                   |
-| Prettier       | 3             | Formatação                |
+| Ferramenta   | Versão mínima | Função             |
+| ------------ | ------------- | ------------------ |
+| React        | 18            | UI                 |
+| Vite         | 5             | Build / dev server |
+| TypeScript   | 5             | Tipagem estática   |
+| Tailwind CSS | 3             | Estilização        |
+| shadcn/ui    | —             | Componentes base   |
+| Jotai        | 2             | Estado global      |
+| Wouter       | 3             | Roteamento         |
+| ESLint       | 9             | Linting            |
+| Prettier     | 3             | Formatação         |
 
 ---
 
@@ -198,6 +198,7 @@ npm run format:check  # Prettier (só verifica — usado no CI)
 ```
 
 Regras críticas ativas no ESLint:
+
 - `@typescript-eslint/no-explicit-any` — **error**
 - `react-hooks/rules-of-hooks` — **error**
 - `react-hooks/exhaustive-deps` — **warn**
@@ -205,3 +206,101 @@ Regras críticas ativas no ESLint:
 - `import/no-cycle` — **error** (previne imports circulares entre features)
 
 O CI falha se `lint` ou `format:check` retornar erro.
+
+## 11. Modularização de Features Complexas
+
+Quando uma feature cresce além de **5 arquivos** ou qualquer arquivo ultrapassa **80 linhas**, ela deve ser decomposta em sub-features. Sub-features vivem dentro da própria feature, nunca no nível raiz de `features/`.
+
+```
+features/
+└── game/
+    ├── board/
+    │   ├── components/
+    │   │   ├── GameBoard.tsx
+    │   │   └── BoardCell.tsx
+    │   ├── hooks/
+    │   │   └── useBoardState.ts
+    │   └── types.ts
+    ├── player/
+    │   ├── components/
+    │   │   ├── PlayerHand.tsx
+    │   │   └── PlayerAvatar.tsx
+    │   ├── hooks/
+    │   │   └── usePlayerActions.ts
+    │   └── types.ts
+    ├── round/
+    │   ├── components/
+    │   │   └── RoundTimer.tsx
+    │   ├── hooks/
+    │   │   └── useRoundFlow.ts
+    │   └── types.ts
+    └── GamePage.tsx        ← único ponto de entrada da feature
+```
+
+Regra: `GamePage.tsx` orquestra as sub-features. Sub-features não se importam entre si — compartilhado sobe para `game/` ou `lib/`.
+
+---
+
+### Limite de linhas por arquivo
+
+**80 linhas é o teto absoluto.** Não há exceção. Se um arquivo está chegando perto do limite, é sinal de que ele acumula mais de uma responsabilidade — divida antes de continuar.
+
+Tipos de arquivo e o que fazer quando explodem:
+
+| Tipo       | Arquivo cresceu? | Ação                                                     |
+| ---------- | ---------------- | -------------------------------------------------------- |
+| Componente | > 80 linhas      | Extraia sub-componentes nomeados                         |
+| Hook       | > 80 linhas      | Separe em hooks menores com responsabilidade única       |
+| `types.ts` | > 80 linhas      | Mova tipos por domínio para a sub-feature correspondente |
+
+---
+
+### Semântica de componentes
+
+Todo componente deve satisfazer **as três condições** abaixo. Se falhar em qualquer uma, ele não está pronto.
+
+**1 — Nome descreve o domínio, não a estrutura visual**
+
+```tsx
+// Errado — descreve estrutura
+<div className="flex flex-col gap-4">
+  <span className="text-lg font-bold">{player.name}</span>
+</div>
+
+// Certo — descreve o domínio
+<PlayerHeader name={player.name} />
+```
+
+**2 — Tags HTML semânticas onde aplicável**
+
+```tsx
+// Errado
+<div> ... </div>   // área de jogo
+<div> ... </div>   // placar
+<div> ... </div>   // lista de jogadores
+
+// Certo
+<main> ... </main>          // área de jogo
+<aside> ... </aside>        // placar lateral
+<ul> / <li> ... </ul>       // lista de jogadores
+<section> ... </section>    // blocos temáticos sem semântica mais específica
+<header> / <footer>         // cabeçalho e rodapé de cards ou da página
+```
+
+**3 — Responsabilidade única**
+
+Um componente renderiza **uma coisa** do domínio. Se o nome precisar de "e" ou "com" para descrever o que faz (`CardWithScore`, `TimerAndControls`), ele deve ser dividido.
+
+---
+
+### Checklist antes de criar ou editar um componente
+
+Antes de escrever qualquer componente novo ou modificar um existente, confirme mentalmente:
+
+- [ ] O nome diz o que é no domínio do jogo, não como é estruturado visualmente?
+- [ ] Ele faz exatamente uma coisa?
+- [ ] As props estão tipadas com `interface`, sem `any`?
+- [ ] O arquivo ficará dentro de 80 linhas após a mudança?
+- [ ] Usei tags HTML semânticas onde havia opção melhor que `<div>` ou `<span>`?
+
+Se qualquer item falhar, refatore antes de prosseguir.

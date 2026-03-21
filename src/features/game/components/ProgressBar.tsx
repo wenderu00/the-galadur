@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Progress as ProgressPrimitive } from '@base-ui/react/progress';
+import { ProgressTrack, ProgressIndicator } from '@/components/ui/progress';
 
 interface ProgressBarProps {
   startedAt: number;
@@ -25,12 +27,11 @@ export function ProgressBar({ startedAt, completesAt }: ProgressBarProps) {
 
   return (
     <div className="w-full">
-      <div className="h-1.5 w-full bg-realm-950 border border-gold-700">
-        <div
-          className="h-full bg-gold-500 transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+      <ProgressPrimitive.Root value={progress} className="w-full">
+        <ProgressTrack className="h-1.5 rounded-none bg-realm-950 border border-gold-700">
+          <ProgressIndicator className="bg-gold-500 rounded-none transition-all duration-300" />
+        </ProgressTrack>
+      </ProgressPrimitive.Root>
       <p className="text-xs text-gold-400 mt-1 font-mono">{remaining}s restantes</p>
     </div>
   );

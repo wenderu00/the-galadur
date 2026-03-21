@@ -15,18 +15,21 @@ export function BuildingGrid() {
     <>
       <div className="mb-6">
         <h1 className="font-medieval text-2xl font-bold text-white">Visão da Cidade</h1>
-        <p className="text-sm text-realm-500 mt-1">Gerencie suas construções e expanda seu império</p>
+        <p className="text-sm text-realm-500 mt-1">
+          Gerencie suas construções e expanda seu império
+        </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <ul className="grid grid-cols-2 gap-4 list-none p-0">
         {builtBuildings.map((building) => (
-          <BuildingCard
-            key={building.id}
-            building={building}
-            onOpenModal={() => setSelectedId(building.id)}
-          />
+          <li key={building.id}>
+            <BuildingCard
+              building={building}
+              onOpenModal={() => setSelectedId(building.id)}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
 
       {selectedId !== null && (
         <BuildingModal buildingId={selectedId} onClose={() => setSelectedId(null)} />
