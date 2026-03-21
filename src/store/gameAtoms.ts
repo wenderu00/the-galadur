@@ -4,12 +4,14 @@ import {
   createInitialGameState,
   safeParseGameState,
   GAME_STATE_VERSION,
+  calculateProduction,
 } from '@/features/game-engine/engine';
 import type {
   GameState,
   BuildingId,
   BuildingState,
   ResourceStore,
+  ResourceAmount,
   BuildQueueEntry,
 } from '@/features/game-engine/types';
 
@@ -66,3 +68,15 @@ export const isConstructingAtom = atom<boolean>(
 );
 
 export const lastSavedAtAtom = atom<number>((get) => get(gameStateAtom).lastSavedAt);
+
+export const productionAtom = atom<ResourceAmount>((get) =>
+  calculateProduction(get(buildingsAtom)),
+);
+
+export const tickCountAtom = atom<number>(0);
+
+export const gameDayAtom = atom<number>((get) => Math.floor(get(tickCountAtom) / 300) + 1);
+
+export type GameSpeed = 0 | 0.5 | 1 | 2 | 4;
+
+export const gameSpeedAtom = atom<GameSpeed>(1);
