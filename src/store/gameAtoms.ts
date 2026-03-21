@@ -69,13 +69,15 @@ export const isConstructingAtom = atom<boolean>(
 
 export const lastSavedAtAtom = atom<number>((get) => get(gameStateAtom).lastSavedAt);
 
+export const castleGoldRateAtom = atom<number>((get) => get(gameStateAtom).castleGoldRate);
+
 export const productionAtom = atom<ResourceAmount>((get) =>
-  calculateProduction(get(buildingsAtom)),
+  calculateProduction(get(buildingsAtom), get(castleGoldRateAtom)),
 );
 
 export const tickCountAtom = atom<number>(0);
 
-export const gameDayAtom = atom<number>((get) => Math.floor(get(tickCountAtom) / 300) + 1);
+export const gameDayAtom = atom<number>((get) => get(tickCountAtom) + 1);
 
 export type GameSpeed = 0 | 0.5 | 1 | 2 | 4;
 

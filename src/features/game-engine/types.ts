@@ -18,7 +18,8 @@ export type BuildingId =
   | 'sawmill'
   | 'mine'
   | 'market'
-  | 'barracks';
+  | 'barracks'
+  | 'prefeitura';
 
 export type BuildingLevel = 0 | 1 | 2 | 3;
 
@@ -40,11 +41,13 @@ export interface GameState {
   buildQueue: BuildQueueEntry[];
   lastSavedAt: number;
   version: number;
+  castleGoldRate: number;
 }
 
 export interface BuildingLevelEffects {
   productionPerTick: Partial<ResourceAmount>;
   storageBonus: Partial<ResourceAmount>;
+  constructionSpeedBonus?: number;
 }
 
 export interface BuildingLevelDefinition {

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAtomCallback } from 'jotai/utils';
-import { gameStateAtom } from '@/store/gameAtoms';
+import { gameStateAtom, gameSpeedAtom } from '@/store/gameAtoms';
 import { eventLogAtom } from '@/store/eventLogAtom';
 import { startConstruction } from '@/features/game-engine/engine';
 import { BUILDING_DEFINITIONS } from '@/config/buildings';
@@ -11,7 +11,8 @@ export function useUpgrade(): (buildingId: BuildingId) => ConstructionResult {
     useCallback((get, set, buildingId: BuildingId): ConstructionResult => {
       const now = Date.now();
       const state = get(gameStateAtom);
-      const result = startConstruction(state, buildingId, now);
+      const speed = get(gameSpeedAtom);
+      const result = startConstruction(state, buildingId, now, speed);
 
       if (result.success) {
         set(gameStateAtom, result.state);

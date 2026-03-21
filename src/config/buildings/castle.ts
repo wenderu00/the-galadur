@@ -12,25 +12,25 @@ export const castle: BuildingDefinition = {
       cost: { wood: 0, stone: 0, food: 0, gold: 0 },
       buildTimeSeconds: 0,
       effects: {
-        productionPerTick: {},
+        productionPerTick: { wood: 0.5, stone: 0.3, food: 0.3 },
         storageBonus: { wood: 200, stone: 200, food: 200, gold: 100 },
       },
     },
     {
       level: 2,
-      cost: { wood: 150, stone: 200, food: 50, gold: 0 },
-      buildTimeSeconds: 300,
+      cost: { wood: 40, stone: 50, food: 15, gold: 0 },
+      buildTimeSeconds: 45,
       effects: {
-        productionPerTick: {},
+        productionPerTick: { wood: 1, stone: 0.6, food: 0.6, gold: 0.1 },
         storageBonus: { wood: 500, stone: 500, food: 500, gold: 300 },
       },
     },
     {
       level: 3,
-      cost: { wood: 500, stone: 800, food: 200, gold: 100 },
-      buildTimeSeconds: 900,
+      cost: { wood: 120, stone: 180, food: 60, gold: 15 },
+      buildTimeSeconds: 240,
       effects: {
-        productionPerTick: {},
+        productionPerTick: { wood: 2, stone: 1.2, food: 1.2, gold: 0.3 },
         storageBonus: { wood: 1500, stone: 1500, food: 1500, gold: 1000 },
       },
     },

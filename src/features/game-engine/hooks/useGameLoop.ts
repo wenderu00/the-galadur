@@ -1,14 +1,21 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { gameStateAtom, tickCountAtom, gameSpeedAtom } from '@/store/gameAtoms';
 import { eventLogAtom } from '@/store/eventLogAtom';
-import { tick, calculateOfflineProgress } from '@/features/game-engine/engine';
+import {
+  tick,
+  calculateOfflineProgress,
+  rescaleQueueForSpeedChange,
+} from '@/features/game-engine/engine';
 import { BUILDING_DEFINITIONS } from '@/config/buildings';
 
 const TICK_INTERVAL_MS = 1_000;
 
 export function useGameLoop(): void {
   const offlineAppliedRef = useRef(false);
+  const prevSpeedRef = useRef<number>(1);
+  const [speed] = useAtom(gameSpeedAtom);
 
   const applyOffline = useAtomCallback(
     useCallback((get, set) => {
@@ -19,9 +26,6 @@ export function useGameLoop(): void {
 
   const runTick = useAtomCallback(
     useCallback((get, set) => {
-      const speed = get(gameSpeedAtom);
-      if (speed === 0) return;
-
       const now = Date.now();
       const prev = get(gameStateAtom);
       const completedNow = prev.buildQueue.filter((e) => e.completesAt <= now);
@@ -41,6 +45,13 @@ export function useGameLoop(): void {
     }, []),
   );
 
+  const applySpeedChange = useAtomCallback(
+    useCallback((get, set, oldSpeed: number, newSpeed: number) => {
+      const now = Date.now();
+      set(gameStateAtom, rescaleQueueForSpeedChange(get(gameStateAtom), now, oldSpeed, newSpeed));
+    }, []),
+  );
+
   useEffect(() => {
     if (offlineAppliedRef.current) return;
     offlineAppliedRef.current = true;
@@ -48,7 +59,18 @@ export function useGameLoop(): void {
   }, [applyOffline]);
 
   useEffect(() => {
-    const intervalId = setInterval(runTick, TICK_INTERVAL_MS);
+    const oldSpeed = prevSpeedRef.current;
+    if (oldSpeed !== speed) {
+      if (oldSpeed > 0 && speed > 0) {
+        applySpeedChange(oldSpeed, speed);
+      }
+      prevSpeedRef.current = speed;
+    }
+  }, [speed, applySpeedChange]);
+
+  useEffect(() => {
+    if (speed === 0) return;
+    const intervalId = setInterval(runTick, TICK_INTERVAL_MS / speed);
     return () => clearInterval(intervalId);
-  }, [runTick]);
+  }, [runTick, speed]);
 }

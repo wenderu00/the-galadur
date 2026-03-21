@@ -2,6 +2,7 @@ import { BuildingIdentity } from './BuildingIdentity';
 import { BuildingProductionStats } from './BuildingProductionStats';
 import { BuildingUpgradeCosts } from './BuildingUpgradeCosts';
 import { BuildingUpgradeActions } from './BuildingUpgradeActions';
+import { BuildingExtra } from './BuildingExtra';
 import { useBuildingModal } from '../hooks/useBuildingModal';
 import {
   Dialog,
@@ -58,6 +59,7 @@ export function BuildingModal({ buildingId, onClose }: BuildingModalProps) {
               currentResources={resources.current}
             />
           )}
+          <BuildingExtra buildingId={buildingId} />
         </div>
 
         <DialogFooter className="mx-0 mb-0 rounded-none border-t border-realm-800 bg-transparent px-5 py-4">

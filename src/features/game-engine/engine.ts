@@ -63,14 +63,31 @@ function scaleAmount(amount: ResourceAmount, multiplier: number): ResourceAmount
 
 export function calculateProduction(
   buildings: Record<BuildingId, BuildingState>,
+  castleGoldRate: number = 0,
 ): ResourceAmount {
   return ALL_BUILDING_IDS.reduce<ResourceAmount>((total, id) => {
     const { level } = buildings[id];
     if (level === 0) return total;
 
     const def = getBuildingLevelDef(id, level as Exclude<BuildingLevel, 0>);
-    return addAmounts(total, def.effects.productionPerTick);
+    const prod =
+      id === 'castle'
+        ? { ...def.effects.productionPerTick, gold: castleGoldRate }
+        : def.effects.productionPerTick;
+    return addAmounts(total, prod);
   }, zeroAmount());
+}
+
+export function calculateConstructionTimeMultiplier(
+  buildings: Record<BuildingId, BuildingState>,
+): number {
+  const totalBonus = ALL_BUILDING_IDS.reduce<number>((bonus, id) => {
+    const { level } = buildings[id];
+    if (level === 0) return bonus;
+    const def = getBuildingLevelDef(id, level as Exclude<BuildingLevel, 0>);
+    return bonus + (def.effects.constructionSpeedBonus ?? 0);
+  }, 0);
+  return Math.max(0.1, 1 - totalBonus);
 }
 
 export function calculateStorageCaps(
@@ -107,6 +124,7 @@ export function createInitialGameState(now: number = Date.now()): GameState {
     buildQueue: [],
     lastSavedAt: now,
     version: GAME_STATE_VERSION,
+    castleGoldRate: 0,
   };
 }
 
@@ -124,10 +142,28 @@ export function deductCost(current: ResourceAmount, cost: ResourceAmount): Resou
   };
 }
 
+export function rescaleQueueForSpeedChange(
+  state: GameState,
+  now: number,
+  oldSpeed: number,
+  newSpeed: number,
+): GameState {
+  if (oldSpeed === newSpeed || state.buildQueue.length === 0) return state;
+
+  const rescaledQueue = state.buildQueue.map((entry) => {
+    const remainingRealMs = entry.completesAt - now;
+    if (remainingRealMs <= 0) return entry;
+    return { ...entry, completesAt: now + (remainingRealMs * oldSpeed) / newSpeed };
+  });
+
+  return { ...state, buildQueue: rescaledQueue };
+}
+
 export function startConstruction(
   state: GameState,
   buildingId: BuildingId,
   now: number,
+  speed: number = 1,
 ): ConstructionResult {
   if (state.buildQueue.length > 0) {
     return { success: false, error: 'queue_full' };
@@ -153,11 +189,13 @@ export function startConstruction(
     return { success: false, error: 'cannot_afford' };
   }
 
+  const constructionMultiplier = calculateConstructionTimeMultiplier(state.buildings);
+
   const entry: BuildQueueEntry = {
     buildingId,
     targetLevel: targetLevel as Exclude<BuildingLevel, 0>,
     startedAt: now,
-    completesAt: now + levelDef.buildTimeSeconds * 1000,
+    completesAt: now + (levelDef.buildTimeSeconds * 1000 * constructionMultiplier) / speed,
   };
 
   const newState: GameState = {
@@ -211,7 +249,7 @@ export function processCompletedBuildings(state: GameState, now: number): GameSt
 }
 
 export function applyProductionTick(state: GameState, now: number): GameState {
-  const production = calculateProduction(state.buildings);
+  const production = calculateProduction(state.buildings, state.castleGoldRate);
   const newCurrent = clampToMax(
     addAmounts(state.resources.current, production),
     state.resources.max,
@@ -253,7 +291,7 @@ export function calculateOfflineProgress(state: GameState, now: number): GameSta
     const segmentSeconds = Math.max(0, Math.floor((entry.completesAt - cursor) / 1000));
 
     if (segmentSeconds > 0) {
-      const production = calculateProduction(currentState.buildings);
+      const production = calculateProduction(currentState.buildings, currentState.castleGoldRate);
       const gained = scaleAmount(production, segmentSeconds);
       const newCurrent = clampToMax(
         addAmounts(currentState.resources.current, gained),
@@ -271,7 +309,7 @@ export function calculateOfflineProgress(state: GameState, now: number): GameSta
 
   const remainingSeconds = Math.max(0, Math.floor((simulationEnd - cursor) / 1000));
   if (remainingSeconds > 0) {
-    const production = calculateProduction(currentState.buildings);
+    const production = calculateProduction(currentState.buildings, currentState.castleGoldRate);
     const gained = scaleAmount(production, remainingSeconds);
     const newCurrent = clampToMax(
       addAmounts(currentState.resources.current, gained),
@@ -305,5 +343,6 @@ export function safeParseGameState(raw: unknown): GameState | null {
     return null;
   }
 
-  return raw as GameState;
+  const state = raw as GameState;
+  return typeof state.castleGoldRate === 'number' ? state : { ...state, castleGoldRate: 0 };
 }

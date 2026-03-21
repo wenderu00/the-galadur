@@ -9,7 +9,7 @@ export function BuildingGrid() {
   const buildings = useAtomValue(buildingsAtom);
   const [selectedId, setSelectedId] = useState<BuildingId | null>(null);
 
-  const builtBuildings = Object.values(buildings).filter((b) => b.level > 0);
+  const allBuildings = Object.values(buildings);
 
   return (
     <>
@@ -21,7 +21,7 @@ export function BuildingGrid() {
       </div>
 
       <ul className="grid grid-cols-2 gap-4 list-none p-0">
-        {builtBuildings.map((building) => (
+        {allBuildings.map((building) => (
           <li key={building.id}>
             <BuildingCard
               building={building}

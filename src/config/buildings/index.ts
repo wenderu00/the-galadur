@@ -6,6 +6,7 @@ import { sawmill } from './sawmill';
 import { mine } from './mine';
 import { market } from './market';
 import { barracks } from './barracks';
+import { prefeitura } from './prefeitura';
 
 export const BUILDING_DEFINITIONS: Record<BuildingId, BuildingDefinition> = {
   castle,
@@ -14,6 +15,7 @@ export const BUILDING_DEFINITIONS: Record<BuildingId, BuildingDefinition> = {
   mine,
   market,
   barracks,
+  prefeitura,
 };
 
 export const ALL_BUILDING_IDS: BuildingId[] = Object.keys(
