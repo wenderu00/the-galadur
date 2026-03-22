@@ -1,5 +1,6 @@
-import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { buttonTap, duration } from '@/lib/animations';
 
 interface BuildingUpgradeButtonProps {
   label: string;
@@ -9,18 +10,21 @@ interface BuildingUpgradeButtonProps {
 
 export function BuildingUpgradeButton({ label, disabled, onClick }: BuildingUpgradeButtonProps) {
   return (
-    <Button
+    <motion.button
       onClick={(e) => {
         e.stopPropagation();
         onClick();
       }}
       disabled={disabled}
       className={cn(
-        'w-full h-auto py-2.5 text-sm font-semibold gap-2 rounded-none border-0 border-t disabled:opacity-100',
+        'w-full py-2.5 text-sm font-semibold flex items-center justify-center gap-2 border-0 border-t disabled:opacity-100',
         disabled
-          ? 'bg-realm-950 hover:bg-realm-950 text-realm-600 border-t-realm-800'
-          : 'bg-sky-600 hover:bg-sky-500 border-t-sky-500 text-white',
+          ? 'bg-realm-950 text-realm-600 border-t-realm-800 hover:opacity-70'
+          : 'bg-sky-600 hover:bg-sky-500 border-t-sky-600 text-white',
       )}
+      whileHover={disabled ? undefined : buttonTap.whileHover}
+      whileTap={disabled ? undefined : { scale: 0.97 }}
+      transition={{ duration: duration.fast }}
     >
       {!disabled && (
         <svg
@@ -34,6 +38,6 @@ export function BuildingUpgradeButton({ label, disabled, onClick }: BuildingUpgr
         </svg>
       )}
       {label}
-    </Button>
+    </motion.button>
   );
 }

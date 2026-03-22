@@ -12,7 +12,7 @@ export function GameSidebar() {
         </div>
         <div>
           <p className="font-medieval font-bold text-white text-sm leading-tight">Galadur</p>
-          <p className="text-[11px] text-realm-500">Build Your Empire</p>
+          <p className="text-[11px] text-realm-400">Build Your Empire</p>
         </div>
       </div>
 

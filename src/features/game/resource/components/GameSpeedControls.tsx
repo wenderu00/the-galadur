@@ -19,7 +19,7 @@ export function GameSpeedControls() {
         className={cn(
           'w-8 h-8 rounded-none border',
           speed === 0
-            ? 'bg-blue-600 border-blue-500 text-white hover:bg-blue-600 hover:text-white'
+            ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-600 hover:text-white'
             : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900',
         )}
       >
@@ -38,7 +38,7 @@ export function GameSpeedControls() {
           className={cn(
             'h-8 rounded-none border text-xs font-semibold px-2.5',
             speed === s && speed !== 0
-              ? 'bg-blue-600 border-blue-500 text-white hover:bg-blue-600 hover:text-white'
+              ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-600 hover:text-white'
               : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900 hover:text-realm-300',
           )}
         >

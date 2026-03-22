@@ -26,7 +26,7 @@ export function useBuildingModal(buildingId: BuildingId, onClose: () => void) {
     : null;
 
   const upgradeDisabled =
-    isMaxLevel || isConstructing || !canAfford(resources.current, nextLevelDef?.cost ?? {});
+    isMaxLevel || isConstructing || !nextLevelDef || !canAfford(resources.current, nextLevelDef.cost);
 
   const handleUpgrade = () => {
     if (upgradeDisabled) return;

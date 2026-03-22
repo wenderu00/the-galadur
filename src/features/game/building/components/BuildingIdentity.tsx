@@ -26,9 +26,9 @@ export function BuildingIdentity({
             <BuildingIcon id={buildingId} className="w-6 h-6" />
           </span>
         </div>
-        <div>
+        <div className="flex flex-col gap-0.5">
           <DialogTitle className="font-bold text-white text-base leading-none">{name}</DialogTitle>
-          <p className="text-xs text-realm-500 mt-0.5">
+          <p className="text-xs text-realm-500">
             {isMaxLevel ? 'Nível Máximo' : `Nível ${level} / ${maxLevel}`}
           </p>
         </div>

@@ -3,8 +3,8 @@ export function GameTip() {
     <section className="p-4">
       <div className="flex items-start gap-2">
         <span className="text-yellow-400 text-base leading-none mt-0.5">💡</span>
-        <div>
-          <h2 className="text-xs font-medieval uppercase tracking-widest text-realm-400 mb-1">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-xs font-medieval uppercase tracking-widest text-realm-400">
             Dica
           </h2>
           <p className="text-xs text-realm-500 leading-relaxed">

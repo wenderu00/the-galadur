@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Progress as ProgressPrimitive } from '@base-ui/react/progress';
-import { ProgressTrack, ProgressIndicator } from '@/components/ui/progress';
+import { motion } from 'framer-motion';
+import { duration, ease } from '@/lib/animations';
 
 interface ProgressBarProps {
   startedAt: number;
@@ -26,13 +26,16 @@ export function ProgressBar({ startedAt, completesAt }: ProgressBarProps) {
   }, [startedAt, completesAt]);
 
   return (
-    <div className="w-full">
-      <ProgressPrimitive.Root value={progress} className="w-full">
-        <ProgressTrack className="h-1.5 rounded-none bg-realm-950 border border-gold-700">
-          <ProgressIndicator className="bg-gold-500 rounded-none transition-all duration-300" />
-        </ProgressTrack>
-      </ProgressPrimitive.Root>
-      <p className="text-xs text-gold-400 mt-1 font-mono">{remaining}s restantes</p>
+    <div className="flex flex-col gap-1 w-full">
+      <div className="h-1.5 bg-realm-950 border border-gold-700 w-full overflow-hidden">
+        <motion.div
+          className="h-full bg-gold-500"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: duration.slower, ease: ease.outQuart }}
+        />
+      </div>
+      <p className="text-xs text-gold-400 font-mono">{remaining}s restantes</p>
     </div>
   );
 }

@@ -18,7 +18,7 @@ export function PrefeituraSpeedInfo() {
       <p className="text-[10px] font-medieval uppercase tracking-widest text-realm-500">
         Bônus de Construção
       </p>
-      <p className="text-sm text-emerald-400">
+      <p className="text-sm text-green-400">
         −{percentage}% no tempo de todas as construções
       </p>
     </section>

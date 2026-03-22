@@ -25,7 +25,7 @@ export function ConstructionQueue() {
       </div>
 
       {buildQueue.length === 0 ? (
-        <p className="text-xs text-realm-600 text-center py-4">
+        <p className="text-xs text-realm-400 text-center py-4">
           Nenhuma construção em andamento
         </p>
       ) : (

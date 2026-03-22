@@ -7,9 +7,7 @@ function GameLoopInitializer(): null {
   return null;
 }
 
-interface ProvidersProps extends PropsWithChildren {}
-
-export function Providers({ children }: ProvidersProps) {
+export function Providers({ children }: PropsWithChildren) {
   return (
     <Provider>
       <GameLoopInitializer />

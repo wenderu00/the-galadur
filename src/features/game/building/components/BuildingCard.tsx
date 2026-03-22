@@ -1,8 +1,10 @@
+import { motion } from 'framer-motion';
 import { BuildingIcon } from '@/features/game/components/BuildingIcon';
 import { ProgressBar } from '@/features/game/components/ProgressBar';
 import { BuildingStats } from './BuildingStats';
 import { BuildingUpgradeButton } from './BuildingUpgradeButton';
 import { useBuildingCard } from '../hooks/useBuildingCard';
+import { cardHover } from '@/lib/animations';
 import type { BuildingState } from '@/features/game-engine/types';
 
 interface BuildingCardProps {
@@ -15,9 +17,11 @@ export function BuildingCard({ building, onOpenModal }: BuildingCardProps) {
     useBuildingCard(building);
 
   return (
-    <article
+    <motion.article
       onClick={onOpenModal}
-      className="flex flex-col bg-realm-900 border border-realm-800 hover:border-blue-700/60 transition-colors duration-200 cursor-pointer overflow-hidden group"
+      className="flex flex-col bg-realm-900 border border-realm-800 cursor-pointer overflow-hidden group"
+      whileHover={cardHover.whileHover}
+      transition={cardHover.transition}
     >
       <div className="p-4 flex-1 flex flex-col gap-3">
         <header className="flex items-start gap-3">
@@ -26,9 +30,9 @@ export function BuildingCard({ building, onOpenModal }: BuildingCardProps) {
               <BuildingIcon id={building.id} className="w-6 h-6" />
             </span>
           </div>
-          <div>
+          <div className="flex flex-col gap-0.5">
             <h3 className="font-bold text-white text-sm leading-tight">{def.name}</h3>
-            <p className="text-xs text-realm-500 mt-0.5">
+            <p className="text-xs text-realm-500">
               Nível {building.level} / {def.maxLevel}
             </p>
           </div>
@@ -51,6 +55,6 @@ export function BuildingCard({ building, onOpenModal }: BuildingCardProps) {
         disabled={upgradeDisabled}
         onClick={onOpenModal}
       />
-    </article>
+    </motion.article>
   );
 }
