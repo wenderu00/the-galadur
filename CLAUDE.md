@@ -304,3 +304,51 @@ Antes de escrever qualquer componente novo ou modificar um existente, confirme m
 - [ ] Usei tags HTML semânticas onde havia opção melhor que `<div>` ou `<span>`?
 
 Se qualquer item falhar, refatore antes de prosseguir.
+
+---
+
+## 12. Testes Automatizados (Playwright)
+
+### Stack e estrutura
+
+| Ferramenta      | Função                        |
+| --------------- | ----------------------------- |
+| Playwright      | Testes E2E de interface       |
+| Page Objects    | Abstração dos seletores da UI |
+
+```
+tests/
+├── pages/     # Page Objects — um por área da UI
+└── specs/     # Specs — um arquivo por feature
+```
+
+### Scripts
+
+```bash
+npm run test:e2e          # Executa todos os testes
+npm run test:e2e:headed   # Executa com browser visível
+npm run test:e2e:ui       # Abre a UI do Playwright
+```
+
+### Convenções
+
+- Usar o MCP Playwright para inspecionar os elementos reais antes de escrever qualquer seletor.
+- Nunca assumir seletores sem inspecionar — sempre capturar snapshot primeiro.
+- Limpar o `localStorage` via `page.evaluate` e recarregar a página no `beforeEach` de cada spec que dependa de estado inicial.
+- Page Objects ficam em `tests/pages/`, um arquivo por área da UI.
+- Specs ficam em `tests/specs/`, um arquivo por feature.
+- Cobrir sempre: caminho feliz + erro principal.
+
+### Missions
+
+As missions de criação dos testes estão em `missions/`. Execute-as na ordem:
+
+| Mission | Escopo                             |
+| ------- | ---------------------------------- |
+| 01      | Configuração do Playwright         |
+| 02      | Page Object: ResourceHUD           |
+| 03      | Page Object: GameSpeedControls     |
+| 04      | Page Object: BuildingGrid          |
+| 05      | Page Object: BuildingModal         |
+| 06      | Page Object: SummaryPanel          |
+| 07      | Fluxo completo de upgrade          |
