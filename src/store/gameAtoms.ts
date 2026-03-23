@@ -47,6 +47,7 @@ export const gameStateAtom = atomWithStorage<GameState>(
       }
     },
   },
+  { getOnInit: true },
 );
 
 export const resourcesAtom = atom<ResourceStore>((get) => get(gameStateAtom).resources);
