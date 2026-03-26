@@ -13,11 +13,13 @@ export function GameSpeedControls() {
   return (
     <div className="flex items-center gap-1">
       <Button
+        data-testid="speed-btn-pause"
+        data-active={speed === 0}
         size="icon"
         variant="ghost"
         onClick={() => setSpeed(speed === 0 ? 1 : 0)}
         className={cn(
-          'w-8 h-8 rounded-none border',
+          'w-11 h-11 md:w-8 md:h-8 rounded-none border',
           speed === 0
             ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-600 hover:text-white'
             : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900',
@@ -32,11 +34,13 @@ export function GameSpeedControls() {
       {SPEED_OPTIONS.map((s) => (
         <Button
           key={s}
+          data-testid={`speed-btn-${s}x`}
+          data-active={speed === s && speed !== 0}
           size="sm"
           variant="ghost"
           onClick={() => setSpeed(s)}
           className={cn(
-            'h-8 rounded-none border text-xs font-semibold px-2.5',
+            'h-11 md:h-8 rounded-none border text-xs font-semibold px-2 md:px-2.5',
             speed === s && speed !== 0
               ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-600 hover:text-white'
               : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900 hover:text-realm-300',

@@ -17,7 +17,7 @@ import type {
 
 export const RESOURCE_KINDS: ResourceKind[] = ['wood', 'stone', 'food', 'gold'];
 
-export const GAME_STATE_VERSION = 1;
+export const GAME_STATE_VERSION = 2;
 
 export const MAX_OFFLINE_SECONDS = 8 * 60 * 60;
 
@@ -122,6 +122,8 @@ export function createInitialGameState(now: number = Date.now()): GameState {
     resources: initialResources,
     buildings,
     buildQueue: [],
+    trainingQueue: [],
+    militaryUnits: { warrior: 0, archer: 0, lancer: 0 },
     lastSavedAt: now,
     version: GAME_STATE_VERSION,
     castleGoldRate: 0,
@@ -331,6 +333,15 @@ export function safeParseGameState(raw: unknown): GameState | null {
   if (typeof raw !== 'object' || raw === null) return null;
 
   const candidate = raw as Record<string, unknown>;
+
+  if (candidate['version'] === 1) {
+    return safeParseGameState({
+      ...candidate,
+      version: 2,
+      trainingQueue: [],
+      militaryUnits: { warrior: 0, archer: 0, lancer: 0 },
+    });
+  }
 
   if (candidate['version'] !== GAME_STATE_VERSION) return null;
 

@@ -8,7 +8,12 @@ import {
   calculateOfflineProgress,
   rescaleQueueForSpeedChange,
 } from '@/features/game-engine/engine';
+import {
+  processCompletedTraining,
+  rescaleTrainingQueue,
+} from '@/features/game-engine/military-engine';
 import { BUILDING_DEFINITIONS } from '@/config/buildings';
+import { UNIT_DEFINITIONS } from '@/config/units';
 
 const TICK_INTERVAL_MS = 1_000;
 
@@ -20,7 +25,9 @@ export function useGameLoop(): void {
   const applyOffline = useAtomCallback(
     useCallback((get, set) => {
       const now = Date.now();
-      set(gameStateAtom, calculateOfflineProgress(get(gameStateAtom), now));
+      const afterOffline = calculateOfflineProgress(get(gameStateAtom), now);
+      const { state: afterTraining } = processCompletedTraining(afterOffline, now);
+      set(gameStateAtom, afterTraining);
     }, []),
   );
 
@@ -28,17 +35,29 @@ export function useGameLoop(): void {
     useCallback((get, set) => {
       const now = Date.now();
       const prev = get(gameStateAtom);
-      const completedNow = prev.buildQueue.filter((e) => e.completesAt <= now);
+      const completedBuildings = prev.buildQueue.filter((e) => e.completesAt <= now);
+      const completedTraining = prev.trainingQueue.filter((e) => e.completesAt <= now);
 
-      set(gameStateAtom, tick(prev, now));
+      const afterTick = tick(prev, now);
+      const { state: afterTraining } = processCompletedTraining(afterTick, now);
+      set(gameStateAtom, afterTraining);
       set(tickCountAtom, (n) => n + 1);
 
-      if (completedNow.length > 0) {
+      if (completedBuildings.length > 0) {
         set(eventLogAtom, (log) => [
           ...log,
-          ...completedNow.map((e) => ({
+          ...completedBuildings.map((e) => ({
             timestamp: now,
             message: `${BUILDING_DEFINITIONS[e.buildingId].name} atingiu Nível ${e.targetLevel}!`,
+          })),
+        ]);
+      }
+      if (completedTraining.length > 0) {
+        set(eventLogAtom, (log) => [
+          ...log,
+          ...completedTraining.map((e) => ({
+            timestamp: now,
+            message: `${UNIT_DEFINITIONS[e.unitId].name} treinado com sucesso!`,
           })),
         ]);
       }
@@ -48,7 +67,8 @@ export function useGameLoop(): void {
   const applySpeedChange = useAtomCallback(
     useCallback((get, set, oldSpeed: number, newSpeed: number) => {
       const now = Date.now();
-      set(gameStateAtom, rescaleQueueForSpeedChange(get(gameStateAtom), now, oldSpeed, newSpeed));
+      const after = rescaleQueueForSpeedChange(get(gameStateAtom), now, oldSpeed, newSpeed);
+      set(gameStateAtom, rescaleTrainingQueue(after, now, oldSpeed, newSpeed));
     }, []),
   );
 

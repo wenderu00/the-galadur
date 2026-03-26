@@ -19,7 +19,7 @@ export function EventLog() {
   }, [events]);
 
   return (
-    <footer className="h-36 bg-black border-t border-gold-700 overflow-y-auto px-4 py-2">
+    <footer className="h-28 md:h-36 bg-black border-t border-gold-700 overflow-y-auto px-4 py-2">
       {events.length === 0 ? (
         <p className="font-mono text-xs text-green-700">{'> Aguardando eventos...'}</p>
       ) : (

@@ -339,6 +339,52 @@ npm run test:e2e:ui       # Abre a UI do Playwright
 - Specs ficam em `tests/specs/`, um arquivo por feature.
 - Cobrir sempre: caminho feliz + erro principal.
 
+### Locators: hierarquia de uso
+
+Prioridade decrescente ao escolher um locator:
+
+1. **`getByTestId()`** — para elementos com identidade de domínio (qual recurso, qual edifício, qual unidade, qual botão de estado)
+2. **`getByRole()`** — para elementos com semântica única no contexto (dialog, heading, button com nome único)
+3. **`getByText()`** — para textos estáticos de domínio que nunca mudam por razões visuais
+4. **Seletores CSS** — proibido para identificação; permitido apenas para estrutura interna de um componente já isolado por testid
+
+Nunca usar classes Tailwind como identificadores de componente ou de estado.
+
+### Convenção de `data-testid`
+
+Formato: `[componente]-[elemento]` ou `[componente]-[elemento]-[identificador]`
+
+| Padrão | Exemplo | Uso |
+| --- | --- | --- |
+| `resource-bar-{kind}` | `resource-bar-wood` | container da barra de recurso (desktop) |
+| `resource-bar-{kind}-value` | `resource-bar-wood-value` | valor numérico do recurso |
+| `resource-bar-{kind}-rate` | `resource-bar-wood-rate` | taxa de produção (+X/s) |
+| `resource-bar-{kind}-compact` | `resource-bar-wood-compact` | container compacto (mobile) |
+| `speed-btn-pause` | — | botão de pausa |
+| `speed-btn-{speed}x` | `speed-btn-2x` | botão de velocidade |
+| `building-card-{id}` | `building-card-castle` | card de edifício |
+| `building-card-{id}-level` | `building-card-castle-level` | texto de nível do edifício |
+| `unit-card-{id}` | `unit-card-warrior` | card de unidade militar |
+| `unit-count-{id}` | `unit-count-warrior` | contador de unidades |
+| `unit-train-{id}` | `unit-train-warrior` | botão de treinar unidade |
+| `mobile-nav` | — | nav inferior mobile |
+| `mobile-nav-tab-{tab}` | `mobile-nav-tab-buildings` | aba da nav mobile |
+| `desktop-sidebar` | — | wrapper do sidebar desktop |
+| `desktop-summary` | — | wrapper do painel de resumo desktop |
+
+### Estado com `data-active`
+
+Para elementos com estado ativo/inativo, usar `data-active` ao invés de verificar classes CSS:
+
+```tsx
+<Button data-testid="speed-btn-pause" data-active={speed === 0} ...>
+```
+
+```typescript
+const value = await page.getByTestId('speed-btn-pause').getAttribute('data-active');
+return value === 'true';
+```
+
 ### Missions
 
 As missions de criação dos testes estão em `missions/`. Execute-as na ordem:

@@ -2,13 +2,6 @@ import { Page } from '@playwright/test';
 
 type ResourceKind = 'wood' | 'stone' | 'food' | 'gold';
 
-const RESOURCE_INDEX: Record<ResourceKind, number> = {
-  wood: 1,
-  stone: 2,
-  food: 3,
-  gold: 4,
-};
-
 export class ResourceHUDPage {
   constructor(private readonly page: Page) {}
 
@@ -17,28 +10,27 @@ export class ResourceHUDPage {
     await this.page.reload();
   }
 
-  private resourceBar(kind: ResourceKind) {
-    return this.page.locator(
-      `header > div:first-child > div:nth-child(${RESOURCE_INDEX[kind]})`
-    );
-  }
-
   async isResourceVisible(kind: ResourceKind): Promise<boolean> {
-    return this.resourceBar(kind).isVisible();
+    return this.page.getByTestId(`resource-bar-${kind}`).isVisible();
   }
 
   async getResourceValue(kind: ResourceKind): Promise<number> {
-    const text = await this.resourceBar(kind).locator('.tabular-nums').textContent();
+    const text = await this.page
+      .getByTestId(`resource-bar-${kind}`)
+      .getByTestId(`resource-bar-${kind}-value`)
+      .textContent();
     return parseInt(text?.replace(/,/g, '') ?? '0', 10);
   }
 
   async getProductionRate(kind: ResourceKind): Promise<string> {
-    const rate = this.resourceBar(kind).locator('.text-sky-400');
+    const rate = this.page
+      .getByTestId(`resource-bar-${kind}`)
+      .getByTestId(`resource-bar-${kind}-rate`);
     if ((await rate.count()) === 0) return '';
     return (await rate.textContent()) ?? '';
   }
 
   async getDayText(): Promise<string> {
-    return (await this.page.locator('header p.leading-none').textContent()) ?? '';
+    return (await this.page.locator('header p.font-bold.leading-none').textContent()) ?? '';
   }
 }

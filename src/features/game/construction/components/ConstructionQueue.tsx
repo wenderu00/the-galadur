@@ -8,7 +8,7 @@ export function ConstructionQueue() {
   const buildQueue = useAtomValue(buildQueueAtom);
 
   return (
-    <section className="p-4 border-b border-realm-800">
+    <section className="p-3 md:p-4 border-b border-realm-800">
       <div className="flex items-center gap-2 mb-3">
         <svg
           viewBox="0 0 24 24"
@@ -43,7 +43,7 @@ export function ConstructionQueue() {
                   </span>
                   <div>
                     <p className="text-xs font-semibold text-white">{def.name}</p>
-                    <p className="text-[10px] text-realm-500">→ Nível {entry.targetLevel}</p>
+                    <p className="text-xs text-realm-500">→ Nível {entry.targetLevel}</p>
                   </div>
                 </div>
                 <ProgressBar startedAt={entry.startedAt} completesAt={entry.completesAt} />

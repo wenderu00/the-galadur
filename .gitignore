@@ -1,4 +1,26 @@
-node_modules
-dist
+# Dependências
+node_modules/
+
+# Build
+dist/
+
+# Testes
 test-results/
 playwright-report/
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Desenvolvimento local
+assets/
+missions/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo

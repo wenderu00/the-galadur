@@ -17,7 +17,7 @@ export function BuildingUpgradeButton({ label, disabled, onClick }: BuildingUpgr
       }}
       disabled={disabled}
       className={cn(
-        'w-full py-2.5 text-sm font-semibold flex items-center justify-center gap-2 border-0 border-t disabled:opacity-100',
+        'w-full min-h-[44px] py-2.5 text-sm font-semibold flex items-center justify-center gap-2 border-0 border-t disabled:opacity-100',
         disabled
           ? 'bg-realm-950 text-realm-600 border-t-realm-800 hover:opacity-70'
           : 'bg-sky-600 hover:bg-sky-500 border-t-sky-600 text-white',

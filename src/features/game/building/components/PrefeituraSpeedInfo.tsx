@@ -15,7 +15,7 @@ export function PrefeituraSpeedInfo() {
 
   return (
     <section className="space-y-1 pt-1 border-t border-realm-800">
-      <p className="text-[10px] font-medieval uppercase tracking-widest text-realm-500">
+      <p className="text-xs font-medieval uppercase tracking-widest text-realm-500">
         Bônus de Construção
       </p>
       <p className="text-sm text-green-400">

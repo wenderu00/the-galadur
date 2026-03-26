@@ -20,7 +20,7 @@ export function BuildingGrid() {
         </p>
       </div>
 
-      <ul className="grid grid-cols-2 gap-4 list-none p-0">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 list-none p-0">
         {allBuildings.map((building) => (
           <li key={building.id}>
             <BuildingCard

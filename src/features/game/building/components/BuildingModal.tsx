@@ -34,9 +34,9 @@ export function BuildingModal({ buildingId, onClose }: BuildingModalProps) {
     <Dialog open={true} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-md p-0 gap-0 bg-realm-950 border-realm-700 rounded-none ring-0"
+        className="w-full max-w-[calc(100%-1rem)] sm:max-w-md p-0 gap-0 bg-realm-950 border-realm-700 rounded-none ring-0"
       >
-        <DialogHeader className="px-5 py-4 border-b border-realm-800">
+        <DialogHeader className="px-4 py-3 sm:px-5 sm:py-4 border-b border-realm-800">
           <BuildingIdentity
             buildingId={buildingId}
             name={def.name}
@@ -46,7 +46,7 @@ export function BuildingModal({ buildingId, onClose }: BuildingModalProps) {
           />
         </DialogHeader>
 
-        <div className="px-5 py-4 space-y-4">
+        <div className="px-4 py-3 sm:px-5 sm:py-4 space-y-4">
           <p className="text-sm text-realm-400 leading-relaxed">{def.description}</p>
           {currentLevelDef && (
             <BuildingProductionStats production={currentLevelDef.effects.productionPerTick ?? {}} />
@@ -62,7 +62,7 @@ export function BuildingModal({ buildingId, onClose }: BuildingModalProps) {
           <BuildingExtra buildingId={buildingId} />
         </div>
 
-        <DialogFooter className="mx-0 mb-0 rounded-none border-t border-realm-800 bg-transparent px-5 py-4">
+        <DialogFooter className="mx-0 mb-0 rounded-none border-t border-realm-800 bg-transparent px-4 py-3 sm:px-5 sm:py-4">
           <BuildingUpgradeActions
             isMaxLevel={isMaxLevel}
             isConstructing={isConstructing}

@@ -13,6 +13,8 @@ import type {
   ResourceStore,
   ResourceAmount,
   BuildQueueEntry,
+  MilitaryUnits,
+  TrainingQueueEntry,
 } from '@/features/game-engine/types';
 
 const safeGameStorage = createJSONStorage<GameState>(() => localStorage, {
@@ -75,6 +77,20 @@ export const castleGoldRateAtom = atom<number>((get) => get(gameStateAtom).castl
 export const productionAtom = atom<ResourceAmount>((get) =>
   calculateProduction(get(buildingsAtom), get(castleGoldRateAtom)),
 );
+
+export const militaryUnitsAtom = atom<MilitaryUnits>(
+  (get) => get(gameStateAtom).militaryUnits,
+);
+
+export const trainingQueueAtom = atom<TrainingQueueEntry[]>(
+  (get) => get(gameStateAtom).trainingQueue,
+);
+
+export const activeTrainingAtom = atom<TrainingQueueEntry | null>(
+  (get) => get(trainingQueueAtom)[0] ?? null,
+);
+
+export const isTrainingAtom = atom<boolean>((get) => get(trainingQueueAtom).length > 0);
 
 export const tickCountAtom = atom<number>(0);
 

@@ -31,7 +31,7 @@ export function BuildingUpgradeCosts({
 }: BuildingUpgradeCostsProps) {
   return (
     <div className="bg-realm-900 border border-realm-800 p-3 space-y-2">
-      <p className="text-[10px] font-medieval uppercase tracking-widest text-realm-500">
+      <p className="text-xs font-medieval uppercase tracking-widest text-realm-500">
         Próximo nível — custo
       </p>
       <div className="flex flex-wrap gap-2">
@@ -49,12 +49,12 @@ export function BuildingUpgradeCosts({
       <p className="text-xs text-realm-500">Tempo: {formatSeconds(buildTimeSeconds)}</p>
       {RESOURCE_ORDER.some((k) => (nextProduction[k] ?? 0) > 0) && (
         <div className="flex flex-wrap gap-2 pt-1 border-t border-realm-800">
-          <span className="text-[11px] text-realm-500">Nova produção:</span>
+          <span className="text-xs text-realm-500">Nova produção:</span>
           {RESOURCE_ORDER.map((kind) => {
             const val = nextProduction[kind] ?? 0;
             if (val === 0) return null;
             return (
-              <span key={kind} className="text-[11px] text-sky-400">
+              <span key={kind} className="text-xs text-sky-400">
                 +{val % 1 === 0 ? val : val.toFixed(1)} {RESOURCE_LABELS[kind]}/s
               </span>
             );

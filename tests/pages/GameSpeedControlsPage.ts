@@ -9,33 +9,21 @@ export class GameSpeedControlsPage {
     await this.page.reload();
   }
 
-  private pauseButton() {
-    return this.page
-      .getByRole('button', { name: '1x', exact: true })
-      .locator('..')
-      .getByRole('button')
-      .first();
-  }
-
-  private speedButton(speed: SpeedOption) {
-    return this.page.getByRole('button', { name: speed, exact: true });
-  }
-
   async clickPause() {
-    await this.pauseButton().click();
+    await this.page.getByTestId('speed-btn-pause').click();
   }
 
   async clickSpeed(speed: SpeedOption) {
-    await this.speedButton(speed).click();
+    await this.page.getByTestId(`speed-btn-${speed}`).click();
   }
 
   async isSpeedActive(speed: SpeedOption): Promise<boolean> {
-    const classes = await this.speedButton(speed).getAttribute('class');
-    return classes?.includes('bg-blue-600') ?? false;
+    const value = await this.page.getByTestId(`speed-btn-${speed}`).getAttribute('data-active');
+    return value === 'true';
   }
 
   async isPaused(): Promise<boolean> {
-    const classes = await this.pauseButton().getAttribute('class');
-    return classes?.includes('bg-blue-600') ?? false;
+    const value = await this.page.getByTestId('speed-btn-pause').getAttribute('data-active');
+    return value === 'true';
   }
 }

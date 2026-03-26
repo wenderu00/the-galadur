@@ -34,16 +34,16 @@ export function BuildingUpgradeActions({
   }
 
   return (
-    <>
+    <div className="flex flex-col-reverse sm:flex-row gap-2 w-full">
       <Button
         variant="outline"
         onClick={onClose}
-        className="rounded-none border-realm-700 text-realm-400 hover:text-white hover:bg-realm-800 hover:border-realm-600"
+        className="w-full sm:w-auto min-h-[44px] rounded-none border-realm-700 text-realm-400 hover:text-white hover:bg-realm-800 hover:border-realm-600"
       >
         Fechar
       </Button>
       {!isMaxLevel && (
-        <div onClick={handleUpgradeClick}>
+        <div className="w-full sm:w-auto" onClick={handleUpgradeClick}>
           <motion.div
             key={shakeKey}
             animate={isShaking ? { x: [0, -4, 4, -4, 4, 0] } : {}}
@@ -55,7 +55,7 @@ export function BuildingUpgradeActions({
                 if (!upgradeDisabled) onUpgrade();
               }}
               disabled={upgradeDisabled}
-              className={`rounded-none gap-2 disabled:opacity-100 ${
+              className={`w-full min-h-[44px] rounded-none gap-2 disabled:opacity-100 ${
                 upgradeDisabled
                   ? 'bg-realm-900 border-realm-800 text-realm-600 hover:bg-realm-900'
                   : 'bg-sky-600 border-sky-600 hover:bg-sky-500 text-white'
@@ -72,10 +72,10 @@ export function BuildingUpgradeActions({
         </div>
       )}
       {isMaxLevel && (
-        <span className="px-5 py-2 text-sm text-realm-500 border border-realm-800">
+        <span className="w-full sm:w-auto px-5 py-2 text-sm text-realm-500 border border-realm-800 text-center">
           Nível Máximo
         </span>
       )}
-    </>
+    </div>
   );
 }

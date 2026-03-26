@@ -1,3 +1,5 @@
+import type { UnitId, MilitaryUnits, TrainingQueueEntry } from './military-types';
+
 export type ResourceKind = 'wood' | 'stone' | 'food' | 'gold';
 
 export interface ResourceAmount {
@@ -39,10 +41,14 @@ export interface GameState {
   resources: ResourceStore;
   buildings: Record<BuildingId, BuildingState>;
   buildQueue: BuildQueueEntry[];
+  trainingQueue: TrainingQueueEntry[];
+  militaryUnits: MilitaryUnits;
   lastSavedAt: number;
   version: number;
   castleGoldRate: number;
 }
+
+export type { UnitId, MilitaryUnits, TrainingQueueEntry };
 
 export interface BuildingLevelEffects {
   productionPerTick: Partial<ResourceAmount>;

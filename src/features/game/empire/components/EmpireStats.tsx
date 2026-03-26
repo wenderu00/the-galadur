@@ -9,7 +9,7 @@ export function EmpireStats() {
   const empireScore = totalLevels * 30;
 
   return (
-    <section className="p-4 border-b border-realm-800">
+    <section className="p-3 md:p-4 border-b border-realm-800">
       <h2 className="text-xs font-medieval uppercase tracking-widest text-realm-400 mb-3">
         Status do Império
       </h2>

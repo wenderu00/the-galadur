@@ -16,7 +16,7 @@ interface BuildingProductionStatsProps {
 export function BuildingProductionStats({ production }: BuildingProductionStatsProps) {
   return (
     <div className="bg-realm-900 border border-realm-800 p-3">
-      <p className="text-[10px] font-medieval uppercase tracking-widest text-realm-500 mb-2">
+      <p className="text-xs font-medieval uppercase tracking-widest text-realm-500 mb-2">
         Produção atual
       </p>
       <div className="flex flex-wrap gap-2">

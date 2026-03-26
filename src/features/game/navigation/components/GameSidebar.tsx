@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { GameNavItem } from './GameNavItem';
 
-export function GameSidebar() {
+interface GameSidebarProps {
+  className?: string;
+}
+
+export function GameSidebar({ className = '' }: GameSidebarProps) {
   return (
-    <aside className="w-56 flex-shrink-0 flex flex-col bg-realm-950 border-r border-realm-800">
+    <aside className={`flex flex-col w-full bg-realm-950 border-r border-realm-800 ${className}`}>
       <div className="flex items-center gap-3 px-4 py-5 border-b border-realm-800">
         <div className="w-9 h-9 bg-white flex items-center justify-center flex-shrink-0">
           <svg viewBox="0 0 24 24" className="w-5 h-5 text-realm-900" fill="currentColor">
@@ -12,7 +16,7 @@ export function GameSidebar() {
         </div>
         <div>
           <p className="font-medieval font-bold text-white text-sm leading-tight">Galadur</p>
-          <p className="text-[11px] text-realm-400">Build Your Empire</p>
+          <p className="text-xs text-realm-400">Build Your Empire</p>
         </div>
       </div>
 

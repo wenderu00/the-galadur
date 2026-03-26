@@ -11,14 +11,19 @@ function formatRate(value: number): string {
   return `+${formatted}/s`;
 }
 
+function formatCompact(value: number): string {
+  return value >= 1000 ? `${(value / 1000).toFixed(1)}k` : String(value);
+}
+
 interface ResourceBarProps {
   kind: ResourceKind;
   current: number;
   max: number;
   rate: number;
+  compact?: boolean;
 }
 
-export function ResourceBar({ kind, current, max, rate }: ResourceBarProps) {
+export function ResourceBar({ kind, current, max, rate, compact = false }: ResourceBarProps) {
   const cfg = RESOURCE_CONFIG[kind];
   const pct = Math.min(100, (current / max) * 100);
   const prevRef = useRef(current);
@@ -31,13 +36,31 @@ export function ResourceBar({ kind, current, max, rate }: ResourceBarProps) {
     }
   }, [current]);
 
+  if (compact) {
+    return (
+      <div data-testid={`resource-bar-${kind}-compact`} className={`flex flex-col items-center justify-center gap-0.5 bg-realm-900 border ${cfg.accent} px-1 py-1.5`}>
+        <span className={cfg.iconColor}>
+          <ResourceIcon kind={kind} className="w-3.5 h-3.5" />
+        </span>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={pulseKey}
+            data-testid={`resource-bar-${kind}-value`}
+            className="text-xs font-bold text-white tabular-nums leading-none"
+            initial={{ scale: 1.25, color: '#fde68a' }}
+            animate={{ scale: 1, color: '#ffffff' }}
+            transition={{ duration: duration.slow, ease: ease.out }}
+          >
+            {formatCompact(current)}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`flex items-center gap-3 bg-realm-900 border ${cfg.accent} px-3 py-2 min-w-[170px]`}
-    >
-      <div
-        className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${cfg.iconBg} border ${cfg.accent}`}
-      >
+    <div data-testid={`resource-bar-${kind}`} className={`flex items-center gap-3 bg-realm-900 border ${cfg.accent} px-3 py-2`}>
+      <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${cfg.iconBg} border ${cfg.accent}`}>
         <span className={cfg.iconColor}>
           <ResourceIcon kind={kind} className="w-4 h-4" />
         </span>
@@ -47,7 +70,8 @@ export function ResourceBar({ kind, current, max, rate }: ResourceBarProps) {
           <AnimatePresence mode="wait">
             <motion.span
               key={pulseKey}
-              className="text-sm font-bold text-white tabular-nums"
+              data-testid={`resource-bar-${kind}-value`}
+            className="text-sm font-bold text-white tabular-nums"
               initial={{ scale: 1.25, color: '#fde68a' }}
               animate={{ scale: 1, color: '#ffffff' }}
               transition={{ duration: duration.slow, ease: ease.out }}
@@ -57,7 +81,7 @@ export function ResourceBar({ kind, current, max, rate }: ResourceBarProps) {
           </AnimatePresence>
           <span className="text-xs text-realm-500">/ {max.toLocaleString()}</span>
           {rate > 0 && (
-            <span className="text-xs text-sky-400 ml-auto flex-shrink-0">{formatRate(rate)}</span>
+            <span data-testid={`resource-bar-${kind}-rate`} className="text-xs text-sky-400 ml-auto flex-shrink-0">{formatRate(rate)}</span>
           )}
         </div>
         <div className="h-0.5 bg-realm-800 w-full overflow-hidden">
