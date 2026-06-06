@@ -31,12 +31,9 @@ export function createInitialGameState(now: number = Date.now()): GameState {
     castleGoldRate: 0,
   };
 }
-
 export function safeParseGameState(raw: unknown): GameState | null {
   if (typeof raw !== 'object' || raw === null) return null;
-
   const candidate = raw as Record<string, unknown>;
-
   if (candidate['version'] === 1) {
     return safeParseGameState({
       ...candidate,
@@ -45,9 +42,7 @@ export function safeParseGameState(raw: unknown): GameState | null {
       militaryUnits: { warrior: 0, archer: 0, lancer: 0 },
     });
   }
-
   if (candidate['version'] !== GAME_STATE_VERSION) return null;
-
   if (
     typeof candidate['resources'] !== 'object' ||
     typeof candidate['buildings'] !== 'object' ||
@@ -56,11 +51,9 @@ export function safeParseGameState(raw: unknown): GameState | null {
   ) {
     return null;
   }
-
   const state = raw as GameState;
   return typeof state.castleGoldRate === 'number' ? state : { ...state, castleGoldRate: 0 };
 }
-
 export {
   RESOURCE_KINDS,
   canAfford,
@@ -79,3 +72,5 @@ export {
 export { tick, applyProductionTick, processCompletedBuildings } from './tick';
 export { startConstruction, rescaleQueueForSpeedChange } from './construction';
 export { MAX_OFFLINE_SECONDS, calculateOfflineProgress } from './offline';
+export { executeTrade, getTradePreview } from './trade';
+export type { TradeResource, TradeDirection, TradeResult } from './trade';
