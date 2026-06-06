@@ -16,4 +16,5 @@ export interface UnitDefinition {
   baseCost: ResourceAmount;
   baseTrainingSeconds: number;
   unlockedAtBarracksLevel: 1 | 2 | 3;
+  power: number;
 }

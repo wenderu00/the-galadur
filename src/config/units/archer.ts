@@ -6,4 +6,5 @@ export const archer: UnitDefinition = {
   baseCost: { wood: 0, stone: 0, food: 15, gold: 20 },
   baseTrainingSeconds: 45,
   unlockedAtBarracksLevel: 2,
+  power: 2,
 };

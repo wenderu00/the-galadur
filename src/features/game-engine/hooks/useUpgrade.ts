@@ -4,7 +4,8 @@ import { gameStateAtom, gameSpeedAtom } from '@/store/gameAtoms';
 import { eventLogAtom } from '@/store/eventLogAtom';
 import { startConstruction } from '@/features/game-engine/engine';
 import { BUILDING_DEFINITIONS } from '@/config/buildings';
-import type { BuildingId, ConstructionResult } from '../types';
+import type { BuildingId } from '../types';
+import type { ConstructionResult } from '../construction';
 
 export function useUpgrade(): (buildingId: BuildingId) => ConstructionResult {
   return useAtomCallback(

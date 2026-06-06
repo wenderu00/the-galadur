@@ -1,4 +1,5 @@
 import type { UnitId, MilitaryUnits, TrainingQueueEntry } from './military-types';
+import type { EnemyId } from './combat-types';
 
 export type ResourceKind = 'wood' | 'stone' | 'food' | 'gold';
 
@@ -43,12 +44,13 @@ export interface GameState {
   buildQueue: BuildQueueEntry[];
   trainingQueue: TrainingQueueEntry[];
   militaryUnits: MilitaryUnits;
+  defeatedEnemies: EnemyId[];
   lastSavedAt: number;
   version: number;
   castleGoldRate: number;
 }
 
-export type { UnitId, MilitaryUnits, TrainingQueueEntry };
+export type { UnitId, MilitaryUnits, TrainingQueueEntry, EnemyId };
 
 export interface BuildingLevelEffects {
   productionPerTick: Partial<ResourceAmount>;
@@ -71,10 +73,3 @@ export interface BuildingDefinition {
   maxLevel: 3;
   levels: [BuildingLevelDefinition, BuildingLevelDefinition, BuildingLevelDefinition];
 }
-
-export type ConstructionResult =
-  | { success: true; state: GameState }
-  | {
-      success: false;
-      error: 'queue_full' | 'max_level' | 'cannot_afford' | 'already_max_level';
-    };

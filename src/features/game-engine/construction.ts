@@ -1,11 +1,9 @@
 import { BUILDING_DEFINITIONS, getBuildingLevelDef } from '@/config/buildings';
-import type {
-  GameState,
-  BuildingId,
-  BuildingLevel,
-  BuildQueueEntry,
-  ConstructionResult,
-} from './types';
+import type { GameState, BuildingId, BuildingLevel, BuildQueueEntry } from './types';
+
+export type ConstructionResult =
+  | { success: true; state: GameState }
+  | { success: false; error: 'queue_full' | 'max_level' | 'cannot_afford' | 'already_max_level' };
 import { canAfford, deductCost } from './math';
 import { calculateConstructionTimeMultiplier } from './production';
 
