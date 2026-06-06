@@ -49,7 +49,7 @@ export function MarketTradeRow({
         <button
           onClick={() => onTrade('buy', resource, amount)}
           disabled={!canBuy}
-          className="rounded bg-yellow-700 px-3 py-1 text-xs font-medium text-white disabled:opacity-40"
+          className="rounded bg-violet-700 px-3 py-1 text-xs font-medium text-white disabled:opacity-40"
           data-testid={`market-buy-${resource}`}
         >
           Comprar ({goldCost}🪙)

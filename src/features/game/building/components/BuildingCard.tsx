@@ -25,8 +25,8 @@ export function BuildingCard({ building, onOpenModal }: BuildingCardProps) {
       transition={cardHover.transition}
     >
       <div className="flex-shrink-0 p-3 sm:p-0 sm:pt-4 sm:pl-4">
-        <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-blue-950 border border-blue-800/60 group-hover:border-blue-600/80 transition-colors">
-          <span className="text-blue-400">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-violet-950 border border-violet-800/50 group-hover:border-violet-600/80 transition-colors">
+          <span className="text-violet-400">
             <BuildingIcon id={building.id} className="w-5 h-5 sm:w-6 sm:h-6" />
           </span>
         </div>

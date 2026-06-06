@@ -36,7 +36,7 @@ export function ConstructionQueue() {
                 className="bg-realm-950 border border-realm-800 p-3"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-blue-400">
+                  <span className="text-violet-400">
                     <BuildingIcon id={entry.buildingId} className="w-5 h-5" />
                   </span>
                   <div>

@@ -51,7 +51,7 @@ export function ResourceBar({ kind, current, max, rate, compact = false }: Resou
           {rate > 0 && (
             <span
               data-testid={`resource-bar-${kind}-rate`}
-              className="text-xs text-sky-400 ml-auto flex-shrink-0"
+              className="text-xs text-violet-400 ml-auto flex-shrink-0"
             >
               {formatRate(rate)}
             </span>

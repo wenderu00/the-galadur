@@ -9,9 +9,10 @@ Mapeamento completo do sistema visual do projeto. Use como referência ao criar 
 UI de jogo no estilo **dark fantasy medieval**. Os princípios visuais:
 
 - Cantos angulares (sem arredondamento) — estética rígida e medieval
-- Paleta azul-marinho profunda simulando o ambiente de um reino sombrio
-- Acentos dourados para progressão e recompensas
-- Cores por recurso para parsing visual imediato
+- Paleta **negro-púrpura** profunda — o "Tribunal Arcano": fundos quase negros com leve toque violeta
+- **Violeta/Roxo** para ações primárias (botões, estados ativos, ícones) — evoca magia e poder
+- **Dourado** exclusivamente para elementos econômicos (barras de progresso, moedas, timers)
+- Cores por recurso para parsing visual imediato (inalteradas)
 - Tipografia serifada medieval para autenticidade
 
 ---
@@ -22,43 +23,44 @@ UI de jogo no estilo **dark fantasy medieval**. Os princípios visuais:
 
 Definidas em `src/index.css`:
 
-| Variável                 | Valor OKLCH                 | Uso                           |
-| ------------------------ | --------------------------- | ----------------------------- |
-| `--background`           | `oklch(0.11 0.03 240)`      | Fundo principal (azul escuro) |
-| `--foreground`           | `oklch(1 0 0)`              | Texto primário (branco)       |
-| `--card`                 | `oklch(0.07 0.025 240)`     | Fundo de cards                |
-| `--card-foreground`      | `oklch(1 0 0)`              | Texto em cards                |
-| `--popover`              | `oklch(0.07 0.025 240)`     | Fundo de popovers             |
-| `--popover-foreground`   | `oklch(1 0 0)`              | Texto em popovers             |
-| `--primary`              | `oklch(0.58 0.17 220)`      | Azul céu — ações primárias    |
-| `--primary-foreground`   | `oklch(1 0 0)`              | Texto sobre primary           |
-| `--secondary`            | `oklch(0.18 0.04 235)`      | Slate escuro — secundário     |
-| `--secondary-foreground` | `oklch(1 0 0)`              | Texto sobre secondary         |
-| `--muted`                | `oklch(0.18 0.04 235)`      | Elementos discretos           |
-| `--muted-foreground`     | `oklch(0.47 0.08 255)`      | Texto discreto                |
-| `--accent`               | `oklch(0.22 0.05 235)`      | Acento sutil                  |
-| `--accent-foreground`    | `oklch(1 0 0)`              | Texto sobre accent            |
-| `--destructive`          | `oklch(0.577 0.245 27.325)` | Vermelho-laranja — destrutivo |
-| `--border`               | `oklch(0.18 0.04 235)`      | Bordas                        |
-| `--input`                | `oklch(0.18 0.04 235)`      | Campos de input               |
-| `--ring`                 | `oklch(0.58 0.17 220)`      | Anel de foco                  |
-| `--sidebar`              | `oklch(0.07 0.025 240)`     | Fundo da sidebar              |
-| `--sidebar-foreground`   | `oklch(1 0 0)`              | Texto da sidebar              |
-| `--sidebar-border`       | `oklch(0.18 0.04 235)`      | Bordas da sidebar             |
-| `--sidebar-ring`         | `oklch(0.58 0.17 220)`      | Foco da sidebar               |
+| Variável                 | Valor OKLCH                 | Uso                             |
+| ------------------------ | --------------------------- | ------------------------------- |
+| `--background`           | `oklch(0.08 0.04 285)`      | Fundo principal (negro-púrpura) |
+| `--foreground`           | `oklch(1 0 0)`              | Texto primário (branco)         |
+| `--card`                 | `oklch(0.07 0.045 285)`     | Fundo de cards                  |
+| `--card-foreground`      | `oklch(1 0 0)`              | Texto em cards                  |
+| `--popover`              | `oklch(0.07 0.045 285)`     | Fundo de popovers               |
+| `--popover-foreground`   | `oklch(1 0 0)`              | Texto em popovers               |
+| `--primary`              | `oklch(0.55 0.26 280)`      | Violeta — ações primárias       |
+| `--primary-foreground`   | `oklch(1 0 0)`              | Texto sobre primary             |
+| `--secondary`            | `oklch(0.14 0.06 280)`      | Púrpura escuro — secundário     |
+| `--secondary-foreground` | `oklch(1 0 0)`              | Texto sobre secondary           |
+| `--muted`                | `oklch(0.14 0.06 280)`      | Elementos discretos             |
+| `--muted-foreground`     | `oklch(0.65 0.1 280)`       | Texto discreto                  |
+| `--accent`               | `oklch(0.18 0.07 280)`      | Acento sutil                    |
+| `--accent-foreground`    | `oklch(1 0 0)`              | Texto sobre accent              |
+| `--destructive`          | `oklch(0.577 0.245 27.325)` | Vermelho-laranja — destrutivo   |
+| `--border`               | `oklch(0.15 0.07 280)`      | Bordas                          |
+| `--input`                | `oklch(0.15 0.07 280)`      | Campos de input                 |
+| `--ring`                 | `oklch(0.55 0.26 280)`      | Anel de foco (violeta)          |
+| `--sidebar`              | `oklch(0.06 0.045 285)`     | Fundo da sidebar                |
+| `--sidebar-foreground`   | `oklch(1 0 0)`              | Texto da sidebar                |
+| `--sidebar-border`       | `oklch(0.15 0.07 280)`      | Bordas da sidebar               |
+| `--sidebar-ring`         | `oklch(0.55 0.26 280)`      | Foco da sidebar                 |
 
-### Paleta `realm` (azul-marinho do reino)
+### Paleta `realm` (negro-púrpura do tribunal arcano)
 
 Definida em `tailwind.config.ts`:
 
-| Token       | Hex       | Uso típico                       |
-| ----------- | --------- | -------------------------------- |
-| `realm-950` | `#080e1a` | Fundo de sidebar, tracking badge |
-| `realm-900` | `#0f1729` | Fundo de cards e containers      |
-| `realm-800` | `#1a2744` | Bordas e divisores               |
-| `realm-700` | `#2a3f6f` | Tom médio                        |
-| `realm-600` | `#3a5490` | Tom mais claro                   |
-| `realm-500` | `#4a6ab0` | Texto de acento, nav inativa     |
+| Token       | Hex       | Uso típico                         |
+| ----------- | --------- | ---------------------------------- |
+| `realm-950` | `#08060f` | Fundo de sidebar, tracking badge   |
+| `realm-900` | `#0f0b1e` | Fundo de cards e containers        |
+| `realm-800` | `#1c1535` | Bordas e divisores                 |
+| `realm-700` | `#2d1f5e` | Tom médio                          |
+| `realm-600` | `#4a2d8a` | Tom mais claro                     |
+| `realm-500` | `#6b48c4` | Texto de acento, nav inativa       |
+| `realm-400` | `#9370db` | Texto secundário de alto contraste |
 
 ### Paleta `gold` (ouro — progressão)
 
@@ -81,13 +83,14 @@ Definida em `tailwind.config.ts`:
 
 ### Cores funcionais
 
-| Função                       | Cor Tailwind         |
-| ---------------------------- | -------------------- |
-| Ação primária / ativo        | `sky-600`, `sky-500` |
-| Link e foco                  | `blue-400`           |
-| Aviso (recurso insuficiente) | `red-400`            |
-| Bônus de armazenamento       | `amber-400`          |
-| Overlay de modal             | `black/75`           |
+| Função                       | Cor Tailwind               |
+| ---------------------------- | -------------------------- |
+| Ação primária / ativo        | `violet-700`, `violet-600` |
+| Ícones de construção/unidade | `violet-400`               |
+| Taxa de produção             | `violet-400`               |
+| Aviso (recurso insuficiente) | `red-400`                  |
+| Bônus de armazenamento       | `amber-400`                |
+| Overlay de modal             | `black/75`                 |
 
 ---
 
@@ -161,24 +164,24 @@ Espessura: sempre `1px` (classe `border`).
 
 ```
 bg-realm-900 border border-realm-800
-hover:border-blue-700/60 transition-colors duration-200
+hover:border-violet-700/60 transition-colors duration-200
 p-3 a p-4
 ```
 
 ### Cards de construção
 
 - Elemento semântico: `<article>`
-- Caixa de ícone: `w-12 h-12 bg-blue-950 border-blue-800/60`
-- Hover no ícone: `group-hover:border-blue-600/80 transition-colors`
-- Cor do ícone: `text-blue-400`
-- Botão de ação: largura total, `bg-sky-600` quando ativo
+- Caixa de ícone: `w-12 h-12 bg-violet-950 border-violet-800/50`
+- Hover no ícone: `group-hover:border-violet-600/80 transition-colors`
+- Cor do ícone: `text-violet-400`
+- Botão de ação: largura total, `bg-violet-700` quando ativo
 - Barra de progresso: dourada
 
 ### Botões
 
 | Estado     | Classes                                          |
 | ---------- | ------------------------------------------------ |
-| Ativo      | `bg-sky-600 hover:bg-sky-500 text-white`         |
+| Ativo      | `bg-violet-700 hover:bg-violet-600 text-white`   |
 | Inativo    | `bg-realm-950 hover:bg-realm-950 text-realm-600` |
 | Destrutivo | Variante `destructive` do shadcn                 |
 
@@ -196,7 +199,7 @@ Label:      text-xs text-gold-400 mt-1 font-mono
 
 | Estado  | Classes                                                                               |
 | ------- | ------------------------------------------------------------------------------------- |
-| Ativo   | `bg-blue-600/20 border border-blue-600/40 text-blue-400`                              |
+| Ativo   | `bg-violet-600/20 border border-violet-600/40 text-violet-400`                        |
 | Inativo | `text-realm-500 hover:text-realm-300 hover:bg-realm-800/50 border border-transparent` |
 | Badge   | `text-realm-600 bg-realm-800 px-1.5 py-0.5`                                           |
 

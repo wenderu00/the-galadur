@@ -25,7 +25,7 @@ export function UnitCard({ data, isTraining }: UnitCardProps) {
       data-testid={`unit-card-${def.id}`}
       className="flex items-center gap-3 bg-realm-900 border border-realm-800 p-2"
     >
-      <span className="text-blue-400 shrink-0">
+      <span className="text-violet-400 shrink-0">
         <UnitIcon id={def.id} className="w-10 h-10" />
       </span>
       <div className="flex-1 min-w-0">

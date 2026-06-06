@@ -12,12 +12,12 @@ export function GameNavItem({ label, icon, active, soon }: GameNavItemProps) {
     <li
       className={`flex items-center justify-between px-3 py-3 min-h-[44px] cursor-pointer transition-colors ${
         active
-          ? 'bg-blue-600/20 border border-blue-600/40 text-blue-400'
+          ? 'bg-violet-600/20 border border-violet-600/40 text-violet-400'
           : 'text-realm-400 hover:text-white hover:bg-realm-800/50 border border-transparent'
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className={active ? 'text-blue-400' : 'text-realm-400'}>{icon}</span>
+        <span className={active ? 'text-violet-400' : 'text-realm-400'}>{icon}</span>
         <span className="text-sm font-medium">{label}</span>
       </div>
       {soon && (
