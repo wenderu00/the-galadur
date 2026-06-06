@@ -41,7 +41,7 @@ export function BuildingUpgradePrompt({
           className={`w-full min-h-[44px] rounded-none gap-2 disabled:opacity-100 ${
             upgradeDisabled
               ? 'bg-realm-900 border-realm-800 text-realm-600 hover:bg-realm-900'
-              : 'bg-sky-600 border-sky-600 hover:bg-sky-500 text-white'
+              : 'bg-violet-700 border-violet-700 hover:bg-violet-600 text-white'
           }`}
         >
           {!upgradeDisabled && (

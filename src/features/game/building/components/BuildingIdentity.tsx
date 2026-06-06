@@ -21,8 +21,8 @@ export function BuildingIdentity({
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 flex items-center justify-center bg-blue-950 border border-blue-800">
-          <span className="text-blue-400">
+        <div className="w-10 h-10 flex items-center justify-center bg-violet-950 border border-violet-800">
+          <span className="text-violet-400">
             <BuildingIcon id={buildingId} className="w-6 h-6" />
           </span>
         </div>

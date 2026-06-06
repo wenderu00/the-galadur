@@ -24,7 +24,7 @@ export function BuildingProductionStats({ production }: BuildingProductionStatsP
           const val = production[kind] ?? 0;
           if (val === 0) return null;
           return (
-            <span key={kind} className="text-sm text-sky-400">
+            <span key={kind} className="text-sm text-violet-400">
               +{val % 1 === 0 ? val : val.toFixed(1)} {RESOURCE_LABELS[kind]}/s
             </span>
           );
