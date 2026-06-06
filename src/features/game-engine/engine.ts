@@ -1,8 +1,7 @@
 import { ALL_BUILDING_IDS } from '@/config/buildings';
 import type { GameState, BuildingId, BuildingState, ResourceStore } from './types';
 import { calculateStorageCaps } from './production';
-
-export const GAME_STATE_VERSION = 2;
+import { GAME_STATE_VERSION } from './state-migration';
 
 export function createInitialGameState(now: number = Date.now()): GameState {
   const buildings = ALL_BUILDING_IDS.reduce<Record<BuildingId, BuildingState>>(
@@ -26,34 +25,13 @@ export function createInitialGameState(now: number = Date.now()): GameState {
     buildQueue: [],
     trainingQueue: [],
     militaryUnits: { warrior: 0, archer: 0, lancer: 0 },
+    defeatedEnemies: [],
     lastSavedAt: now,
     version: GAME_STATE_VERSION,
     castleGoldRate: 0,
   };
 }
-export function safeParseGameState(raw: unknown): GameState | null {
-  if (typeof raw !== 'object' || raw === null) return null;
-  const candidate = raw as Record<string, unknown>;
-  if (candidate['version'] === 1) {
-    return safeParseGameState({
-      ...candidate,
-      version: 2,
-      trainingQueue: [],
-      militaryUnits: { warrior: 0, archer: 0, lancer: 0 },
-    });
-  }
-  if (candidate['version'] !== GAME_STATE_VERSION) return null;
-  if (
-    typeof candidate['resources'] !== 'object' ||
-    typeof candidate['buildings'] !== 'object' ||
-    !Array.isArray(candidate['buildQueue']) ||
-    typeof candidate['lastSavedAt'] !== 'number'
-  ) {
-    return null;
-  }
-  const state = raw as GameState;
-  return typeof state.castleGoldRate === 'number' ? state : { ...state, castleGoldRate: 0 };
-}
+export { GAME_STATE_VERSION, safeParseGameState } from './state-migration';
 export {
   RESOURCE_KINDS,
   canAfford,
@@ -72,5 +50,10 @@ export {
 export { tick, applyProductionTick, processCompletedBuildings } from './tick';
 export { startConstruction, rescaleQueueForSpeedChange } from './construction';
 export { MAX_OFFLINE_SECONDS, calculateOfflineProgress } from './offline';
-export { executeTrade, getTradePreview } from './trade';
-export type { TradeResource, TradeDirection, TradeResult } from './trade';
+export {
+  executeTrade,
+  getTradePreview,
+  type TradeResource,
+  type TradeDirection,
+  type TradeResult,
+} from './trade';

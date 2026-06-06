@@ -6,4 +6,5 @@ export const lancer: UnitDefinition = {
   baseCost: { wood: 5, stone: 0, food: 25, gold: 15 },
   baseTrainingSeconds: 60,
   unlockedAtBarracksLevel: 3,
+  power: 3,
 };

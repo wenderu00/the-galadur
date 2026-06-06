@@ -8,6 +8,7 @@ import type {
   BuildQueueEntry,
   MilitaryUnits,
   TrainingQueueEntry,
+  EnemyId,
 } from '@/features/game-engine/types';
 import { gameStateAtom } from './gameStateAtom';
 
@@ -46,6 +47,8 @@ export const activeTrainingAtom = atom<TrainingQueueEntry | null>(
 );
 
 export const isTrainingAtom = atom<boolean>((get) => get(trainingQueueAtom).length > 0);
+
+export const defeatedEnemiesAtom = atom<EnemyId[]>((get) => get(gameStateAtom).defeatedEnemies);
 
 export const tickCountAtom = atom<number>(0);
 

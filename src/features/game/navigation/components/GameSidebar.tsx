@@ -1,12 +1,24 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import { Button } from '@/components/ui/button';
 import { GameNavItem } from './GameNavItem';
 import { CityIcon, ArmyIcon, ResearchIcon, SettingsIcon } from './sidebarNavConfig';
+import { activePageAtom, type ActivePage } from '@/store/activePageAtom';
+import { mobileTabAtom } from '@/store/mobileNavAtom';
 
 interface GameSidebarProps {
   className?: string;
 }
 
 export function GameSidebar({ className = '' }: GameSidebarProps) {
+  const activePage = useAtomValue(activePageAtom);
+  const setActivePage = useSetAtom(activePageAtom);
+  const setMobileTab = useSetAtom(mobileTabAtom);
+
+  function navigateTo(page: ActivePage) {
+    setActivePage(page);
+    setMobileTab('buildings');
+  }
+
   return (
     <aside className={`flex flex-col w-full bg-realm-950 border-r border-realm-800 ${className}`}>
       <div className="flex items-center gap-3 px-4 py-5 border-b border-realm-800">
@@ -22,8 +34,20 @@ export function GameSidebar({ className = '' }: GameSidebarProps) {
       </div>
       <nav className="flex-1 p-3">
         <ul className="space-y-1">
-          <GameNavItem label="Cidade" active icon={CityIcon} />
-          <GameNavItem label="Exército" soon icon={ArmyIcon} />
+          <GameNavItem
+            label="Cidade"
+            active={activePage === 'cidade'}
+            icon={CityIcon}
+            testId="nav-item-cidade"
+            onClick={() => navigateTo('cidade')}
+          />
+          <GameNavItem
+            label="Exército"
+            active={activePage === 'exercito'}
+            icon={ArmyIcon}
+            testId="nav-item-exercito"
+            onClick={() => navigateTo('exercito')}
+          />
           <GameNavItem label="Pesquisa" soon icon={ResearchIcon} />
           <GameNavItem label="Configurações" soon icon={SettingsIcon} />
         </ul>

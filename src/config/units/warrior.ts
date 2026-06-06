@@ -6,4 +6,5 @@ export const warrior: UnitDefinition = {
   baseCost: { wood: 0, stone: 0, food: 20, gold: 10 },
   baseTrainingSeconds: 30,
   unlockedAtBarracksLevel: 1,
+  power: 1,
 };

@@ -5,19 +5,28 @@ interface GameNavItemProps {
   icon: ReactNode;
   active?: boolean;
   soon?: boolean;
+  onClick?: () => void;
+  testId?: string;
 }
 
-export function GameNavItem({ label, icon, active, soon }: GameNavItemProps) {
+export function GameNavItem({ label, icon, active, soon, onClick, testId }: GameNavItemProps) {
   return (
     <li
-      className={`flex items-center justify-between px-3 py-3 min-h-[44px] cursor-pointer transition-colors ${
-        active
-          ? 'bg-violet-600/20 border border-violet-600/40 text-violet-400'
-          : 'text-realm-400 hover:text-white hover:bg-realm-800/50 border border-transparent'
+      data-testid={testId}
+      onClick={soon ? undefined : onClick}
+      className={`flex items-center justify-between px-3 py-3 min-h-[44px] transition-colors ${
+        soon
+          ? 'cursor-default text-realm-600'
+          : 'cursor-pointer ' +
+            (active
+              ? 'bg-violet-600/20 border border-violet-600/40 text-violet-400'
+              : 'text-realm-400 hover:text-white hover:bg-realm-800/50 border border-transparent')
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className={active ? 'text-violet-400' : 'text-realm-400'}>{icon}</span>
+        <span className={active ? 'text-violet-400' : soon ? 'text-realm-600' : 'text-realm-400'}>
+          {icon}
+        </span>
         <span className="text-sm font-medium">{label}</span>
       </div>
       {soon && (
