@@ -311,10 +311,10 @@ Se qualquer item falhar, refatore antes de prosseguir.
 
 ### Stack e estrutura
 
-| Ferramenta      | Função                        |
-| --------------- | ----------------------------- |
-| Playwright      | Testes E2E de interface       |
-| Page Objects    | Abstração dos seletores da UI |
+| Ferramenta   | Função                        |
+| ------------ | ----------------------------- |
+| Playwright   | Testes E2E de interface       |
+| Page Objects | Abstração dos seletores da UI |
 
 ```
 tests/
@@ -354,23 +354,23 @@ Nunca usar classes Tailwind como identificadores de componente ou de estado.
 
 Formato: `[componente]-[elemento]` ou `[componente]-[elemento]-[identificador]`
 
-| Padrão | Exemplo | Uso |
-| --- | --- | --- |
-| `resource-bar-{kind}` | `resource-bar-wood` | container da barra de recurso (desktop) |
-| `resource-bar-{kind}-value` | `resource-bar-wood-value` | valor numérico do recurso |
-| `resource-bar-{kind}-rate` | `resource-bar-wood-rate` | taxa de produção (+X/s) |
-| `resource-bar-{kind}-compact` | `resource-bar-wood-compact` | container compacto (mobile) |
-| `speed-btn-pause` | — | botão de pausa |
-| `speed-btn-{speed}x` | `speed-btn-2x` | botão de velocidade |
-| `building-card-{id}` | `building-card-castle` | card de edifício |
-| `building-card-{id}-level` | `building-card-castle-level` | texto de nível do edifício |
-| `unit-card-{id}` | `unit-card-warrior` | card de unidade militar |
-| `unit-count-{id}` | `unit-count-warrior` | contador de unidades |
-| `unit-train-{id}` | `unit-train-warrior` | botão de treinar unidade |
-| `mobile-nav` | — | nav inferior mobile |
-| `mobile-nav-tab-{tab}` | `mobile-nav-tab-buildings` | aba da nav mobile |
-| `desktop-sidebar` | — | wrapper do sidebar desktop |
-| `desktop-summary` | — | wrapper do painel de resumo desktop |
+| Padrão                        | Exemplo                      | Uso                                     |
+| ----------------------------- | ---------------------------- | --------------------------------------- |
+| `resource-bar-{kind}`         | `resource-bar-wood`          | container da barra de recurso (desktop) |
+| `resource-bar-{kind}-value`   | `resource-bar-wood-value`    | valor numérico do recurso               |
+| `resource-bar-{kind}-rate`    | `resource-bar-wood-rate`     | taxa de produção (+X/s)                 |
+| `resource-bar-{kind}-compact` | `resource-bar-wood-compact`  | container compacto (mobile)             |
+| `speed-btn-pause`             | —                            | botão de pausa                          |
+| `speed-btn-{speed}x`          | `speed-btn-2x`               | botão de velocidade                     |
+| `building-card-{id}`          | `building-card-castle`       | card de edifício                        |
+| `building-card-{id}-level`    | `building-card-castle-level` | texto de nível do edifício              |
+| `unit-card-{id}`              | `unit-card-warrior`          | card de unidade militar                 |
+| `unit-count-{id}`             | `unit-count-warrior`         | contador de unidades                    |
+| `unit-train-{id}`             | `unit-train-warrior`         | botão de treinar unidade                |
+| `mobile-nav`                  | —                            | nav inferior mobile                     |
+| `mobile-nav-tab-{tab}`        | `mobile-nav-tab-buildings`   | aba da nav mobile                       |
+| `desktop-sidebar`             | —                            | wrapper do sidebar desktop              |
+| `desktop-summary`             | —                            | wrapper do painel de resumo desktop     |
 
 ### Estado com `data-active`
 
@@ -389,12 +389,12 @@ return value === 'true';
 
 As missions de criação dos testes estão em `missions/`. Execute-as na ordem:
 
-| Mission | Escopo                             |
-| ------- | ---------------------------------- |
-| 01      | Configuração do Playwright         |
-| 02      | Page Object: ResourceHUD           |
-| 03      | Page Object: GameSpeedControls     |
-| 04      | Page Object: BuildingGrid          |
-| 05      | Page Object: BuildingModal         |
-| 06      | Page Object: SummaryPanel          |
-| 07      | Fluxo completo de upgrade          |
+| Mission | Escopo                         |
+| ------- | ------------------------------ |
+| 01      | Configuração do Playwright     |
+| 02      | Page Object: ResourceHUD       |
+| 03      | Page Object: GameSpeedControls |
+| 04      | Page Object: BuildingGrid      |
+| 05      | Page Object: BuildingModal     |
+| 06      | Page Object: SummaryPanel      |
+| 07      | Fluxo completo de upgrade      |

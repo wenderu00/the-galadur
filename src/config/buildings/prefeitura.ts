@@ -3,7 +3,8 @@ import type { BuildingDefinition } from '@/features/game-engine/types';
 export const prefeitura: BuildingDefinition = {
   id: 'prefeitura',
   name: 'Prefeitura',
-  description: 'Centro administrativo do império. Coordena as obras e reduz o tempo de construção de todas as edificações.',
+  description:
+    'Centro administrativo do império. Coordena as obras e reduz o tempo de construção de todas as edificações.',
   category: 'headquarters',
   maxLevel: 3,
   levels: [
@@ -24,7 +25,7 @@ export const prefeitura: BuildingDefinition = {
       effects: {
         productionPerTick: {},
         storageBonus: {},
-        constructionSpeedBonus: 0.30,
+        constructionSpeedBonus: 0.3,
       },
     },
     {
@@ -34,7 +35,7 @@ export const prefeitura: BuildingDefinition = {
       effects: {
         productionPerTick: {},
         storageBonus: {},
-        constructionSpeedBonus: 0.50,
+        constructionSpeedBonus: 0.5,
       },
     },
   ],

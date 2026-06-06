@@ -9,7 +9,7 @@ function makeState(barracksLevel: 0 | 1 | 2 | 3, overrides: Record<string, unkno
     IDS.map((id) => {
       const level = id === 'castle' ? 1 : id === 'barracks' ? barracksLevel : 0;
       return [id, { id, level }];
-    }),
+    })
   );
   return JSON.stringify({
     version: 2,
@@ -27,10 +27,14 @@ function makeState(barracksLevel: 0 | 1 | 2 | 3, overrides: Record<string, unkno
   });
 }
 
-async function injectState(page: Page, barracksLevel: 0 | 1 | 2 | 3, overrides: Record<string, unknown> = {}) {
+async function injectState(
+  page: Page,
+  barracksLevel: 0 | 1 | 2 | 3,
+  overrides: Record<string, unknown> = {}
+) {
   await page.addInitScript(
     (str: string) => localStorage.setItem('galadur-state', str),
-    makeState(barracksLevel, overrides),
+    makeState(barracksLevel, overrides)
   );
   await page.reload();
 }

@@ -18,12 +18,13 @@ export function UnitCard({ data, isTraining }: UnitCardProps) {
   const { def, count, affordable } = data;
   const disabled = isTraining || !affordable;
 
-  const costEntries = (
-    Object.entries(def.baseCost) as [string, number][]
-  ).filter(([, v]) => v > 0);
+  const costEntries = (Object.entries(def.baseCost) as [string, number][]).filter(([, v]) => v > 0);
 
   return (
-    <li data-testid={`unit-card-${def.id}`} className="flex items-center gap-3 bg-realm-900 border border-realm-800 p-2">
+    <li
+      data-testid={`unit-card-${def.id}`}
+      className="flex items-center gap-3 bg-realm-900 border border-realm-800 p-2"
+    >
       <span className="text-blue-400 shrink-0">
         <UnitIcon id={def.id} className="w-10 h-10" />
       </span>
@@ -34,7 +35,9 @@ export function UnitCard({ data, isTraining }: UnitCardProps) {
         </p>
       </div>
       <div className="flex flex-col items-end gap-1 shrink-0">
-        <span data-testid={`unit-count-${def.id}`} className="text-xs text-gold-300 font-mono">×{count}</span>
+        <span data-testid={`unit-count-${def.id}`} className="text-xs text-gold-300 font-mono">
+          ×{count}
+        </span>
         <button
           data-testid={`unit-train-${def.id}`}
           onClick={() => train(def.id)}

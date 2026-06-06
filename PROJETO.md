@@ -14,19 +14,19 @@ O jogo roda inteiramente no navegador, sem backend. Todo estado é persistido no
 
 ## 2. Stack de Tecnologias
 
-| Ferramenta     | Versão         | Função                              |
-|----------------|----------------|-------------------------------------|
-| React          | 18.3.1         | Biblioteca de UI                    |
-| Vite           | 5.x            | Bundler e servidor de desenvolvimento |
-| TypeScript     | 5.7.2          | Tipagem estática                    |
-| Tailwind CSS   | 3.4.17         | Estilização via classes utilitárias |
-| shadcn/ui      | —              | Componentes base (Dialog, Button)   |
-| @base-ui/react | —              | Primitivos headless para Dialog/Progress |
-| Jotai          | 2.11.0         | Gerenciamento de estado global      |
-| Wouter         | 3.3.5          | Roteamento (atualmente não utilizado ativamente) |
-| lucide-react   | —              | Ícones SVG                          |
-| clsx           | —              | Composição condicional de classes   |
-| tailwind-merge | —              | Fusão segura de classes Tailwind    |
+| Ferramenta     | Versão | Função                                           |
+| -------------- | ------ | ------------------------------------------------ |
+| React          | 18.3.1 | Biblioteca de UI                                 |
+| Vite           | 5.x    | Bundler e servidor de desenvolvimento            |
+| TypeScript     | 5.7.2  | Tipagem estática                                 |
+| Tailwind CSS   | 3.4.17 | Estilização via classes utilitárias              |
+| shadcn/ui      | —      | Componentes base (Dialog, Button)                |
+| @base-ui/react | —      | Primitivos headless para Dialog/Progress         |
+| Jotai          | 2.11.0 | Gerenciamento de estado global                   |
+| Wouter         | 3.3.5  | Roteamento (atualmente não utilizado ativamente) |
+| lucide-react   | —      | Ícones SVG                                       |
+| clsx           | —      | Composição condicional de classes                |
+| tailwind-merge | —      | Fusão segura de classes Tailwind                 |
 
 ---
 
@@ -162,22 +162,15 @@ interface ResourceAmount {
 }
 
 interface ResourceStore {
-  current: ResourceAmount;  // quanto o jogador tem agora
-  max: ResourceAmount;      // capacidade máxima de armazenamento
+  current: ResourceAmount; // quanto o jogador tem agora
+  max: ResourceAmount; // capacidade máxima de armazenamento
 }
 ```
 
 ### Edifícios
 
 ```ts
-type BuildingId =
-  | 'castle'
-  | 'farm'
-  | 'sawmill'
-  | 'mine'
-  | 'market'
-  | 'barracks'
-  | 'prefeitura';
+type BuildingId = 'castle' | 'farm' | 'sawmill' | 'mine' | 'market' | 'barracks' | 'prefeitura';
 
 type BuildingLevel = 0 | 1 | 2 | 3;
 // 0 = não construído, 1-3 = níveis
@@ -192,15 +185,15 @@ interface BuildingState {
 
 ```ts
 interface BuildingLevelEffects {
-  productionPerTick: Partial<ResourceAmount>;  // produção por segundo
-  storageBonus: Partial<ResourceAmount>;        // bônus de armazenamento adicionado
-  constructionSpeedBonus?: number;              // fração de redução no tempo de construção (0.15 = 15% mais rápido)
+  productionPerTick: Partial<ResourceAmount>; // produção por segundo
+  storageBonus: Partial<ResourceAmount>; // bônus de armazenamento adicionado
+  constructionSpeedBonus?: number; // fração de redução no tempo de construção (0.15 = 15% mais rápido)
 }
 
 interface BuildingLevelDefinition {
-  level: Exclude<BuildingLevel, 0>;   // 1 | 2 | 3
-  cost: ResourceAmount;               // custo para construir/upar
-  buildTimeSeconds: number;           // tempo base de construção em segundos
+  level: Exclude<BuildingLevel, 0>; // 1 | 2 | 3
+  cost: ResourceAmount; // custo para construir/upar
+  buildTimeSeconds: number; // tempo base de construção em segundos
   effects: BuildingLevelEffects;
 }
 
@@ -220,17 +213,17 @@ interface BuildingDefinition {
 interface BuildQueueEntry {
   buildingId: BuildingId;
   targetLevel: Exclude<BuildingLevel, 0>;
-  startedAt: number;    // timestamp em ms (Date.now())
-  completesAt: number;  // timestamp em ms quando termina
+  startedAt: number; // timestamp em ms (Date.now())
+  completesAt: number; // timestamp em ms quando termina
 }
 
 interface GameState {
   resources: ResourceStore;
   buildings: Record<BuildingId, BuildingState>;
   buildQueue: BuildQueueEntry[];
-  lastSavedAt: number;       // timestamp da última atualização
-  version: number;           // versão do schema (atual: 1)
-  castleGoldRate: number;    // produção de ouro configurada no castelo (0 a maxRate)
+  lastSavedAt: number; // timestamp da última atualização
+  version: number; // versão do schema (atual: 1)
+  castleGoldRate: number; // produção de ouro configurada no castelo (0 a maxRate)
 }
 
 type ConstructionResult =
@@ -248,11 +241,11 @@ type ConstructionResult =
 - **Função**: Sede do império. Controla limites de armazenamento e possui produção ajustável de ouro.
 - **Começa**: Nível 1 automaticamente no início do jogo.
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  | Prod./tick (mad/ped/com/ouro) | Storage |
-|-------|---------|-------|--------|------|--------|-------------------------------|---------|
-| 1     | 0       | 0     | 0      | 0    | 0s     | +0.5 / +0.3 / +0.3 / ajustável | +200/+200/+200/+100 |
-| 2     | 40      | 50    | 15     | 0    | 45s    | +1.0 / +0.6 / +0.6 / ajustável (max 0.1) | +500/+500/+500/+300 |
-| 3     | 120     | 180   | 60     | 15   | 240s   | +2.0 / +1.2 / +1.2 / ajustável (max 0.3) | +1500/+1500/+1500/+1000 |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo | Prod./tick (mad/ped/com/ouro)            | Storage                 |
+| ----- | ------- | ----- | ------ | ---- | ----- | ---------------------------------------- | ----------------------- |
+| 1     | 0       | 0     | 0      | 0    | 0s    | +0.5 / +0.3 / +0.3 / ajustável           | +200/+200/+200/+100     |
+| 2     | 40      | 50    | 15     | 0    | 45s   | +1.0 / +0.6 / +0.6 / ajustável (max 0.1) | +500/+500/+500/+300     |
+| 3     | 120     | 180   | 60     | 15   | 240s  | +2.0 / +1.2 / +1.2 / ajustável (max 0.3) | +1500/+1500/+1500/+1000 |
 
 **Mecânica especial**: O ouro produzido pelo castelo não é fixo. O jogador ajusta um slider no modal do castelo que vai de 0 até o valor máximo do nível atual. Isso permite controle sobre o quanto de capacidade de produção de ouro é alocada. O valor é persistido em `gameState.castleGoldRate`.
 
@@ -263,11 +256,11 @@ type ConstructionResult =
 - **Categoria**: producer
 - **Função**: Produz comida.
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  | Comida/tick |
-|-------|---------|-------|--------|------|--------|-------------|
-| 1     | 30      | 10    | 0      | 0    | 60s    | +0.5        |
-| 2     | 80      | 30    | 0      | 0    | 180s   | +1.5        |
-| 3     | 200     | 100   | 0      | 20   | 480s   | +4.0        |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo | Comida/tick |
+| ----- | ------- | ----- | ------ | ---- | ----- | ----------- |
+| 1     | 30      | 10    | 0      | 0    | 60s   | +0.5        |
+| 2     | 80      | 30    | 0      | 0    | 180s  | +1.5        |
+| 3     | 200     | 100   | 0      | 20   | 480s  | +4.0        |
 
 ---
 
@@ -276,11 +269,11 @@ type ConstructionResult =
 - **Categoria**: producer
 - **Função**: Produz madeira.
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  | Madeira/tick |
-|-------|---------|-------|--------|------|--------|--------------|
-| 1     | 0       | 15    | 5      | 0    | 60s    | +0.5         |
-| 2     | 60      | 50    | 15     | 0    | 200s   | +1.5         |
-| 3     | 150     | 150   | 50     | 30   | 500s   | +4.0         |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo | Madeira/tick |
+| ----- | ------- | ----- | ------ | ---- | ----- | ------------ |
+| 1     | 0       | 15    | 5      | 0    | 60s   | +0.5         |
+| 2     | 60      | 50    | 15     | 0    | 200s  | +1.5         |
+| 3     | 150     | 150   | 50     | 30   | 500s  | +4.0         |
 
 ---
 
@@ -289,11 +282,11 @@ type ConstructionResult =
 - **Categoria**: producer
 - **Função**: Produz pedra.
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  | Pedra/tick |
-|-------|---------|-------|--------|------|--------|------------|
-| 1     | 40      | 0     | 10     | 0    | 90s    | +0.4       |
-| 2     | 100     | 20    | 30     | 0    | 240s   | +1.2       |
-| 3     | 250     | 60    | 80     | 50   | 600s   | +3.5       |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo | Pedra/tick |
+| ----- | ------- | ----- | ------ | ---- | ----- | ---------- |
+| 1     | 40      | 0     | 10     | 0    | 90s   | +0.4       |
+| 2     | 100     | 20    | 30     | 0    | 240s  | +1.2       |
+| 3     | 250     | 60    | 80     | 50   | 600s  | +3.5       |
 
 ---
 
@@ -302,11 +295,11 @@ type ConstructionResult =
 - **Categoria**: producer
 - **Função**: Produz ouro de forma fixa (diferente do castelo que é ajustável).
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  | Ouro/tick |
-|-------|---------|-------|--------|------|--------|-----------|
-| 1     | 60      | 40    | 20     | 0    | 120s   | +0.2      |
-| 2     | 150     | 120   | 60     | 10   | 360s   | +0.6      |
-| 3     | 400     | 300   | 150    | 50   | 720s   | +1.5      |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo | Ouro/tick |
+| ----- | ------- | ----- | ------ | ---- | ----- | --------- |
+| 1     | 60      | 40    | 20     | 0    | 120s  | +0.2      |
+| 2     | 150     | 120   | 60     | 10   | 360s  | +0.6      |
+| 3     | 400     | 300   | 150    | 50   | 720s  | +1.5      |
 
 ---
 
@@ -315,11 +308,11 @@ type ConstructionResult =
 - **Categoria**: military
 - **Função**: Futuro sistema militar. Atualmente não produz recursos nem concede bônus.
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  |
-|-------|---------|-------|--------|------|--------|
-| 1     | 80      | 60    | 30     | 0    | 150s   |
-| 2     | 200     | 180   | 100    | 30   | 420s   |
-| 3     | 500     | 500   | 300    | 100  | 840s   |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo |
+| ----- | ------- | ----- | ------ | ---- | ----- |
+| 1     | 80      | 60    | 30     | 0    | 150s  |
+| 2     | 200     | 180   | 100    | 30   | 420s  |
+| 3     | 500     | 500   | 300    | 100  | 840s  |
 
 ---
 
@@ -328,15 +321,15 @@ type ConstructionResult =
 - **Categoria**: headquarters
 - **Função**: Reduz o tempo de construção de TODOS os edifícios. Quanto maior o nível, maior a redução.
 
-| Nível | Madeira | Pedra | Comida | Ouro | Tempo  | Redução de Construção |
-|-------|---------|-------|--------|------|--------|-----------------------|
-| 1     | 30      | 25    | 10     | 0    | 40s    | −15%                  |
-| 2     | 90      | 70    | 25     | 5    | 120s   | −30%                  |
-| 3     | 250     | 200   | 60     | 25   | 360s   | −50%                  |
+| Nível | Madeira | Pedra | Comida | Ouro | Tempo | Redução de Construção |
+| ----- | ------- | ----- | ------ | ---- | ----- | --------------------- |
+| 1     | 30      | 25    | 10     | 0    | 40s   | −15%                  |
+| 2     | 90      | 70    | 25     | 5    | 120s  | −30%                  |
+| 3     | 250     | 200   | 60     | 25   | 360s  | −50%                  |
 
 **Mecânica especial**: O bônus de `constructionSpeedBonus` é somado de todos os edifícios e o tempo de construção é multiplicado por `(1 - totalBonus)`. O mínimo é `0.1` (nunca menor que 10% do tempo original). Atualmente apenas a Prefeitura tem esse bônus, mas o sistema é genérico.
 
-Exemplo: Com Prefeitura nível 2 (30% de bônus), uma construção de 240s levaria 240 * 0.70 = 168s.
+Exemplo: Com Prefeitura nível 2 (30% de bônus), uma construção de 240s levaria 240 \* 0.70 = 168s.
 
 ---
 
@@ -347,9 +340,9 @@ O arquivo `src/features/game-engine/engine.ts` contém toda a lógica do jogo co
 ### Constantes
 
 ```ts
-RESOURCE_KINDS = ['wood', 'stone', 'food', 'gold']
-GAME_STATE_VERSION = 1
-MAX_OFFLINE_SECONDS = 28800  // 8 horas
+RESOURCE_KINDS = ['wood', 'stone', 'food', 'gold'];
+GAME_STATE_VERSION = 1;
+MAX_OFFLINE_SECONDS = 28800; // 8 horas
 ```
 
 ### Funções Utilitárias Internas
@@ -395,6 +388,7 @@ Quando a velocidade do jogo muda, ajusta os timestamps de conclusão das constru
 #### `startConstruction(state, buildingId, now, speed): ConstructionResult`
 
 Tenta iniciar a construção de um edifício. Valida:
+
 1. Fila está vazia (máximo 1 construção simultânea)
 2. Edifício não está no nível máximo (3)
 3. O próximo nível não excede `maxLevel` da definição
@@ -417,6 +411,7 @@ Combina `processCompletedBuildings` + `applyProductionTick`. É chamado a cada s
 #### `calculateOfflineProgress(state, now): GameState`
 
 Simula o tempo que o jogador ficou offline, até `MAX_OFFLINE_SECONDS`. O algoritmo:
+
 1. Calcula quantos segundos passaram desde `lastSavedAt`
 2. Ordena a fila de construção por `completesAt`
 3. Para cada construção que terminaria no período offline:
@@ -428,6 +423,7 @@ Simula o tempo que o jogador ficou offline, até `MAX_OFFLINE_SECONDS`. O algori
 #### `safeParseGameState(raw): GameState | null`
 
 Valida o JSON recuperado do `localStorage`. Verifica:
+
 - É um objeto não-nulo
 - `version === GAME_STATE_VERSION` (atualmente 1)
 - Campos obrigatórios presentes com tipos corretos
@@ -446,24 +442,24 @@ Compatibilidade retroativa: se `castleGoldRate` não existir no save antigo, inj
 
 #### Átomos Derivados (leitura)
 
-| Átomo | Derivado de | Tipo |
-|-------|-------------|------|
-| `resourcesAtom` | `gameStateAtom.resources` | `ResourceStore` |
-| `buildingsAtom` | `gameStateAtom.buildings` | `Record<BuildingId, BuildingState>` |
-| `buildQueueAtom` | `gameStateAtom.buildQueue` | `BuildQueueEntry[]` |
-| `activeBuildAtom` | `buildQueueAtom[0]` | `BuildQueueEntry \| null` |
-| `isConstructingAtom` | `buildQueueAtom.length > 0` | `boolean` |
-| `lastSavedAtAtom` | `gameStateAtom.lastSavedAt` | `number` |
-| `castleGoldRateAtom` | `gameStateAtom.castleGoldRate` | `number` |
-| `productionAtom` | `calculateProduction(buildings, castleGoldRate)` | `ResourceAmount` |
-| `gameDayAtom` | `tickCountAtom + 1` | `number` |
+| Átomo                | Derivado de                                      | Tipo                                |
+| -------------------- | ------------------------------------------------ | ----------------------------------- |
+| `resourcesAtom`      | `gameStateAtom.resources`                        | `ResourceStore`                     |
+| `buildingsAtom`      | `gameStateAtom.buildings`                        | `Record<BuildingId, BuildingState>` |
+| `buildQueueAtom`     | `gameStateAtom.buildQueue`                       | `BuildQueueEntry[]`                 |
+| `activeBuildAtom`    | `buildQueueAtom[0]`                              | `BuildQueueEntry \| null`           |
+| `isConstructingAtom` | `buildQueueAtom.length > 0`                      | `boolean`                           |
+| `lastSavedAtAtom`    | `gameStateAtom.lastSavedAt`                      | `number`                            |
+| `castleGoldRateAtom` | `gameStateAtom.castleGoldRate`                   | `number`                            |
+| `productionAtom`     | `calculateProduction(buildings, castleGoldRate)` | `ResourceAmount`                    |
+| `gameDayAtom`        | `tickCountAtom + 1`                              | `number`                            |
 
 #### Átomos de Controle
 
-| Átomo | Tipo | Default | Descrição |
-|-------|------|---------|-----------|
-| `tickCountAtom` | `number` | `0` | Contador de ticks desde abertura do jogo |
-| `gameSpeedAtom` | `GameSpeed` | `1` | Velocidade do jogo (0, 0.5, 1, 2, 4) |
+| Átomo           | Tipo        | Default | Descrição                                |
+| --------------- | ----------- | ------- | ---------------------------------------- |
+| `tickCountAtom` | `number`    | `0`     | Contador de ticks desde abertura do jogo |
+| `gameSpeedAtom` | `GameSpeed` | `1`     | Velocidade do jogo (0, 0.5, 1, 2, 4)     |
 
 ### `eventLogAtom.ts`
 
@@ -496,6 +492,7 @@ Hook chamado uma vez, em `providers.tsx`, dentro de `GameLoopInitializer`. Não 
 ### `useUpgrade.ts`
 
 Retorna uma função `(buildingId) => ConstructionResult` via `useAtomCallback`. Ao ser chamada:
+
 1. Lê estado atual e velocidade do jogo
 2. Chama `startConstruction(state, buildingId, now, speed)`
 3. Se sucesso: salva novo estado no `gameStateAtom`, loga evento de início
@@ -508,6 +505,7 @@ Retorna uma função `(buildingId) => ConstructionResult` via `useAtomCallback`.
 ### `useBuildingCard.ts`
 
 Usado por `BuildingCard`. Recebe `buildingId`. Retorna:
+
 - `building`: estado atual (`level`)
 - `def`: definição completa do edifício
 - `currentLevelDef`: definição do nível atual (ou `null` se nível 0)
@@ -518,6 +516,7 @@ Usado por `BuildingCard`. Recebe `buildingId`. Retorna:
 ### `useBuildingModal.ts`
 
 Usado por `BuildingModal`. Recebe `buildingId` e `onClose`. Retorna os mesmos dados de `useBuildingCard` mais:
+
 - `resources`: recursos atuais do jogador
 - `nextLevelDef`: definição do próximo nível (ou `null` se max)
 - `isMaxLevel`, `isConstructing`
@@ -526,6 +525,7 @@ Usado por `BuildingModal`. Recebe `buildingId` e `onClose`. Retorna os mesmos da
 ### `useCastleGoldRate.ts`
 
 Usado por `CastleGoldSlider`. Retorna:
+
 - `rate`: valor atual de `castleGoldRate`
 - `maxRate`: máximo do nível atual do castelo (de `productionPerTick.gold` da definição)
 - `setRate(newRate)`: escreve `castleGoldRate` direto no `gameStateAtom`
@@ -539,6 +539,7 @@ Usado por `CastleGoldSlider`. Retorna:
 #### `GameLayout.tsx`
 
 Layout de 3 colunas com `flex`:
+
 - **Coluna esquerda** (estreita, fixa): `GameSidebar`
 - **Coluna central** (cresce, scroll): `ResourceHUD` no topo + `BuildingGrid` embaixo
 - **Coluna direita** (fixa): `GameSummaryPanel`
@@ -546,6 +547,7 @@ Layout de 3 colunas com `flex`:
 #### `GameSummaryPanel.tsx`
 
 Painel direito que organiza verticalmente:
+
 1. `EmpireStats`
 2. `ConstructionQueue`
 3. `RecentEvents`
@@ -564,6 +566,7 @@ Painel direito que organiza verticalmente:
 #### `BuildingCard.tsx`
 
 Artigo HTML com:
+
 - Ícone do edifício + nome + nível
 - Produção atual (se level > 0)
 - Barra de progresso de construção (se em fila)
@@ -572,6 +575,7 @@ Artigo HTML com:
 #### `BuildingModal.tsx`
 
 Dialog shadcn dividida em seções:
+
 1. **Header**: `BuildingIdentity` (ícone, nome, nível, max, botão fechar)
 2. **Body**:
    - Descrição em texto
@@ -583,6 +587,7 @@ Dialog shadcn dividida em seções:
 #### `BuildingExtra.tsx`
 
 Componente de despacho sem estado. Routing por `buildingId`:
+
 - `'castle'` → `<CastleGoldSlider />`
 - `'prefeitura'` → `<PrefeituraSpeedInfo />`
 - outros → `null`
@@ -590,6 +595,7 @@ Componente de despacho sem estado. Routing por `buildingId`:
 #### `CastleGoldSlider.tsx`
 
 Visível apenas quando `maxRate > 0` (Castelo nível 2 ou 3). Exibe:
+
 - Rótulo "Produção de Ouro" e valor atual `X.XX/tick (Y%)`
 - `<input type="range" min=0 max=maxRate step=0.01>`
 - Rótulos de min/max
@@ -609,6 +615,7 @@ Faixa de header com as 4 barras de recurso lado a lado, mais `GameDayCounter` e 
 #### `ResourceBar.tsx`
 
 Para cada recurso mostra:
+
 - Ícone com cor temática
 - `atual / máximo`
 - Taxa de produção por segundo (`+X.X/s`)
@@ -629,6 +636,7 @@ Seção com título "Em Construção". Se não há builds ativos, exibe "Nenhuma
 #### `EmpireStats.tsx`
 
 Calcula:
+
 - Total de edifícios construídos (level > 0)
 - Soma de todos os níveis
 - "Score do Império" = soma dos níveis × 30
@@ -642,6 +650,7 @@ Exibe os últimos 5 eventos do `eventLogAtom` em ordem reversa, com horário for
 #### `GameSidebar.tsx`
 
 Sidebar esquerda com:
+
 - Logo "Galadur" com ícone
 - Itens de navegação: "Cidade" (ativo), "Exército", "Pesquisa", "Configurações" (últimos 3 com badge "SOON")
 - Botão de recolher sidebar
@@ -662,6 +671,7 @@ O tema é medieval/fantasia com tons escuros. As cores customizadas são definid
 - **`white`**: textos primários
 
 Cores de recursos:
+
 - Madeira: tons de âmbar/amarelo
 - Pedra: tons de cinza
 - Comida: tons de verde
@@ -709,6 +719,7 @@ useCastleGoldRate.setRate(newRate) (ao mover slider)
 ## 13. Salvamento e Persistência
 
 O `gameStateAtom` usa `atomWithStorage` do Jotai com storage customizado. O `getItem` customizado:
+
 1. Lê o JSON do `localStorage`
 2. Faz parse
 3. Chama `safeParseGameState(parsed)` para validar
@@ -761,6 +772,7 @@ Quando a velocidade muda, `rescaleQueueForSpeedChange` ajusta os `completesAt` d
 O jogo suporta apenas **1 construção por vez**. A fila (`buildQueue`) é um array mas na prática tem 0 ou 1 item.
 
 Regras:
+
 - `startConstruction` retorna `{ success: false, error: 'queue_full' }` se já houver 1 item
 - Um edifício não pode ter 2 construções simultâneas pelo mesmo motivo
 - Ao completar, o entry é removido da fila e o `level` do edifício é incrementado
@@ -825,27 +837,27 @@ buildQueue: []
 
 ## 20. Resumo de Arquivos por Responsabilidade
 
-| Responsabilidade | Arquivo(s) |
-|------------------|------------|
-| Tipos do domínio | `game-engine/types.ts` |
-| Lógica pura do jogo | `game-engine/engine.ts` |
-| Loop de ticks | `game-engine/hooks/useGameLoop.ts` |
-| Iniciar construção | `game-engine/hooks/useUpgrade.ts` |
-| Estado global | `store/gameAtoms.ts` |
-| Log de eventos | `store/eventLogAtom.ts` |
-| Definição de edifícios | `config/buildings/*.ts` |
-| Layout principal | `game/components/GameLayout.tsx` |
-| Grade de edifícios | `game/building/components/BuildingGrid.tsx` |
-| Modal de edifício | `game/building/components/BuildingModal.tsx` |
-| Slider de ouro do castelo | `game/building/components/CastleGoldSlider.tsx` |
-| Info de velocidade da prefeitura | `game/building/components/PrefeituraSpeedInfo.tsx` |
-| Roteador de extras no modal | `game/building/components/BuildingExtra.tsx` |
-| HUD de recursos | `game/resource/components/ResourceHUD.tsx` |
-| Controles de velocidade | `game/resource/components/GameSpeedControls.tsx` |
-| Fila de construção | `game/construction/components/ConstructionQueue.tsx` |
-| Stats do império | `game/empire/components/EmpireStats.tsx` |
-| Eventos recentes | `game/empire/components/RecentEvents.tsx` |
-| Navegação | `game/navigation/components/GameSidebar.tsx` |
-| Ícones de edifícios | `game/components/icons/*.tsx` |
-| Ícones de recursos | `game/components/ResourceIcon.tsx` |
-| Utilitários CSS | `lib/utils.ts` |
+| Responsabilidade                 | Arquivo(s)                                           |
+| -------------------------------- | ---------------------------------------------------- |
+| Tipos do domínio                 | `game-engine/types.ts`                               |
+| Lógica pura do jogo              | `game-engine/engine.ts`                              |
+| Loop de ticks                    | `game-engine/hooks/useGameLoop.ts`                   |
+| Iniciar construção               | `game-engine/hooks/useUpgrade.ts`                    |
+| Estado global                    | `store/gameAtoms.ts`                                 |
+| Log de eventos                   | `store/eventLogAtom.ts`                              |
+| Definição de edifícios           | `config/buildings/*.ts`                              |
+| Layout principal                 | `game/components/GameLayout.tsx`                     |
+| Grade de edifícios               | `game/building/components/BuildingGrid.tsx`          |
+| Modal de edifício                | `game/building/components/BuildingModal.tsx`         |
+| Slider de ouro do castelo        | `game/building/components/CastleGoldSlider.tsx`      |
+| Info de velocidade da prefeitura | `game/building/components/PrefeituraSpeedInfo.tsx`   |
+| Roteador de extras no modal      | `game/building/components/BuildingExtra.tsx`         |
+| HUD de recursos                  | `game/resource/components/ResourceHUD.tsx`           |
+| Controles de velocidade          | `game/resource/components/GameSpeedControls.tsx`     |
+| Fila de construção               | `game/construction/components/ConstructionQueue.tsx` |
+| Stats do império                 | `game/empire/components/EmpireStats.tsx`             |
+| Eventos recentes                 | `game/empire/components/RecentEvents.tsx`            |
+| Navegação                        | `game/navigation/components/GameSidebar.tsx`         |
+| Ícones de edifícios              | `game/components/icons/*.tsx`                        |
+| Ícones de recursos               | `game/components/ResourceIcon.tsx`                   |
+| Utilitários CSS                  | `lib/utils.ts`                                       |

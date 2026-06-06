@@ -36,7 +36,10 @@ export function BuildingCard({ building, onOpenModal }: BuildingCardProps) {
         <div className="flex-1 px-3 py-3 sm:px-4 sm:pb-4 sm:pt-4 flex flex-col gap-1.5 sm:gap-3">
           <div className="flex flex-col gap-0.5">
             <h3 className="font-bold text-white text-sm leading-tight">{def.name}</h3>
-            <p data-testid={`building-card-${building.id}-level`} className="text-xs text-realm-500">
+            <p
+              data-testid={`building-card-${building.id}-level`}
+              className="text-xs text-realm-500"
+            >
               Nível {building.level} / {def.maxLevel}
             </p>
           </div>
@@ -61,7 +64,13 @@ export function BuildingCard({ building, onOpenModal }: BuildingCardProps) {
       </div>
 
       <div className="sm:hidden flex-shrink-0 flex items-center self-center pr-3 text-realm-600 group-hover:text-realm-400 transition-colors">
-        <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          viewBox="0 0 24 24"
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M9 18l6-6-6-6" />
         </svg>
       </div>

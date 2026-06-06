@@ -4,12 +4,7 @@ import { BuildingUpgradeCosts } from './BuildingUpgradeCosts';
 import { BuildingUpgradeActions } from './BuildingUpgradeActions';
 import { BuildingExtra } from './BuildingExtra';
 import { useBuildingModal } from '../hooks/useBuildingModal';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import type { BuildingId } from '@/features/game-engine/types';
 
 interface BuildingModalProps {
@@ -31,7 +26,12 @@ export function BuildingModal({ buildingId, onClose }: BuildingModalProps) {
   } = useBuildingModal(buildingId, onClose);
 
   return (
-    <Dialog open={true} onOpenChange={(open) => { if (!open) onClose(); }}>
+    <Dialog
+      open={true}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
       <DialogContent
         showCloseButton={false}
         className="w-full max-w-[calc(100%-1rem)] sm:max-w-md p-0 gap-0 bg-realm-950 border-realm-700 rounded-none ring-0"

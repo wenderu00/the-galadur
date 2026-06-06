@@ -15,18 +15,13 @@ export function BuildingGrid() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
         <h1 className="font-medieval text-2xl font-bold text-white">Visão da Cidade</h1>
-        <p className="text-sm text-realm-500">
-          Gerencie suas construções e expanda seu império
-        </p>
+        <p className="text-sm text-realm-500">Gerencie suas construções e expanda seu império</p>
       </div>
 
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 list-none p-0">
         {allBuildings.map((building) => (
           <li key={building.id}>
-            <BuildingCard
-              building={building}
-              onOpenModal={() => setSelectedId(building.id)}
-            />
+            <BuildingCard building={building} onOpenModal={() => setSelectedId(building.id)} />
           </li>
         ))}
       </ul>

@@ -27,7 +27,9 @@ test.describe('Mobile Layout', () => {
 
   test('aba Resumo exibe o painel de resumo', async ({ page }) => {
     await nav.goToSummary();
-    await expect(page.getByText('Status do Império').filter({ visible: true }).first()).toBeVisible();
+    await expect(
+      page.getByText('Status do Império').filter({ visible: true }).first()
+    ).toBeVisible();
   });
 
   test('aba Edifícios exibe o building grid', async () => {
@@ -46,7 +48,7 @@ test.describe('Mobile Layout', () => {
 
   test('sem scroll horizontal em 390px', async ({ page }) => {
     const hasOverflow = await page.evaluate(
-      () => document.documentElement.scrollWidth > window.innerWidth,
+      () => document.documentElement.scrollWidth > window.innerWidth
     );
     expect(hasOverflow).toBe(false);
   });

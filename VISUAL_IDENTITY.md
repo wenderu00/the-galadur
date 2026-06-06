@@ -22,72 +22,72 @@ UI de jogo no estilo **dark fantasy medieval**. Os princípios visuais:
 
 Definidas em `src/index.css`:
 
-| Variável              | Valor OKLCH                  | Uso                          |
-|-----------------------|------------------------------|------------------------------|
-| `--background`        | `oklch(0.11 0.03 240)`       | Fundo principal (azul escuro)|
-| `--foreground`        | `oklch(1 0 0)`               | Texto primário (branco)      |
-| `--card`              | `oklch(0.07 0.025 240)`      | Fundo de cards               |
-| `--card-foreground`   | `oklch(1 0 0)`               | Texto em cards               |
-| `--popover`           | `oklch(0.07 0.025 240)`      | Fundo de popovers            |
-| `--popover-foreground`| `oklch(1 0 0)`               | Texto em popovers            |
-| `--primary`           | `oklch(0.58 0.17 220)`       | Azul céu — ações primárias   |
-| `--primary-foreground`| `oklch(1 0 0)`               | Texto sobre primary          |
-| `--secondary`         | `oklch(0.18 0.04 235)`       | Slate escuro — secundário    |
-| `--secondary-foreground`| `oklch(1 0 0)`             | Texto sobre secondary        |
-| `--muted`             | `oklch(0.18 0.04 235)`       | Elementos discretos          |
-| `--muted-foreground`  | `oklch(0.47 0.08 255)`       | Texto discreto               |
-| `--accent`            | `oklch(0.22 0.05 235)`       | Acento sutil                 |
-| `--accent-foreground` | `oklch(1 0 0)`               | Texto sobre accent           |
-| `--destructive`       | `oklch(0.577 0.245 27.325)`  | Vermelho-laranja — destrutivo|
-| `--border`            | `oklch(0.18 0.04 235)`       | Bordas                       |
-| `--input`             | `oklch(0.18 0.04 235)`       | Campos de input              |
-| `--ring`              | `oklch(0.58 0.17 220)`       | Anel de foco                 |
-| `--sidebar`           | `oklch(0.07 0.025 240)`      | Fundo da sidebar             |
-| `--sidebar-foreground`| `oklch(1 0 0)`               | Texto da sidebar             |
-| `--sidebar-border`    | `oklch(0.18 0.04 235)`       | Bordas da sidebar            |
-| `--sidebar-ring`      | `oklch(0.58 0.17 220)`       | Foco da sidebar              |
+| Variável                 | Valor OKLCH                 | Uso                           |
+| ------------------------ | --------------------------- | ----------------------------- |
+| `--background`           | `oklch(0.11 0.03 240)`      | Fundo principal (azul escuro) |
+| `--foreground`           | `oklch(1 0 0)`              | Texto primário (branco)       |
+| `--card`                 | `oklch(0.07 0.025 240)`     | Fundo de cards                |
+| `--card-foreground`      | `oklch(1 0 0)`              | Texto em cards                |
+| `--popover`              | `oklch(0.07 0.025 240)`     | Fundo de popovers             |
+| `--popover-foreground`   | `oklch(1 0 0)`              | Texto em popovers             |
+| `--primary`              | `oklch(0.58 0.17 220)`      | Azul céu — ações primárias    |
+| `--primary-foreground`   | `oklch(1 0 0)`              | Texto sobre primary           |
+| `--secondary`            | `oklch(0.18 0.04 235)`      | Slate escuro — secundário     |
+| `--secondary-foreground` | `oklch(1 0 0)`              | Texto sobre secondary         |
+| `--muted`                | `oklch(0.18 0.04 235)`      | Elementos discretos           |
+| `--muted-foreground`     | `oklch(0.47 0.08 255)`      | Texto discreto                |
+| `--accent`               | `oklch(0.22 0.05 235)`      | Acento sutil                  |
+| `--accent-foreground`    | `oklch(1 0 0)`              | Texto sobre accent            |
+| `--destructive`          | `oklch(0.577 0.245 27.325)` | Vermelho-laranja — destrutivo |
+| `--border`               | `oklch(0.18 0.04 235)`      | Bordas                        |
+| `--input`                | `oklch(0.18 0.04 235)`      | Campos de input               |
+| `--ring`                 | `oklch(0.58 0.17 220)`      | Anel de foco                  |
+| `--sidebar`              | `oklch(0.07 0.025 240)`     | Fundo da sidebar              |
+| `--sidebar-foreground`   | `oklch(1 0 0)`              | Texto da sidebar              |
+| `--sidebar-border`       | `oklch(0.18 0.04 235)`      | Bordas da sidebar             |
+| `--sidebar-ring`         | `oklch(0.58 0.17 220)`      | Foco da sidebar               |
 
 ### Paleta `realm` (azul-marinho do reino)
 
 Definida em `tailwind.config.ts`:
 
-| Token        | Hex       | Uso típico                       |
-|--------------|-----------|----------------------------------|
-| `realm-950`  | `#080e1a` | Fundo de sidebar, tracking badge |
-| `realm-900`  | `#0f1729` | Fundo de cards e containers      |
-| `realm-800`  | `#1a2744` | Bordas e divisores               |
-| `realm-700`  | `#2a3f6f` | Tom médio                        |
-| `realm-600`  | `#3a5490` | Tom mais claro                   |
-| `realm-500`  | `#4a6ab0` | Texto de acento, nav inativa     |
+| Token       | Hex       | Uso típico                       |
+| ----------- | --------- | -------------------------------- |
+| `realm-950` | `#080e1a` | Fundo de sidebar, tracking badge |
+| `realm-900` | `#0f1729` | Fundo de cards e containers      |
+| `realm-800` | `#1a2744` | Bordas e divisores               |
+| `realm-700` | `#2a3f6f` | Tom médio                        |
+| `realm-600` | `#3a5490` | Tom mais claro                   |
+| `realm-500` | `#4a6ab0` | Texto de acento, nav inativa     |
 
 ### Paleta `gold` (ouro — progressão)
 
-| Token       | Hex       | Uso típico                      |
-|-------------|-----------|----------------------------------|
-| `gold-300`  | `#fde68a` | Ouro claro                       |
-| `gold-400`  | `#f5c842` | Destaque dourado                 |
-| `gold-500`  | `#d4a017` | Preenchimento de barra de progresso |
-| `gold-600`  | `#b8860b` | Ouro mais escuro                 |
-| `gold-700`  | `#8b6914` | Borda dourada                    |
+| Token      | Hex       | Uso típico                          |
+| ---------- | --------- | ----------------------------------- |
+| `gold-300` | `#fde68a` | Ouro claro                          |
+| `gold-400` | `#f5c842` | Destaque dourado                    |
+| `gold-500` | `#d4a017` | Preenchimento de barra de progresso |
+| `gold-600` | `#b8860b` | Ouro mais escuro                    |
+| `gold-700` | `#8b6914` | Borda dourada                       |
 
 ### Cores por recurso
 
-| Recurso | Fundo         | Texto / Ícone   | Barra de progresso |
-|---------|---------------|-----------------|--------------------|
-| Madeira | `green-950`   | `green-400`     | `green-500`        |
-| Pedra   | `slate-900`   | `slate-400`     | `slate-500`        |
-| Comida  | `amber-950`   | `amber-400`     | `amber-500`        |
-| Ouro    | `yellow-950`  | `yellow-400`    | `yellow-500`       |
+| Recurso | Fundo        | Texto / Ícone | Barra de progresso |
+| ------- | ------------ | ------------- | ------------------ |
+| Madeira | `green-950`  | `green-400`   | `green-500`        |
+| Pedra   | `slate-900`  | `slate-400`   | `slate-500`        |
+| Comida  | `amber-950`  | `amber-400`   | `amber-500`        |
+| Ouro    | `yellow-950` | `yellow-400`  | `yellow-500`       |
 
 ### Cores funcionais
 
-| Função                  | Cor Tailwind        |
-|-------------------------|---------------------|
-| Ação primária / ativo   | `sky-600`, `sky-500`|
-| Link e foco             | `blue-400`          |
-| Aviso (recurso insuficiente) | `red-400`      |
-| Bônus de armazenamento  | `amber-400`         |
-| Overlay de modal        | `black/75`          |
+| Função                       | Cor Tailwind         |
+| ---------------------------- | -------------------- |
+| Ação primária / ativo        | `sky-600`, `sky-500` |
+| Link e foco                  | `blue-400`           |
+| Aviso (recurso insuficiente) | `red-400`            |
+| Bônus de armazenamento       | `amber-400`          |
+| Overlay de modal             | `black/75`           |
 
 ---
 
@@ -95,34 +95,34 @@ Definida em `tailwind.config.ts`:
 
 ### Fontes
 
-| Família           | Fonte          | Fallback           | Uso                               |
-|-------------------|----------------|--------------------|-----------------------------------|
-| `font-medieval`   | Cinzel (serif) | Georgia, serif     | Títulos, labels, nome do jogo     |
-| (padrão do sistema) | —            | —                  | Corpo, valores numéricos          |
+| Família             | Fonte          | Fallback       | Uso                           |
+| ------------------- | -------------- | -------------- | ----------------------------- |
+| `font-medieval`     | Cinzel (serif) | Georgia, serif | Títulos, labels, nome do jogo |
+| (padrão do sistema) | —              | —              | Corpo, valores numéricos      |
 
 Importação via Google Fonts: `family=Cinzel:wght@400;600;700`
 
 ### Pesos
 
-| Peso | Classe Tailwind   | Uso                                    |
-|------|-------------------|----------------------------------------|
-| 400  | `font-normal`     | Texto de corpo                         |
-| 600  | `font-semibold`   | Nome de construções, valores de stats  |
-| 700  | `font-bold`       | Títulos principais                     |
+| Peso | Classe Tailwind | Uso                                   |
+| ---- | --------------- | ------------------------------------- |
+| 400  | `font-normal`   | Texto de corpo                        |
+| 600  | `font-semibold` | Nome de construções, valores de stats |
+| 700  | `font-bold`     | Títulos principais                    |
 
 ### Tamanhos e estilos recorrentes
 
-| Classe                              | Uso                                      |
-|-------------------------------------|------------------------------------------|
-| `text-2xl font-bold`                | Títulos de página                        |
-| `text-lg font-bold`                 | Contador de dia                          |
-| `text-sm font-bold`                 | Nome de construções, labels de stats     |
-| `text-xs`                           | Descrições e textos secundários          |
-| `text-[11px]`                       | Texto terciário, labels pequenos         |
-| `text-[10px]`                       | Labels minúsculos com estilo medieval    |
-| `uppercase tracking-widest`         | Labels medievais em caixa-alta           |
+| Classe                                | Uso                                    |
+| ------------------------------------- | -------------------------------------- |
+| `text-2xl font-bold`                  | Títulos de página                      |
+| `text-lg font-bold`                   | Contador de dia                        |
+| `text-sm font-bold`                   | Nome de construções, labels de stats   |
+| `text-xs`                             | Descrições e textos secundários        |
+| `text-[11px]`                         | Texto terciário, labels pequenos       |
+| `text-[10px]`                         | Labels minúsculos com estilo medieval  |
+| `uppercase tracking-widest`           | Labels medievais em caixa-alta         |
 | `font-mono` + `text-xs text-gold-400` | Tempo restante em barras de progresso  |
-| `tabular-nums`                      | Valores numéricos alinhados (recursos)   |
+| `tabular-nums`                        | Valores numéricos alinhados (recursos) |
 
 ---
 
@@ -140,13 +140,13 @@ Espessura: sempre `1px` (classe `border`).
 
 ### Padding
 
-| Contexto                  | Classe               |
-|---------------------------|----------------------|
-| Cards e seções            | `p-3` ou `p-4`       |
-| Header da sidebar         | `px-4 py-5`          |
-| Botões                    | `py-2.5 px-4` / `px-3` |
-| Cabeçalhos de conteúdo    | `px-6 py-3`          |
-| Área de conteúdo principal| `px-6 py-4`          |
+| Contexto                   | Classe                 |
+| -------------------------- | ---------------------- |
+| Cards e seções             | `p-3` ou `p-4`         |
+| Header da sidebar          | `px-4 py-5`            |
+| Botões                     | `py-2.5 px-4` / `px-3` |
+| Cabeçalhos de conteúdo     | `px-6 py-3`            |
+| Área de conteúdo principal | `px-6 py-4`            |
 
 ### Gap
 
@@ -176,11 +176,11 @@ p-3 a p-4
 
 ### Botões
 
-| Estado    | Classes                                          |
-|-----------|--------------------------------------------------|
-| Ativo     | `bg-sky-600 hover:bg-sky-500 text-white`         |
-| Inativo   | `bg-realm-950 hover:bg-realm-950 text-realm-600` |
-| Destrutivo| Variante `destructive` do shadcn                 |
+| Estado     | Classes                                          |
+| ---------- | ------------------------------------------------ |
+| Ativo      | `bg-sky-600 hover:bg-sky-500 text-white`         |
+| Inativo    | `bg-realm-950 hover:bg-realm-950 text-realm-600` |
+| Destrutivo | Variante `destructive` do shadcn                 |
 
 Todos sem arredondamento (`rounded-none`).
 
@@ -194,11 +194,11 @@ Label:      text-xs text-gold-400 mt-1 font-mono
 
 ### Itens de navegação
 
-| Estado  | Classes                                                        |
-|---------|----------------------------------------------------------------|
-| Ativo   | `bg-blue-600/20 border border-blue-600/40 text-blue-400`      |
+| Estado  | Classes                                                                               |
+| ------- | ------------------------------------------------------------------------------------- |
+| Ativo   | `bg-blue-600/20 border border-blue-600/40 text-blue-400`                              |
 | Inativo | `text-realm-500 hover:text-realm-300 hover:bg-realm-800/50 border border-transparent` |
-| Badge   | `text-realm-600 bg-realm-800 px-1.5 py-0.5`                   |
+| Badge   | `text-realm-600 bg-realm-800 px-1.5 py-0.5`                                           |
 
 ### Barras de recurso
 
@@ -213,13 +213,13 @@ Texto:      tabular-nums para alinhamento
 
 ## 7. Opacidade e Transparência
 
-| Sufixo | Uso                                    |
-|--------|----------------------------------------|
-| `/20`  | Lavagem de fundo leve (nav ativo)      |
-| `/40`  | Ênfase em borda                        |
-| `/60`  | Bordas sutis em cards de construção    |
-| `/75`  | Overlay de fundo de modal              |
-| `/80`  | Ênfase visual mais forte               |
+| Sufixo | Uso                                 |
+| ------ | ----------------------------------- |
+| `/20`  | Lavagem de fundo leve (nav ativo)   |
+| `/40`  | Ênfase em borda                     |
+| `/60`  | Bordas sutis em cards de construção |
+| `/75`  | Overlay de fundo de modal           |
+| `/80`  | Ênfase visual mais forte            |
 
 ---
 
@@ -244,12 +244,12 @@ Texto:      tabular-nums para alinhamento
 
 ## 10. Arquivos-chave
 
-| Arquivo                                              | Conteúdo                                  |
-|------------------------------------------------------|-------------------------------------------|
-| `src/index.css`                                      | Variáveis CSS globais (OKLCH), base styles|
-| `tailwind.config.ts`                                 | Paletas `realm` e `gold`, `font-medieval`, `borderRadius: 0rem` |
-| `components.json`                                    | Configuração shadcn/ui (`base-nova`, `neutral`) |
-| `src/components/ui/button.tsx`                       | Variantes de botão                        |
-| `src/components/ui/progress.tsx`                     | Componente de barra de progresso          |
-| `src/components/ui/dialog.tsx`                       | Componente de diálogo                     |
-| `src/features/game/resource/components/resourceConfig.ts` | Mapeamento de cores por recurso      |
+| Arquivo                                                   | Conteúdo                                                        |
+| --------------------------------------------------------- | --------------------------------------------------------------- |
+| `src/index.css`                                           | Variáveis CSS globais (OKLCH), base styles                      |
+| `tailwind.config.ts`                                      | Paletas `realm` e `gold`, `font-medieval`, `borderRadius: 0rem` |
+| `components.json`                                         | Configuração shadcn/ui (`base-nova`, `neutral`)                 |
+| `src/components/ui/button.tsx`                            | Variantes de botão                                              |
+| `src/components/ui/progress.tsx`                          | Componente de barra de progresso                                |
+| `src/components/ui/dialog.tsx`                            | Componente de diálogo                                           |
+| `src/features/game/resource/components/resourceConfig.ts` | Mapeamento de cores por recurso                                 |
