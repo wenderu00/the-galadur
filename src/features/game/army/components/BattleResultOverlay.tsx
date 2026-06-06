@@ -52,7 +52,7 @@ export function BattleResultOverlay({ result, onClose }: BattleResultOverlayProp
             </section>
           )}
         </div>
-        <DialogFooter className="px-4 py-3 border-t border-realm-800">
+        <DialogFooter className="mx-0 mb-0 px-4 py-3 border-t border-realm-800">
           <button
             data-testid="battle-result-dismiss"
             onClick={onClose}

@@ -44,7 +44,7 @@ export function MobilizationModal({
             />
           ))}
         </ul>
-        <DialogFooter className="px-4 py-3 border-t border-realm-800 gap-2">
+        <DialogFooter className="mx-0 mb-0 px-4 py-3 border-t border-realm-800 gap-2">
           <button onClick={onClose} className="px-4 py-2 text-sm text-realm-400 hover:text-white">
             Cancelar
           </button>
