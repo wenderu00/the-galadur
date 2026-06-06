@@ -1,19 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ResourceIcon } from '@/features/game/components/ResourceIcon';
 import { RESOURCE_CONFIG } from './resourceConfig';
 import { duration, ease } from '@/lib/animations';
 import type { ResourceKind } from '@/features/game-engine/types';
-
-function formatRate(value: number): string {
-  if (value === 0) return '';
-  const formatted = value % 1 === 0 ? String(value) : value.toFixed(1);
-  return `+${formatted}/s`;
-}
-
-function formatCompact(value: number): string {
-  return value >= 1000 ? `${(value / 1000).toFixed(1)}k` : String(value);
-}
+import { ResourceBarCompact } from './ResourceBarCompact';
+import { formatRate, usePulseKey } from './resourceBarUtils';
 
 interface ResourceBarProps {
   kind: ResourceKind;
@@ -26,40 +17,9 @@ interface ResourceBarProps {
 export function ResourceBar({ kind, current, max, rate, compact = false }: ResourceBarProps) {
   const cfg = RESOURCE_CONFIG[kind];
   const pct = Math.min(100, (current / max) * 100);
-  const prevRef = useRef(current);
-  const [pulseKey, setPulseKey] = useState(0);
+  const pulseKey = usePulseKey(current);
 
-  useEffect(() => {
-    if (current !== prevRef.current) {
-      setPulseKey((k) => k + 1);
-      prevRef.current = current;
-    }
-  }, [current]);
-
-  if (compact) {
-    return (
-      <div
-        data-testid={`resource-bar-${kind}-compact`}
-        className={`flex flex-col items-center justify-center gap-0.5 bg-realm-900 border ${cfg.accent} px-1 py-1.5`}
-      >
-        <span className={cfg.iconColor}>
-          <ResourceIcon kind={kind} className="w-3.5 h-3.5" />
-        </span>
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={pulseKey}
-            data-testid={`resource-bar-${kind}-value`}
-            className="text-xs font-bold text-white tabular-nums leading-none"
-            initial={{ scale: 1.25, color: '#fde68a' }}
-            animate={{ scale: 1, color: '#ffffff' }}
-            transition={{ duration: duration.slow, ease: ease.out }}
-          >
-            {formatCompact(current)}
-          </motion.span>
-        </AnimatePresence>
-      </div>
-    );
-  }
+  if (compact) return <ResourceBarCompact kind={kind} current={current} pulseKey={pulseKey} />;
 
   return (
     <div
