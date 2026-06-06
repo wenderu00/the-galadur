@@ -29,6 +29,10 @@ export class BarracksPage {
     return this.dialog.locator('section', { hasText: 'Treinando' }).last();
   }
 
+  unitTrainingTime(unitName: string): Locator {
+    return this.unitCard(unitName).locator('[data-testid^="unit-training-time-"]');
+  }
+
   notBuiltMessage(): Locator {
     return this.dialog.locator('p', { hasText: 'Construa o Quartel' });
   }

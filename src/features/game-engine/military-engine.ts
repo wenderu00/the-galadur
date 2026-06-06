@@ -1,4 +1,4 @@
-import type { GameState } from './types';
+import type { GameState, BuildingLevel } from './types';
 import type { UnitId, TrainingQueueEntry } from './military-types';
 import { UNIT_DEFINITIONS } from '@/config/units';
 import { canAfford, deductCost } from './math';
@@ -9,7 +9,7 @@ export type TrainingResult =
   | { success: true; state: GameState }
   | { success: false; error: TrainingError };
 
-const TRAINING_MULTIPLIERS: Record<1 | 2 | 3, number> = { 1: 1.0, 2: 0.8, 3: 0.6 };
+export const TRAINING_MULTIPLIERS: Record<BuildingLevel, number> = { 0: 1.0, 1: 1.0, 2: 0.8, 3: 0.6 };
 
 export function getUnlockedUnitIds(barracksLevel: number): UnitId[] {
   return Object.values(UNIT_DEFINITIONS)
@@ -31,7 +31,7 @@ export function startTraining(
   const unit = UNIT_DEFINITIONS[unitId];
   if (!canAfford(state.resources.current, unit.baseCost))
     return { success: false, error: 'cannot_afford' };
-  const mult = TRAINING_MULTIPLIERS[barracksLevel as 1 | 2 | 3];
+  const mult = TRAINING_MULTIPLIERS[barracksLevel];
   const entry: TrainingQueueEntry = {
     unitId,
     startedAt: now,

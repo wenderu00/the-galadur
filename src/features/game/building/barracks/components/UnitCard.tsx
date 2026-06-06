@@ -15,7 +15,7 @@ const RESOURCE_LABELS: Record<string, string> = {
 
 export function UnitCard({ data, isTraining }: UnitCardProps) {
   const train = useTraining();
-  const { def, count, affordable } = data;
+  const { def, count, affordable, trainingSeconds } = data;
   const disabled = isTraining || !affordable;
 
   const costEntries = (Object.entries(def.baseCost) as [string, number][]).filter(([, v]) => v > 0);
@@ -32,6 +32,9 @@ export function UnitCard({ data, isTraining }: UnitCardProps) {
         <p className="text-sm font-semibold text-white">{def.name}</p>
         <p className="text-xs text-realm-400">
           {costEntries.map(([k, v]) => `${v} ${RESOURCE_LABELS[k] ?? k}`).join(' · ')}
+        </p>
+        <p data-testid={`unit-training-time-${def.id}`} className="text-xs text-realm-500">
+          {trainingSeconds}s
         </p>
       </div>
       <div className="flex flex-col items-end gap-1 shrink-0">

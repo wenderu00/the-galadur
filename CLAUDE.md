@@ -367,6 +367,7 @@ Formato: `[componente]-[elemento]` ou `[componente]-[elemento]-[identificador]`
 | `unit-card-{id}`              | `unit-card-warrior`          | card de unidade militar                 |
 | `unit-count-{id}`             | `unit-count-warrior`         | contador de unidades                    |
 | `unit-train-{id}`             | `unit-train-warrior`         | botão de treinar unidade                |
+| `unit-training-time-{id}`     | `unit-training-time-warrior` | tempo efetivo de treino da unidade      |
 | `mobile-nav`                  | —                            | nav inferior mobile                     |
 | `mobile-nav-tab-{tab}`        | `mobile-nav-tab-buildings`   | aba da nav mobile                       |
 | `desktop-sidebar`             | —                            | wrapper do sidebar desktop              |
