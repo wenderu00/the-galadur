@@ -25,9 +25,7 @@ export function EventLog() {
       ) : (
         events.map((event, i) => (
           <p key={i} className="font-mono text-xs text-green-400 leading-5">
-            <span className="text-green-600">[{formatTime(event.timestamp)}]</span>
-            {' '}
-            {event.message}
+            <span className="text-green-600">[{formatTime(event.timestamp)}]</span> {event.message}
           </p>
         ))
       )}

@@ -1,14 +1,13 @@
 import type { GameState } from './types';
 import type { UnitId, TrainingQueueEntry } from './military-types';
 import { UNIT_DEFINITIONS } from '@/config/units';
-import { canAfford, deductCost } from './engine';
+import { canAfford, deductCost } from './math';
+
+type TrainingError = 'barracks_not_built' | 'unit_locked' | 'cannot_afford' | 'queue_full';
 
 export type TrainingResult =
   | { success: true; state: GameState }
-  | {
-      success: false;
-      error: 'barracks_not_built' | 'unit_locked' | 'cannot_afford' | 'queue_full';
-    };
+  | { success: false; error: TrainingError };
 
 const TRAINING_MULTIPLIERS: Record<1 | 2 | 3, number> = { 1: 1.0, 2: 0.8, 3: 0.6 };
 
@@ -22,7 +21,7 @@ export function startTraining(
   state: GameState,
   unitId: UnitId,
   now: number,
-  speed: number = 1,
+  speed: number = 1
 ): TrainingResult {
   const barracksLevel = state.buildings['barracks'].level;
   if (barracksLevel === 0) return { success: false, error: 'barracks_not_built' };
@@ -53,7 +52,7 @@ export function startTraining(
 
 export function processCompletedTraining(
   state: GameState,
-  now: number,
+  now: number
 ): { state: GameState; completed: UnitId[] } {
   const done = state.trainingQueue.filter((e) => e.completesAt <= now);
   if (done.length === 0) return { state, completed: [] };
@@ -70,7 +69,7 @@ export function rescaleTrainingQueue(
   state: GameState,
   now: number,
   oldSpeed: number,
-  newSpeed: number,
+  newSpeed: number
 ): GameState {
   if (oldSpeed === newSpeed || state.trainingQueue.length === 0) return state;
   const queue = state.trainingQueue.map((e) => {

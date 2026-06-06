@@ -27,6 +27,6 @@ export function useUpgrade(): (buildingId: BuildingId) => ConstructionResult {
       }
 
       return result;
-    }, []),
+    }, [])
   );
 }

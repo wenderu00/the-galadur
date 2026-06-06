@@ -5,8 +5,12 @@ export class SummaryPanelPage {
   readonly queueSection: Locator;
 
   constructor(private readonly page: Page) {
-    this.panel = page.locator('aside').filter({ has: page.getByRole('heading', { name: 'Fila de Construção' }) });
-    this.queueSection = this.panel.locator('section').filter({ has: page.getByRole('heading', { name: 'Fila de Construção' }) });
+    this.panel = page
+      .locator('aside')
+      .filter({ has: page.getByRole('heading', { name: 'Fila de Construção' }) });
+    this.queueSection = this.panel
+      .locator('section')
+      .filter({ has: page.getByRole('heading', { name: 'Fila de Construção' }) });
   }
 
   async resetState(): Promise<void> {
@@ -23,18 +27,40 @@ export class SummaryPanelPage {
   }
 
   async getQueueItemName(index: number): Promise<string> {
-    return (await this.queueSection.getByRole('listitem').nth(index).locator('p').first().textContent()) ?? '';
+    return (
+      (await this.queueSection
+        .getByRole('listitem')
+        .nth(index)
+        .locator('p')
+        .first()
+        .textContent()) ?? ''
+    );
   }
 
   async getTotalBuildings(): Promise<string> {
-    return (await this.panel.locator('dt', { hasText: 'Total de Construções' }).locator('+ dd').textContent()) ?? '';
+    return (
+      (await this.panel
+        .locator('dt', { hasText: 'Total de Construções' })
+        .locator('+ dd')
+        .textContent()) ?? ''
+    );
   }
 
   async getTotalLevels(): Promise<string> {
-    return (await this.panel.locator('dt', { hasText: 'Níveis Totais' }).locator('+ dd').textContent()) ?? '';
+    return (
+      (await this.panel
+        .locator('dt', { hasText: 'Níveis Totais' })
+        .locator('+ dd')
+        .textContent()) ?? ''
+    );
   }
 
   async getEmpireScore(): Promise<string> {
-    return (await this.panel.locator('dt', { hasText: 'Pontuação do Império' }).locator('+ dd').textContent()) ?? '';
+    return (
+      (await this.panel
+        .locator('dt', { hasText: 'Pontuação do Império' })
+        .locator('+ dd')
+        .textContent()) ?? ''
+    );
   }
 }

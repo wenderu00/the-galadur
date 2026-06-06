@@ -38,7 +38,10 @@ export function ResourceBar({ kind, current, max, rate, compact = false }: Resou
 
   if (compact) {
     return (
-      <div data-testid={`resource-bar-${kind}-compact`} className={`flex flex-col items-center justify-center gap-0.5 bg-realm-900 border ${cfg.accent} px-1 py-1.5`}>
+      <div
+        data-testid={`resource-bar-${kind}-compact`}
+        className={`flex flex-col items-center justify-center gap-0.5 bg-realm-900 border ${cfg.accent} px-1 py-1.5`}
+      >
         <span className={cfg.iconColor}>
           <ResourceIcon kind={kind} className="w-3.5 h-3.5" />
         </span>
@@ -59,8 +62,13 @@ export function ResourceBar({ kind, current, max, rate, compact = false }: Resou
   }
 
   return (
-    <div data-testid={`resource-bar-${kind}`} className={`flex items-center gap-3 bg-realm-900 border ${cfg.accent} px-3 py-2`}>
-      <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${cfg.iconBg} border ${cfg.accent}`}>
+    <div
+      data-testid={`resource-bar-${kind}`}
+      className={`flex items-center gap-3 bg-realm-900 border ${cfg.accent} px-3 py-2`}
+    >
+      <div
+        className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${cfg.iconBg} border ${cfg.accent}`}
+      >
         <span className={cfg.iconColor}>
           <ResourceIcon kind={kind} className="w-4 h-4" />
         </span>
@@ -71,7 +79,7 @@ export function ResourceBar({ kind, current, max, rate, compact = false }: Resou
             <motion.span
               key={pulseKey}
               data-testid={`resource-bar-${kind}-value`}
-            className="text-sm font-bold text-white tabular-nums"
+              className="text-sm font-bold text-white tabular-nums"
               initial={{ scale: 1.25, color: '#fde68a' }}
               animate={{ scale: 1, color: '#ffffff' }}
               transition={{ duration: duration.slow, ease: ease.out }}
@@ -81,7 +89,12 @@ export function ResourceBar({ kind, current, max, rate, compact = false }: Resou
           </AnimatePresence>
           <span className="text-xs text-realm-500">/ {max.toLocaleString()}</span>
           {rate > 0 && (
-            <span data-testid={`resource-bar-${kind}-rate`} className="text-xs text-sky-400 ml-auto flex-shrink-0">{formatRate(rate)}</span>
+            <span
+              data-testid={`resource-bar-${kind}-rate`}
+              className="text-xs text-sky-400 ml-auto flex-shrink-0"
+            >
+              {formatRate(rate)}
+            </span>
           )}
         </div>
         <div className="h-0.5 bg-realm-800 w-full overflow-hidden">

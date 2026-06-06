@@ -28,7 +28,7 @@ export function useGameLoop(): void {
       const afterOffline = calculateOfflineProgress(get(gameStateAtom), now);
       const { state: afterTraining } = processCompletedTraining(afterOffline, now);
       set(gameStateAtom, afterTraining);
-    }, []),
+    }, [])
   );
 
   const runTick = useAtomCallback(
@@ -61,7 +61,7 @@ export function useGameLoop(): void {
           })),
         ]);
       }
-    }, []),
+    }, [])
   );
 
   const applySpeedChange = useAtomCallback(
@@ -69,7 +69,7 @@ export function useGameLoop(): void {
       const now = Date.now();
       const after = rescaleQueueForSpeedChange(get(gameStateAtom), now, oldSpeed, newSpeed);
       set(gameStateAtom, rescaleTrainingQueue(after, now, oldSpeed, newSpeed));
-    }, []),
+    }, [])
   );
 
   useEffect(() => {

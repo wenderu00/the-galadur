@@ -7,8 +7,18 @@ const IDS = ['castle', 'farm', 'sawmill', 'mine', 'market', 'barracks', 'prefeit
 
 async function injectState(page: Page, extra: Record<string, unknown> = {}): Promise<void> {
   const bldgs = Object.fromEntries(IDS.map((id) => [id, { id, level: id === 'castle' ? 1 : 0 }]));
-  const s = JSON.stringify({ version: 1, castleGoldRate: 0, lastSavedAt: Date.now(), buildings: bldgs, buildQueue: [],
-    resources: { current: { wood: 150, stone: 150, food: 150, gold: 0 }, max: { wood: 200, stone: 200, food: 200, gold: 100 } }, ...extra });
+  const s = JSON.stringify({
+    version: 1,
+    castleGoldRate: 0,
+    lastSavedAt: Date.now(),
+    buildings: bldgs,
+    buildQueue: [],
+    resources: {
+      current: { wood: 150, stone: 150, food: 150, gold: 0 },
+      max: { wood: 200, stone: 200, food: 200, gold: 100 },
+    },
+    ...extra,
+  });
   await page.addInitScript((str: string) => localStorage.setItem('galadur-state', str), s);
   await page.reload();
 }
@@ -63,9 +73,13 @@ test.describe('UpgradeFlow', () => {
   test.describe('após construção concluída', () => {
     test.beforeEach(async ({ page }) => {
       const past = Date.now() - 120_000;
-      const entry = [{ buildingId: 'castle', targetLevel: 2, startedAt: past, completesAt: past + 45_000 }];
+      const entry = [
+        { buildingId: 'castle', targetLevel: 2, startedAt: past, completesAt: past + 45_000 },
+      ];
       await injectState(page, { buildQueue: entry, lastSavedAt: past });
-      await expect(grid.cardByName('Castelo').locator('p', { hasText: /^Nível 2/ })).toBeVisible({ timeout: 5000 });
+      await expect(grid.cardByName('Castelo').locator('p', { hasText: /^Nível 2/ })).toBeVisible({
+        timeout: 5000,
+      });
     });
 
     test('Castelo está no nível 2', async () => {

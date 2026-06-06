@@ -15,10 +15,7 @@ export function useBuildingCard(building: BuildingState) {
 
   const nextLevelDef =
     !isMaxLevel && building.level < 3
-      ? getBuildingLevelDef(
-          building.id,
-          (building.level + 1) as Exclude<typeof building.level, 0>,
-        )
+      ? getBuildingLevelDef(building.id, (building.level + 1) as Exclude<typeof building.level, 0>)
       : null;
 
   const canAffordNext = nextLevelDef ? canAfford(resources.current, nextLevelDef.cost) : false;
@@ -26,10 +23,7 @@ export function useBuildingCard(building: BuildingState) {
 
   const currentLevelDef =
     building.level > 0
-      ? getBuildingLevelDef(
-          building.id,
-          building.level as Exclude<typeof building.level, 0>,
-        )
+      ? getBuildingLevelDef(building.id, building.level as Exclude<typeof building.level, 0>)
       : null;
 
   function upgradeLabel(): string {

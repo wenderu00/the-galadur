@@ -1,4 +1,8 @@
-import type { BuildingId, BuildingLevel, BuildingLevelDefinition } from '@/features/game-engine/types';
+import type {
+  BuildingId,
+  BuildingLevel,
+  BuildingLevelDefinition,
+} from '@/features/game-engine/types';
 import type { BuildingDefinition } from '@/features/game-engine/types';
 import { castle } from './castle';
 import { farm } from './farm';
@@ -18,13 +22,11 @@ export const BUILDING_DEFINITIONS: Record<BuildingId, BuildingDefinition> = {
   prefeitura,
 };
 
-export const ALL_BUILDING_IDS: BuildingId[] = Object.keys(
-  BUILDING_DEFINITIONS,
-) as BuildingId[];
+export const ALL_BUILDING_IDS: BuildingId[] = Object.keys(BUILDING_DEFINITIONS) as BuildingId[];
 
 export function getBuildingLevelDef(
   id: BuildingId,
-  level: Exclude<BuildingLevel, 0>,
+  level: Exclude<BuildingLevel, 0>
 ): BuildingLevelDefinition {
   return BUILDING_DEFINITIONS[id].levels[level - 1];
 }

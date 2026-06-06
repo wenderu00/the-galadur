@@ -1,13 +1,6 @@
 import { atom } from 'jotai';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import {
-  createInitialGameState,
-  safeParseGameState,
-  GAME_STATE_VERSION,
-  calculateProduction,
-} from '@/features/game-engine/engine';
+import { calculateProduction } from '@/features/game-engine/engine';
 import type {
-  GameState,
   BuildingId,
   BuildingState,
   ResourceStore,
@@ -16,78 +9,40 @@ import type {
   MilitaryUnits,
   TrainingQueueEntry,
 } from '@/features/game-engine/types';
+import { gameStateAtom } from './gameStateAtom';
 
-const safeGameStorage = createJSONStorage<GameState>(() => localStorage, {
-  reviver: (_key: string, value: unknown) => value,
-});
-
-const STORAGE_KEY = 'galadur-state';
-
-export const gameStateAtom = atomWithStorage<GameState>(
-  STORAGE_KEY,
-  createInitialGameState(),
-  {
-    ...safeGameStorage,
-    getItem: (key, initialValue) => {
-      try {
-        const raw = localStorage.getItem(key);
-        if (raw === null) return initialValue;
-
-        const parsed: unknown = JSON.parse(raw);
-        const validated = safeParseGameState(parsed);
-
-        if (validated === null) {
-          console.warn(
-            `[Galadur] Schema v${GAME_STATE_VERSION} incompatível. Resetando estado.`,
-          );
-          return createInitialGameState();
-        }
-
-        return validated;
-      } catch {
-        return initialValue;
-      }
-    },
-  },
-  { getOnInit: true },
-);
+export { gameStateAtom };
 
 export const resourcesAtom = atom<ResourceStore>((get) => get(gameStateAtom).resources);
 
 export const buildingsAtom = atom<Record<BuildingId, BuildingState>>(
-  (get) => get(gameStateAtom).buildings,
+  (get) => get(gameStateAtom).buildings
 );
 
-export const buildQueueAtom = atom<BuildQueueEntry[]>(
-  (get) => get(gameStateAtom).buildQueue,
-);
+export const buildQueueAtom = atom<BuildQueueEntry[]>((get) => get(gameStateAtom).buildQueue);
 
 export const activeBuildAtom = atom<BuildQueueEntry | null>(
-  (get) => get(buildQueueAtom)[0] ?? null,
+  (get) => get(buildQueueAtom)[0] ?? null
 );
 
-export const isConstructingAtom = atom<boolean>(
-  (get) => get(buildQueueAtom).length > 0,
-);
+export const isConstructingAtom = atom<boolean>((get) => get(buildQueueAtom).length > 0);
 
 export const lastSavedAtAtom = atom<number>((get) => get(gameStateAtom).lastSavedAt);
 
 export const castleGoldRateAtom = atom<number>((get) => get(gameStateAtom).castleGoldRate);
 
 export const productionAtom = atom<ResourceAmount>((get) =>
-  calculateProduction(get(buildingsAtom), get(castleGoldRateAtom)),
+  calculateProduction(get(buildingsAtom), get(castleGoldRateAtom))
 );
 
-export const militaryUnitsAtom = atom<MilitaryUnits>(
-  (get) => get(gameStateAtom).militaryUnits,
-);
+export const militaryUnitsAtom = atom<MilitaryUnits>((get) => get(gameStateAtom).militaryUnits);
 
 export const trainingQueueAtom = atom<TrainingQueueEntry[]>(
-  (get) => get(gameStateAtom).trainingQueue,
+  (get) => get(gameStateAtom).trainingQueue
 );
 
 export const activeTrainingAtom = atom<TrainingQueueEntry | null>(
-  (get) => get(trainingQueueAtom)[0] ?? null,
+  (get) => get(trainingQueueAtom)[0] ?? null
 );
 
 export const isTrainingAtom = atom<boolean>((get) => get(trainingQueueAtom).length > 0);

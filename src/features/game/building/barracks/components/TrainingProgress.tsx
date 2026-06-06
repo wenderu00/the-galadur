@@ -12,9 +12,7 @@ export function TrainingProgress({ entry }: TrainingProgressProps) {
 
   return (
     <section className="space-y-2 pt-3 border-t border-realm-800">
-      <p className="text-xs font-medieval uppercase tracking-widest text-realm-500">
-        Treinando
-      </p>
+      <p className="text-xs font-medieval uppercase tracking-widest text-realm-500">Treinando</p>
       <div className="flex items-center gap-2 mb-1">
         <img src={svgSrc} alt={unit.name} className="w-6 h-6 object-contain opacity-80" />
         <span className="text-sm text-white">{unit.name}</span>

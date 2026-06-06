@@ -22,7 +22,7 @@ export function GameSpeedControls() {
           'w-11 h-11 md:w-8 md:h-8 rounded-none border',
           speed === 0
             ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-600 hover:text-white'
-            : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900',
+            : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900'
         )}
       >
         <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor">
@@ -43,7 +43,7 @@ export function GameSpeedControls() {
             'h-11 md:h-8 rounded-none border text-xs font-semibold px-2 md:px-2.5',
             speed === s && speed !== 0
               ? 'bg-blue-600 border-blue-600 text-white hover:bg-blue-600 hover:text-white'
-              : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900 hover:text-realm-300',
+              : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900 hover:text-realm-300'
           )}
         >
           {s}x

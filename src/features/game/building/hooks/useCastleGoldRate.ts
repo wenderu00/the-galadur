@@ -13,16 +13,13 @@ export function useCastleGoldRate() {
   const maxRate =
     castleLevel === 0
       ? 0
-      : (getBuildingLevelDef('castle', castleLevel as Exclude<BuildingLevel, 0>)
-          .effects.productionPerTick.gold ?? 0);
+      : (getBuildingLevelDef('castle', castleLevel as Exclude<BuildingLevel, 0>).effects
+          .productionPerTick.gold ?? 0);
 
   const setRate = useAtomCallback(
-    useCallback(
-      (get, set, newRate: number) => {
-        set(gameStateAtom, { ...get(gameStateAtom), castleGoldRate: newRate });
-      },
-      [],
-    ),
+    useCallback((get, set, newRate: number) => {
+      set(gameStateAtom, { ...get(gameStateAtom), castleGoldRate: newRate });
+    }, [])
   );
 
   return { rate, maxRate, setRate };

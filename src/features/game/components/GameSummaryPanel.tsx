@@ -9,7 +9,9 @@ interface GameSummaryPanelProps {
 
 export function GameSummaryPanel({ className = '' }: GameSummaryPanelProps) {
   return (
-    <aside className={`flex flex-col w-full bg-realm-950 border-l border-realm-800 overflow-y-auto ${className}`}>
+    <aside
+      className={`flex flex-col w-full bg-realm-950 border-l border-realm-800 overflow-y-auto ${className}`}
+    >
       <ConstructionQueue />
       <EmpireStats />
       <RecentEvents />

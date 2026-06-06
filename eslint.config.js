@@ -31,5 +31,5 @@ export default tseslint.config(
   {
     // Ignora arquivos de configuração do toolchain.
     ignores: ['dist/', 'node_modules/', '*.config.js', '*.config.ts'],
-  },
+  }
 );

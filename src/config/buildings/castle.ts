@@ -3,7 +3,8 @@ import type { BuildingDefinition } from '@/features/game-engine/types';
 export const castle: BuildingDefinition = {
   id: 'castle',
   name: 'Castelo',
-  description: 'Sede do seu império. Controla os limites de armazenamento e desbloqueia novas construções.',
+  description:
+    'Sede do seu império. Controla os limites de armazenamento e desbloqueia novas construções.',
   category: 'headquarters',
   maxLevel: 3,
   levels: [

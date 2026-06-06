@@ -23,6 +23,6 @@ export function useTraining(): (unitId: UnitId) => TrainingResult {
         ]);
       }
       return result;
-    }, []),
+    }, [])
   );
 }
