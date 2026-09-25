@@ -9,7 +9,12 @@ export type TrainingResult =
   | { success: true; state: GameState }
   | { success: false; error: TrainingError };
 
-export const TRAINING_MULTIPLIERS: Record<BuildingLevel, number> = { 0: 1.0, 1: 1.0, 2: 0.8, 3: 0.6 };
+export const TRAINING_MULTIPLIERS: Record<BuildingLevel, number> = {
+  0: 1.0,
+  1: 1.0,
+  2: 0.8,
+  3: 0.6,
+};
 
 export function getUnlockedUnitIds(barracksLevel: number): UnitId[] {
   return Object.values(UNIT_DEFINITIONS)
