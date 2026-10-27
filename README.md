@@ -48,7 +48,8 @@ flowchart LR
 | Unitários | Vitest                      | 55 testes: engine (produção, construção, combate, comércio, progresso offline, migração de estado) e formatação pt-BR               |
 | E2E       | Playwright com Page Objects | 16 specs: HUD de recursos, grade de construções, fluxo de upgrade, exército, velocidade, tema, destaque de recursos e layout mobile |
 
-O CI roda lint (com o modo estrito do mwds), `format:check` e os testes unitários a cada push.
+O CI roda lint (com o modo estrito do mwds), typecheck, `format:check`, os testes unitários e o build a
+cada push. Cada push no `main` também publica o jogo no GitHub Pages.
 
 ## Rodando localmente
 
