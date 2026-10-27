@@ -1,7 +1,4 @@
-import { Coin } from '@/components/icons/base/coin';
-import { Food } from '@/components/icons/medieval/food';
-import { Stone } from '@/components/icons/medieval/stone';
-import { Wood } from '@/components/icons/medieval/wood';
+import { Coins, Mountain, TreePine, Wheat } from 'lucide-react';
 import type { ResourceKind } from '@/features/game-engine/types';
 
 interface ResourceIconProps {
@@ -9,8 +6,8 @@ interface ResourceIconProps {
 }
 
 export function ResourceIcon({ kind }: ResourceIconProps) {
-  if (kind === 'wood') return <Wood aria-hidden="true" className="text-category-2-line" />;
-  if (kind === 'stone') return <Stone aria-hidden="true" className="text-category-1-line" />;
-  if (kind === 'food') return <Food aria-hidden="true" className="text-category-4-line" />;
-  return <Coin aria-hidden="true" className="text-category-7-line" />;
+  if (kind === 'wood') return <TreePine aria-hidden="true" className="text-category-2-line" />;
+  if (kind === 'stone') return <Mountain aria-hidden="true" className="text-category-1-line" />;
+  if (kind === 'food') return <Wheat aria-hidden="true" className="text-category-4-line" />;
+  return <Coins aria-hidden="true" className="text-category-7-line" />;
 }

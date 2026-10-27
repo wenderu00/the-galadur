@@ -4,7 +4,6 @@ next-env.d.ts
 playwright-report/
 test-results/
 src/components/ui/
-src/components/icons/
 src/app/globals.css
 src/app/mw-strict.css
 src/lib/utils.ts
