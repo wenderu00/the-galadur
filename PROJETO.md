@@ -1,12 +1,12 @@
 # Galadur — Documentação Completa do Projeto
 
-> Gerado em 2026-03-21. Descreve o estado atual do projeto com detalhes sobre arquitetura, mecânicas, tipos, lógica de engine, componentes, átomos de estado e convenções de código.
+> Gerado em 2026-03-21 e atualizado em 2026-10-26 na migração para Next e mwds. Descreve o estado atual do projeto com detalhes sobre arquitetura, mecânicas, tipos, lógica de engine, componentes, átomos de estado e convenções de código.
 
 ---
 
 ## 1. Visão Geral
 
-**Galadur** é um jogo incremental/idle com temática medieval, desenvolvido como aplicação web com React. O jogador gerencia um império que começa com um castelo nível 1 e recursos iniciais modestos (50 madeira, 30 pedra, 20 comida, 0 ouro). A progressão é feita construindo e evoluindo edifícios que produzem recursos passivamente ao longo do tempo, financiando construções cada vez mais caras.
+**Galadur** é um jogo incremental/idle com temática medieval, desenvolvido como aplicação web com Next.js e React. O jogador gerencia um império que começa com um castelo nível 1 e recursos iniciais modestos (50 madeira, 30 pedra, 20 comida, 0 ouro). A progressão é feita construindo e evoluindo edifícios que produzem recursos passivamente ao longo do tempo, financiando construções cada vez mais caras.
 
 O jogo roda inteiramente no navegador, sem backend. Todo estado é persistido no `localStorage` e sobrevive ao fechamento do navegador. Há suporte a progressão offline: ao reabrir o jogo, o tempo que passou é simulado retroativamente (limitado a 8 horas).
 
@@ -14,19 +14,18 @@ O jogo roda inteiramente no navegador, sem backend. Todo estado é persistido no
 
 ## 2. Stack de Tecnologias
 
-| Ferramenta     | Versão | Função                                           |
-| -------------- | ------ | ------------------------------------------------ |
-| React          | 18.3.1 | Biblioteca de UI                                 |
-| Vite           | 5.x    | Bundler e servidor de desenvolvimento            |
-| TypeScript     | 5.7.2  | Tipagem estática                                 |
-| Tailwind CSS   | 3.4.17 | Estilização via classes utilitárias              |
-| shadcn/ui      | —      | Componentes base (Dialog, Button)                |
-| @base-ui/react | —      | Primitivos headless para Dialog/Progress         |
-| Jotai          | 2.11.0 | Gerenciamento de estado global                   |
-| Wouter         | 3.3.5  | Roteamento (atualmente não utilizado ativamente) |
-| lucide-react   | —      | Ícones SVG                                       |
-| clsx           | —      | Composição condicional de classes                |
-| tailwind-merge | —      | Fusão segura de classes Tailwind                 |
+| Ferramenta           | Versão | Função                                                    |
+| -------------------- | ------ | --------------------------------------------------------- |
+| Next.js (App Router) | 16     | Framework e build estático (`output: 'export'`)           |
+| React                | 19     | Biblioteca de UI                                          |
+| TypeScript           | 5      | Tipagem estática                                          |
+| Tailwind CSS         | 4      | Estilização via classes utilitárias e tokens              |
+| mwds (`@marcio`)     | 0.16   | Design system: tokens, componentes, ícones e lint estrito |
+| radix-ui             | 1      | Primitivos acessíveis usados pelos componentes do mwds    |
+| Jotai                | 2      | Gerenciamento de estado global                            |
+| lucide-react         | 1      | Ícones genéricos (os de domínio vêm do pacote medieval)   |
+| Vitest               | 4      | Testes unitários da engine e dos formatadores             |
+| Playwright           | 1      | Testes E2E com Page Objects                               |
 
 ---
 
@@ -34,113 +33,58 @@ O jogo roda inteiramente no navegador, sem backend. Todo estado é persistido no
 
 ```
 galadur/
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.ts
-├── eslint.config.js
+├── next.config.ts                     ← Export estático; basePath /the-galadur só em produção
+├── components.json                    ← Registry @marcio do shadcn
+├── eslint.config.mjs                  ← Next + regras do projeto + modo estrito do mwds
+├── eslint.mw.mjs, eslint-rules/       ← Regras mw/* instaladas pelo marcio-strict
 ├── CLAUDE.md                          ← Regras técnicas do projeto
 ├── PROJETO.md                         ← Este arquivo
 │
 └── src/
-    ├── main.tsx                       ← Entry point React
-    ├── App.tsx                        ← Raiz da aplicação
-    ├── index.css                      ← Variáveis CSS + Tailwind
-    │
     ├── app/
-    │   └── providers.tsx              ← Jotai Provider + inicializador do game loop
-    │
-    ├── config/
-    │   └── buildings/
-    │       ├── index.ts               ← Exporta BUILDING_DEFINITIONS, ALL_BUILDING_IDS, getBuildingLevelDef
-    │       ├── castle.ts              ← Definição do Castelo
-    │       ├── farm.ts                ← Definição da Fazenda
-    │       ├── sawmill.ts             ← Definição da Serraria
-    │       ├── mine.ts                ← Definição da Mina
-    │       ├── market.ts              ← Definição do Mercado
-    │       ├── barracks.ts            ← Definição dos Quartéis
-    │       └── prefeitura.ts          ← Definição da Prefeitura
-    │
-    ├── features/
-    │   ├── game-engine/
-    │   │   ├── types.ts               ← Todos os tipos do domínio
-    │   │   ├── engine.ts              ← Lógica pura do jogo (funções sem efeito colateral)
-    │   │   └── hooks/
-    │   │       ├── useGameLoop.ts     ← Hook que dirige o loop do jogo (ticks)
-    │   │       └── useUpgrade.ts      ← Hook para iniciar construções
-    │   │
-    │   └── game/
-    │       ├── components/
-    │       │   ├── GameLayout.tsx          ← Layout de 3 colunas
-    │       │   ├── GameSummaryPanel.tsx    ← Painel direito
-    │       │   ├── EventLog.tsx            ← Log de eventos (componente existente)
-    │       │   ├── ProgressBar.tsx         ← Barra de progresso reutilizável
-    │       │   ├── BuildingIcon.tsx        ← Dispatcher de ícones por BuildingId
-    │       │   ├── ResourceIcon.tsx        ← Ícones SVG dos 4 recursos
-    │       │   └── icons/
-    │       │       ├── CastleIcon.tsx
-    │       │       ├── FarmIcon.tsx
-    │       │       ├── SawmillIcon.tsx
-    │       │       ├── MineIcon.tsx
-    │       │       ├── MarketIcon.tsx
-    │       │       ├── PrefeituraIcon.tsx
-    │       │       └── DefaultBuildingIcon.tsx
-    │       │
-    │       ├── building/
-    │       │   ├── components/
-    │       │   │   ├── BuildingGrid.tsx         ← Grade de cards de edifícios
-    │       │   │   ├── BuildingCard.tsx         ← Card individual de edifício
-    │       │   │   ├── BuildingModal.tsx         ← Modal de detalhes/upgrade
-    │       │   │   ├── BuildingIdentity.tsx      ← Cabeçalho do modal (ícone + nome + nível)
-    │       │   │   ├── BuildingStats.tsx         ← Stats compactos
-    │       │   │   ├── BuildingProductionStats.tsx ← Produção atual no modal
-    │       │   │   ├── BuildingUpgradeCosts.tsx  ← Custos e tempo do próximo nível
-    │       │   │   ├── BuildingUpgradeActions.tsx ← Botões de ação do modal
-    │       │   │   ├── BuildingUpgradeButton.tsx ← Botão de upgrade isolado
-    │       │   │   ├── BuildingExtra.tsx         ← Conteúdo extra específico por edifício
-    │       │   │   ├── CastleGoldSlider.tsx      ← Slider de produção de ouro do castelo
-    │       │   │   └── PrefeituraSpeedInfo.tsx   ← Info do bônus de velocidade de construção
-    │       │   └── hooks/
-    │       │       ├── useBuildingCard.ts        ← Lógica do card
-    │       │       ├── useBuildingModal.ts        ← Lógica do modal
-    │       │       └── useCastleGoldRate.ts       ← Leitura/escrita da taxa de ouro do castelo
-    │       │
-    │       ├── construction/
-    │       │   └── components/
-    │       │       └── ConstructionQueue.tsx     ← Fila de construção ativa
-    │       │
-    │       ├── empire/
-    │       │   └── components/
-    │       │       ├── EmpireStats.tsx           ← Estatísticas do império
-    │       │       ├── RecentEvents.tsx           ← Últimos 5 eventos
-    │       │       └── GameTip.tsx                ← Dica estática
-    │       │
-    │       ├── navigation/
-    │       │   └── components/
-    │       │       ├── GameSidebar.tsx            ← Barra lateral esquerda
-    │       │       └── GameNavItem.tsx            ← Item de navegação
-    │       │
-    │       └── resource/
-    │           └── components/
-    │               ├── ResourceHUD.tsx            ← HUD de recursos no topo
-    │               ├── ResourceBar.tsx            ← Barra individual de recurso
-    │               ├── GameDayCounter.tsx         ← Contador de dias de jogo
-    │               ├── GameSpeedControls.tsx      ← Controles de velocidade
-    │               └── resourceConfig.ts          ← Configuração visual dos recursos
-    │
-    ├── store/
-    │   ├── gameAtoms.ts               ← Átomos Jotai do estado do jogo
-    │   └── eventLogAtom.ts            ← Átomo do log de eventos
+    │   ├── layout.tsx                 ← Fontes, ThemeScript, TooltipProvider e Toaster
+    │   ├── page.tsx                   ← Única página: renderiza GameClient
+    │   ├── providers.tsx              ← Jotai Provider + inicializador do game loop
+    │   ├── globals.css                ← Tokens do mwds (gerado pelo registry)
+    │   └── mw-strict.css              ← Reset da paleta padrão do Tailwind (modo estrito)
     │
     ├── components/
-    │   └── ui/
-    │       ├── button.tsx             ← Button shadcn
-    │       ├── dialog.tsx             ← Dialog shadcn
-    │       └── progress.tsx           ← Progress shadcn
+    │   ├── ui/                        ← Componentes do mwds (gerados, não editar à mão)
+    │   └── icons/                     ← Ícones autorais do mwds (pacotes base e medieval)
     │
-    └── lib/
-        └── utils.ts                   ← Função cn() (clsx + tailwind-merge)
+    ├── config/                        ← Definições de edifícios, unidades e inimigos
+    ├── lib/
+    │   ├── format.ts                  ← Números, taxas e durações em pt-BR
+    │   └── utils.ts                   ← cn() (gerado pelo mwds)
+    ├── store/                         ← Átomos Jotai (estado, navegação, eventos de recurso)
+    │
+    └── features/
+        ├── game-engine/               ← Engine pura e hooks do loop
+        └── game/
+            ├── GameClient.tsx         ← Carrega o jogo só no cliente (ssr: false)
+            ├── GamePage.tsx           ← Providers + GameLayout
+            ├── components/            ← Compartilhados do jogo: GameLayout, PanelSection,
+            │                            TimedProgress, BuildingIcon, UnitIcon, GameSummaryPanel
+            ├── hooks/useNow.ts        ← Relógio para barras de progresso
+            ├── navigation/            ← GameBrand e useGameNavigation (itens do AppShell)
+            ├── resource/              ← HUD: ResourceMeters, GameDayCounter, GameSpeedControls
+            ├── construction/          ← Fila de construção
+            ├── empire/                ← Status, eventos recentes e dica
+            ├── building/
+            │   ├── BuildingGrid.tsx   ← Ponto de entrada: grade + modal
+            │   ├── BuildingExtra.tsx  ← Conteúdo extra do modal por edifício
+            │   ├── card/              ← BuildingCard, BuildingStats, useBuildingCard
+            │   ├── modal/             ← BuildingModal e seções de custo, produção e ações
+            │   ├── castle/            ← Slider de ouro do castelo
+            │   ├── prefeitura/        ← Bônus de construção
+            │   ├── barracks/          ← Treino de unidades
+            │   └── market/            ← Comércio
+            └── army/
+                ├── ArmyPage.tsx       ← Ponto de entrada
+                ├── roster/            ← Tropas disponíveis
+                ├── enemies/           ← Lista e card de inimigos
+                ├── mobilization/      ← Modal de mobilização
+                └── battle/            ← Resultado, saque e perdas
 ```
 
 ---
@@ -502,190 +446,73 @@ Retorna uma função `(buildingId) => ConstructionResult` via `useAtomCallback`.
 
 ## 9. Hooks de Feature
 
-### `useBuildingCard.ts`
+### `useBuildingCard.ts` (`building/card/hooks`)
 
-Usado por `BuildingCard`. Recebe `buildingId`. Retorna:
+Usado por `BuildingCard`. Recebe o `BuildingState`. Retorna `def`, `currentLevelDef`, `activeEntry` (entrada na fila, se houver) e `upgradeStatus`, o texto de situação mostrado no card ("Pronto para evoluir para nível 2", "Recursos insuficientes para evoluir", "Fila de construção ocupada", "Nível máximo").
 
-- `building`: estado atual (`level`)
-- `def`: definição completa do edifício
-- `currentLevelDef`: definição do nível atual (ou `null` se nível 0)
-- `activeEntry`: entrada na fila se este edifício estiver em construção
-- `upgradeDisabled`: `true` se max level, ou já construindo, ou sem recursos
-- `upgradeLabel`: texto do botão de upgrade
+### `useBuildingModal.ts` (`building/modal/hooks`)
 
-### `useBuildingModal.ts`
+Usado por `BuildingModal`. Recebe `buildingId` e `onClose`. Retorna `building`, `def`, `resources`, `currentLevelDef`, `nextLevelDef`, `isMaxLevel`, `isConstructing`, `upgradeDisabled` e `handleUpgrade()`, que chama `useUpgrade` e fecha o modal.
 
-Usado por `BuildingModal`. Recebe `buildingId` e `onClose`. Retorna os mesmos dados de `useBuildingCard` mais:
+### `useCastleGoldRate.ts` (`building/castle/hooks`)
 
-- `resources`: recursos atuais do jogador
-- `nextLevelDef`: definição do próximo nível (ou `null` se max)
-- `isMaxLevel`, `isConstructing`
-- `handleUpgrade()`: chama `useUpgrade`, fecha modal em sucesso
+Usado por `CastleGoldSlider`. Retorna `rate`, `maxRate` (do nível atual do castelo) e `setRate(newRate)`, que escreve `castleGoldRate` no `gameStateAtom`.
 
-### `useCastleGoldRate.ts`
+### `useMarketTrade.ts` (`building/market/hooks`)
 
-Usado por `CastleGoldSlider`. Retorna:
+Executa a troca na engine e, quando ela dá certo, anuncia um evento para o recurso negociado e para o ouro, o que faz os medidores piscarem.
 
-- `rate`: valor atual de `castleGoldRate`
-- `maxRate`: máximo do nível atual do castelo (de `productionPerTick.gold` da definição)
-- `setRate(newRate)`: escreve `castleGoldRate` direto no `gameStateAtom`
+### `useArmyActions.ts` (`army/hooks`)
+
+Controla inimigo selecionado, mobilização e resultado da batalha. Ao resolver a batalha, registra a mensagem no log e anuncia o saque como evento de recurso.
 
 ---
 
-## 10. Componentes de UI — Detalhes
+## 10. Componentes de UI
 
-### Layout Principal
+Toda a interface usa componentes do mwds. Os mais usados e onde aparecem:
 
-#### `GameLayout.tsx`
+| Componente do mwds                                     | Uso no jogo                                                           |
+| ------------------------------------------------------ | --------------------------------------------------------------------- |
+| `AppShell` (`mobileNav="bottom"`, breakpoint `md`)     | Casca: sidebar no desktop, abas no rodapé no mobile, resumo à direita |
+| `Meter`                                                | HUD de recursos; `compact` no mobile; `highlightKey` em eventos       |
+| `ToggleGroup`                                          | Velocidade do jogo (pausa, 0,5x a 4x)                                 |
+| `Card` + `CardAction` + `IconTile`                     | Cards de edifício (card inteiro clicável) e de inimigo                |
+| `Dialog`                                               | Modal de edifício, mobilização e resultado da batalha                 |
+| `Progress` com `valueText`                             | Construção e treino ("12 s restantes")                                |
+| `Slider` + `FormField`                                 | Produção de ouro do castelo                                           |
+| `NumberInput`                                          | Quantidade no mercado e na mobilização, com rótulos por recurso/tropa |
+| `PageHeader`, `DescriptionList`, `EmptyState`, `Alert` | Títulos de página, status do império, fila vazia, dica                |
+| `Badge`                                                | "em breve", "derrotado", "bloqueado" e contagem ×N                    |
+| `ThemeToggle`                                          | Tema claro, escuro ou do sistema, no fim do painel de resumo          |
 
-Layout de 3 colunas com `flex`:
+### Layout (`GameLayout.tsx`)
 
-- **Coluna esquerda** (estreita, fixa): `GameSidebar`
-- **Coluna central** (cresce, scroll): `ResourceHUD` no topo + `BuildingGrid` embaixo
-- **Coluna direita** (fixa): `GameSummaryPanel`
+`AppShell` com `AppShellSidebar` (marca e navegação), `AppShellHeader` (HUD), `AppShellMain` (cidade ou exército, com `animate-mw-fade-in` na troca) e `AppShellAside` (resumo). Os itens de navegação são escritos direto no JSX do layout, porque o `AppShell` só conta itens que estão na árvore para decidir pela barra inferior (de 3 a 5 itens). "pesquisa" e "configurações" aparecem desabilitados com "em breve".
 
-#### `GameSummaryPanel.tsx`
+O jogo é renderizado só no cliente (`GameClient` com `next/dynamic` e `ssr: false`), porque o átomo do save lê o `localStorage` durante a renderização.
 
-Painel direito que organiza verticalmente:
+### Feedback de movimento
 
-1. `EmpireStats`
-2. `ConstructionQueue`
-3. `RecentEvents`
-4. `GameTip`
-
-### Sub-feature: Building
-
-#### `BuildingGrid.tsx`
-
-- Lê `buildingsAtom` para listar todos os edifícios
-- Gerencia `selectedId` (qual modal está aberto)
-- Renderiza uma `<ul>` com `grid grid-cols-2`
-- Cada `<li>` tem um `BuildingCard`
-- Abre `BuildingModal` quando `selectedId !== null`
-
-#### `BuildingCard.tsx`
-
-Artigo HTML com:
-
-- Ícone do edifício + nome + nível
-- Produção atual (se level > 0)
-- Barra de progresso de construção (se em fila)
-- Botão de upgrade
-
-#### `BuildingModal.tsx`
-
-Dialog shadcn dividida em seções:
-
-1. **Header**: `BuildingIdentity` (ícone, nome, nível, max, botão fechar)
-2. **Body**:
-   - Descrição em texto
-   - `BuildingProductionStats`: produção atual formatada
-   - `BuildingUpgradeCosts`: custo do próximo nível, tempo, produção futura
-   - `BuildingExtra`: conteúdo extra específico do edifício
-3. **Footer**: `BuildingUpgradeActions` (botões Fechar e Upar)
-
-#### `BuildingExtra.tsx`
-
-Componente de despacho sem estado. Routing por `buildingId`:
-
-- `'castle'` → `<CastleGoldSlider />`
-- `'prefeitura'` → `<PrefeituraSpeedInfo />`
-- outros → `null`
-
-#### `CastleGoldSlider.tsx`
-
-Visível apenas quando `maxRate > 0` (Castelo nível 2 ou 3). Exibe:
-
-- Rótulo "Produção de Ouro" e valor atual `X.XX/tick (Y%)`
-- `<input type="range" min=0 max=maxRate step=0.01>`
-- Rótulos de min/max
-
-Quando o slider é movido, chama `setRate()` do `useCastleGoldRate` que escreve direto no `gameStateAtom`. O próximo tick usa o novo valor.
-
-#### `PrefeituraSpeedInfo.tsx`
-
-Visível apenas quando a Prefeitura está construída (nível > 0). Exibe o percentual de redução atual do edifício: "−X% no tempo de todas as construções".
-
-### Sub-feature: Resource
-
-#### `ResourceHUD.tsx`
-
-Faixa de header com as 4 barras de recurso lado a lado, mais `GameDayCounter` e `GameSpeedControls`.
-
-#### `ResourceBar.tsx`
-
-Para cada recurso mostra:
-
-- Ícone com cor temática
-- `atual / máximo`
-- Taxa de produção por segundo (`+X.X/s`)
-- Barra de progresso mostrando `atual/máximo`
-
-#### `GameSpeedControls.tsx`
-
-Botões de velocidade: ⏸ (pause = 0), 0.5×, 1×, 2×, 4×. O botão ativo é destacado. Ao clicar, atualiza `gameSpeedAtom`.
-
-### Sub-feature: Construction
-
-#### `ConstructionQueue.tsx`
-
-Seção com título "Em Construção". Se não há builds ativos, exibe "Nenhuma construção em andamento". Para cada entry na fila mostra ícone do edifício, nome, nível alvo, e barra de progresso com tempo restante.
-
-### Sub-feature: Empire
-
-#### `EmpireStats.tsx`
-
-Calcula:
-
-- Total de edifícios construídos (level > 0)
-- Soma de todos os níveis
-- "Score do Império" = soma dos níveis × 30
-
-#### `RecentEvents.tsx`
-
-Exibe os últimos 5 eventos do `eventLogAtom` em ordem reversa, com horário formatado.
-
-### Sub-feature: Navigation
-
-#### `GameSidebar.tsx`
-
-Sidebar esquerda com:
-
-- Logo "Galadur" com ícone
-- Itens de navegação: "Cidade" (ativo), "Exército", "Pesquisa", "Configurações" (últimos 3 com badge "SOON")
-- Botão de recolher sidebar
+- **Flash (`animate-mw-flash`)**: o `Meter` pisca quando o `highlightKey` do recurso muda. O contador vem de `resourceEventsAtom`, incrementado só por eventos discretos (compra e venda no mercado, saque de batalha), nunca pela produção contínua.
+- **Glitch (`animate-mw-glitch`)**: o botão "Evoluir para nível N" usa `aria-disabled` e, ao ser clicado sem condições, toca o glitch uma vez.
 
 ---
 
 ## 11. Estilo Visual
 
-### Paleta de Cores
+A identidade é a do design system mwds, aplicada à risca: tokens semânticos (`bg-ground`, `text-ink`, `accent`...), temas claro e escuro, fontes Bricolage Grotesque, IBM Plex Sans e IBM Plex Mono. O modo estrito (`mw-strict.css` + regras `mw/*` no ESLint) zera a paleta padrão do Tailwind, então só tokens funcionam.
 
-O tema é medieval/fantasia com tons escuros. As cores customizadas são definidas em `tailwind.config.ts`:
+Cada recurso tem um ícone do pacote medieval e uma cor de categoria, sempre acompanhada do nome (a cor nunca é a única pista):
 
-- **`realm-500`** a **`realm-950`**: escala de cinza-azulado escuro usada para fundos, bordas, textos secundários
-- **`realm-950`**: fundo mais escuro (fundos de modais, cards)
-- **`realm-700/800`**: bordas, separadores
-- **`realm-400/500`**: textos secundários
-- **`realm-300`**: textos de destaque suave
-- **`white`**: textos primários
+| Recurso | Ícone   | Categoria              |
+| ------- | ------- | ---------------------- |
+| Madeira | `Wood`  | `category-2` (verde)   |
+| Pedra   | `Stone` | `category-1` (azul)    |
+| Comida  | `Food`  | `category-4` (laranja) |
+| Ouro    | `Coin`  | `category-7` (amarelo) |
 
-Cores de recursos:
-
-- Madeira: tons de âmbar/amarelo
-- Pedra: tons de cinza
-- Comida: tons de verde
-- Ouro: tons de dourado/âmbar
-
-### Tipografia
-
-- **Corpo**: sans-serif padrão do sistema
-- **Títulos temáticos**: `font-medieval` (Cinzel, importada do Google Fonts) — usada em títulos de seção e rótulos uppercase
-- **Monospace**: para logs e valores numéricos em alguns contextos
-
-### Bordas e Cantos
-
-`border-radius: 0rem` global — sem arredondamento de bordas em nenhum elemento. Visual mais austero/angular, coerente com o tema medieval.
+Serraria, mina, mercado, prefeitura e guerreiro ainda não têm ícone autoral no pacote medieval e usam o lucide (`Axe`, `Pickaxe`, `Store`, `Landmark`, `Sword`).
 
 ---
 
@@ -781,7 +608,7 @@ Regras:
 
 ## 17. Convenções de Código (resumo do CLAUDE.md)
 
-- **Proibido**: comentários de qualquer tipo (`//`, `/* */`, `/** */`)
+- **Proibido**: comentários de qualquer tipo (`//`, `/* */`, `/** */`) no código do Galadur
 - **Proibido**: `any` — usar `unknown` com narrowing
 - **Props de componentes**: sempre `interface`, nunca inline ou `type`
 - **Nomes de componentes**: descrevem o domínio, não a estrutura visual
@@ -789,16 +616,15 @@ Regras:
 - **Limite de linhas**: 80 por arquivo (teto absoluto)
 - **Estado global**: Jotai. Estado local de UI: `useState`
 - **Imports entre features**: proibido (`features/X` não importa de `features/Y`)
-- **Compartilhado**: vai em `components/` ou `lib/`
-- **Sem CSS customizado**: Tailwind primeiro
+- **UI**: componentes e tokens do mwds; nada de cor, raio, sombra ou curva fora dos tokens
+- **Exceção**: arquivos gerados pelo registry (`src/components/ui`, `src/components/icons`, `globals.css`, `lib/utils.ts`, `eslint-rules`) ficam fora do teto de linhas, da proibição de comentários e do Prettier
 
 ---
 
 ## 18. Pontos de Extensão Futuros (inferidos da estrutura)
 
-- **Sistema militar**: `barracks.ts` existe mas não tem mecânica. A categoria `'military'` está reservada. `GameSidebar` tem "Exército" como item futuro.
-- **Pesquisa**: sidebar tem "Pesquisa" como futuro
-- **Rotas**: Wouter está instalado mas não há múltiplas rotas ativas ainda
+- **Pesquisa e configurações**: aparecem na navegação como "em breve"
+- **Rotas**: o jogo é uma página só; a navegação troca a tela por `activePageAtom`
 - **Mais edifícios**: `BuildingId` pode crescer. `ALL_BUILDING_IDS` é derivado automaticamente de `BUILDING_DEFINITIONS`
 - **Mais velocidades**: `GameSpeed` é um tipo union — novas velocidades só precisam ser adicionadas ao tipo e ao componente de controle
 - **Log persistido**: `eventLogAtom` não persiste — poderia ser movido para `gameStateAtom` ou para localStorage separado
@@ -837,27 +663,28 @@ buildQueue: []
 
 ## 20. Resumo de Arquivos por Responsabilidade
 
-| Responsabilidade                 | Arquivo(s)                                           |
-| -------------------------------- | ---------------------------------------------------- |
-| Tipos do domínio                 | `game-engine/types.ts`                               |
-| Lógica pura do jogo              | `game-engine/engine.ts`                              |
-| Loop de ticks                    | `game-engine/hooks/useGameLoop.ts`                   |
-| Iniciar construção               | `game-engine/hooks/useUpgrade.ts`                    |
-| Estado global                    | `store/gameAtoms.ts`                                 |
-| Log de eventos                   | `store/eventLogAtom.ts`                              |
-| Definição de edifícios           | `config/buildings/*.ts`                              |
-| Layout principal                 | `game/components/GameLayout.tsx`                     |
-| Grade de edifícios               | `game/building/components/BuildingGrid.tsx`          |
-| Modal de edifício                | `game/building/components/BuildingModal.tsx`         |
-| Slider de ouro do castelo        | `game/building/components/CastleGoldSlider.tsx`      |
-| Info de velocidade da prefeitura | `game/building/components/PrefeituraSpeedInfo.tsx`   |
-| Roteador de extras no modal      | `game/building/components/BuildingExtra.tsx`         |
-| HUD de recursos                  | `game/resource/components/ResourceHUD.tsx`           |
-| Controles de velocidade          | `game/resource/components/GameSpeedControls.tsx`     |
-| Fila de construção               | `game/construction/components/ConstructionQueue.tsx` |
-| Stats do império                 | `game/empire/components/EmpireStats.tsx`             |
-| Eventos recentes                 | `game/empire/components/RecentEvents.tsx`            |
-| Navegação                        | `game/navigation/components/GameSidebar.tsx`         |
-| Ícones de edifícios              | `game/components/icons/*.tsx`                        |
-| Ícones de recursos               | `game/components/ResourceIcon.tsx`                   |
-| Utilitários CSS                  | `lib/utils.ts`                                       |
+| Responsabilidade           | Arquivo(s)                                                    |
+| -------------------------- | ------------------------------------------------------------- |
+| Tipos do domínio           | `game-engine/types.ts`                                        |
+| Lógica pura do jogo        | `game-engine/engine.ts`                                       |
+| Loop de ticks              | `game-engine/hooks/useGameLoop.ts`                            |
+| Iniciar construção         | `game-engine/hooks/useUpgrade.ts`                             |
+| Estado global              | `store/gameAtoms.ts`                                          |
+| Log de eventos             | `store/eventLogAtom.ts`                                       |
+| Eventos de recurso (flash) | `store/resourceEventsAtom.ts`                                 |
+| Formatação pt-BR           | `lib/format.ts`, `game/resource/resourceNames.ts`             |
+| Definição de edifícios     | `config/buildings/*.ts`                                       |
+| Carregamento no cliente    | `game/GameClient.tsx`                                         |
+| Layout principal           | `game/components/GameLayout.tsx`                              |
+| Navegação                  | `game/navigation/hooks/useGameNavigation.tsx`                 |
+| Grade de edifícios         | `game/building/BuildingGrid.tsx`                              |
+| Modal de edifício          | `game/building/modal/components/BuildingModal.tsx`            |
+| Slider de ouro do castelo  | `game/building/castle/components/CastleGoldSlider.tsx`        |
+| Bônus da prefeitura        | `game/building/prefeitura/components/PrefeituraSpeedInfo.tsx` |
+| Extras do modal            | `game/building/BuildingExtra.tsx`                             |
+| HUD de recursos            | `game/resource/components/ResourceHUD.tsx`                    |
+| Controles de velocidade    | `game/resource/components/GameSpeedControls.tsx`              |
+| Fila de construção         | `game/construction/components/ConstructionQueue.tsx`          |
+| Status do império          | `game/empire/components/EmpireStats.tsx`                      |
+| Exército                   | `game/army/ArmyPage.tsx`                                      |
+| Ícones de domínio          | `components/icons/*` (mwds), `game/components/*Icon.tsx`      |

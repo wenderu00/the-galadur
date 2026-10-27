@@ -29,7 +29,7 @@ flowchart LR
     trade["trade.ts<br/>mercado"]
     migr["state-migration.ts<br/>saves antigos"]
   end
-  tick --> atoms["átomos Jotai"] --> ui["UI (React + shadcn/ui)"]
+  tick --> atoms["átomos Jotai"] --> ui["UI (Next + design system mwds)"]
   atoms <--> storage[("localStorage")]
   ui -->|ações do jogador| engine
 ```
@@ -43,18 +43,18 @@ flowchart LR
 
 ## Testes
 
-| Tipo      | Ferramenta                  | O que cobre                                                                                                     |
-| --------- | --------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Unitários | Vitest                      | 43 testes da engine: produção, construção, combate, comércio, progresso offline e migração de estado            |
-| E2E       | Playwright com Page Objects | 13 specs: HUD de recursos, grade de construções, fluxo de upgrade, exército, velocidade do jogo e layout mobile |
+| Tipo      | Ferramenta                  | O que cobre                                                                                                                         |
+| --------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Unitários | Vitest                      | 55 testes: engine (produção, construção, combate, comércio, progresso offline, migração de estado) e formatação pt-BR               |
+| E2E       | Playwright com Page Objects | 16 specs: HUD de recursos, grade de construções, fluxo de upgrade, exército, velocidade, tema, destaque de recursos e layout mobile |
 
-O CI roda lint, `format:check` e os testes unitários a cada push.
+O CI roda lint (com o modo estrito do mwds), `format:check` e os testes unitários a cada push.
 
 ## Rodando localmente
 
 ```bash
 npm ci
-npm run dev          # http://localhost:5173
+npm run dev          # http://localhost:3000
 npm run test:unit    # engine
 npm run test:e2e     # Playwright (sobe o dev server)
 ```
@@ -67,10 +67,10 @@ chegar a esta, em TypeScript, com a engine separada da interface e testada.
 
 ## Stack
 
-React 18 · TypeScript · Vite · Jotai · Tailwind CSS · shadcn/ui · Framer Motion · Vitest · Playwright · GitHub Pages
+Next.js 16 · React 19 · TypeScript · Jotai · Tailwind CSS 4 · [mwds](https://github.com/wenderu00/mwds) · Vitest · Playwright · GitHub Pages
 
-A documentação completa de tipos, engine e componentes está em [`PROJETO.md`](PROJETO.md),
-e a identidade visual em [`VISUAL_IDENTITY.md`](VISUAL_IDENTITY.md).
+A documentação completa de tipos, engine e componentes está em [`PROJETO.md`](PROJETO.md).
+A identidade visual é a do design system [mwds](https://wenderu00.github.io/mwds/), aplicada à risca.
 
 ## Licença
 

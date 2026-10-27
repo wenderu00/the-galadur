@@ -32,7 +32,7 @@ export function useTickEngine(): void {
           ...log,
           ...completedBuildings.map((e) => ({
             timestamp: now,
-            message: `${BUILDING_DEFINITIONS[e.buildingId].name} atingiu Nível ${e.targetLevel}!`,
+            message: `${BUILDING_DEFINITIONS[e.buildingId].name} chegou ao nível ${e.targetLevel}.`,
           })),
         ]);
       }
@@ -41,7 +41,7 @@ export function useTickEngine(): void {
           ...log,
           ...completedTraining.map((e) => ({
             timestamp: now,
-            message: `${UNIT_DEFINITIONS[e.unitId].name} treinado com sucesso!`,
+            message: `${UNIT_DEFINITIONS[e.unitId].name} treinado.`,
           })),
         ]);
       }

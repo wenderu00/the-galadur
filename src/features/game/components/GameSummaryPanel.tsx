@@ -1,21 +1,17 @@
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { ConstructionQueue } from '../construction/components/ConstructionQueue';
 import { EmpireStats } from '../empire/components/EmpireStats';
-import { RecentEvents } from '../empire/components/RecentEvents';
 import { GameTip } from '../empire/components/GameTip';
+import { RecentEvents } from '../empire/components/RecentEvents';
 
-interface GameSummaryPanelProps {
-  className?: string;
-}
-
-export function GameSummaryPanel({ className = '' }: GameSummaryPanelProps) {
+export function GameSummaryPanel() {
   return (
-    <aside
-      className={`flex flex-col w-full bg-realm-950 border-l border-realm-800 overflow-y-auto ${className}`}
-    >
+    <div className="flex flex-col gap-8">
       <ConstructionQueue />
       <EmpireStats />
       <RecentEvents />
       <GameTip />
-    </aside>
+      <ThemeToggle />
+    </div>
   );
 }

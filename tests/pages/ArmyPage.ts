@@ -1,10 +1,16 @@
 import { Page, Locator } from '@playwright/test';
 
+const UNIT_PLURALS: Record<string, string> = {
+  warrior: 'guerreiros',
+  archer: 'arqueiros',
+  lancer: 'lanceiros',
+};
+
 export class ArmyPage {
   readonly navItem: Locator;
 
   constructor(private readonly page: Page) {
-    this.navItem = page.getByTestId('desktop-sidebar').locator('[data-testid="nav-item-exercito"]');
+    this.navItem = page.getByTestId('desktop-sidebar').getByRole('button', { name: 'Exército' });
   }
 
   async navigate(): Promise<void> {
@@ -28,7 +34,9 @@ export class ArmyPage {
   }
 
   mobilizationIncrement(unitId: string): Locator {
-    return this.page.getByTestId(`mobilization-unit-${unitId}-increment`);
+    return this.page
+      .getByRole('dialog')
+      .getByRole('button', { name: `Aumentar ${UNIT_PLURALS[unitId]}` });
   }
 
   mobilizationConfirm(): Locator {

@@ -5,12 +5,8 @@ export class SummaryPanelPage {
   readonly queueSection: Locator;
 
   constructor(private readonly page: Page) {
-    this.panel = page
-      .locator('aside')
-      .filter({ has: page.getByRole('heading', { name: 'Fila de Construção' }) });
-    this.queueSection = this.panel
-      .locator('section')
-      .filter({ has: page.getByRole('heading', { name: 'Fila de Construção' }) });
+    this.panel = page.getByTestId('summary-panel');
+    this.queueSection = this.panel.getByRole('region', { name: 'Fila de construção' });
   }
 
   async resetState(): Promise<void> {
@@ -18,8 +14,8 @@ export class SummaryPanelPage {
     await this.page.reload();
   }
 
-  isQueueEmpty(): Promise<boolean> {
-    return this.panel.getByText('Nenhuma construção em andamento').isVisible();
+  emptyQueueMessage(): Locator {
+    return this.queueSection.getByText('Nenhuma construção em andamento');
   }
 
   queueItemCount(): Promise<number> {
@@ -27,40 +23,22 @@ export class SummaryPanelPage {
   }
 
   async getQueueItemName(index: number): Promise<string> {
-    return (
-      (await this.queueSection
-        .getByRole('listitem')
-        .nth(index)
-        .locator('p')
-        .first()
-        .textContent()) ?? ''
-    );
+    return (await this.queueSection.getByRole('listitem').nth(index).textContent()) ?? '';
+  }
+
+  private statValue(term: string): Locator {
+    return this.panel.locator('dt', { hasText: term }).locator('+ dd');
   }
 
   async getTotalBuildings(): Promise<string> {
-    return (
-      (await this.panel
-        .locator('dt', { hasText: 'Total de Construções' })
-        .locator('+ dd')
-        .textContent()) ?? ''
-    );
+    return (await this.statValue('Total de construções').textContent()) ?? '';
   }
 
   async getTotalLevels(): Promise<string> {
-    return (
-      (await this.panel
-        .locator('dt', { hasText: 'Níveis Totais' })
-        .locator('+ dd')
-        .textContent()) ?? ''
-    );
+    return (await this.statValue('Níveis totais').textContent()) ?? '';
   }
 
   async getEmpireScore(): Promise<string> {
-    return (
-      (await this.panel
-        .locator('dt', { hasText: 'Pontuação do Império' })
-        .locator('+ dd')
-        .textContent()) ?? ''
-    );
+    return (await this.statValue('Pontuação do império').textContent()) ?? '';
   }
 }

@@ -46,26 +46,26 @@ test.describe('BarracksTrainingSpeed', () => {
 
   test('nível 1 exibe tempo base do guerreiro', async ({ page }) => {
     await openBarracks(page, 1);
-    await expect(barracks.unitTrainingTime('Guerreiro')).toHaveText('30s');
+    await expect(barracks.unitTrainingTime('Guerreiro')).toHaveText('30 s');
   });
 
   test('nível 2 exibe tempo reduzido do guerreiro', async ({ page }) => {
     await openBarracks(page, 2);
-    await expect(barracks.unitTrainingTime('Guerreiro')).toHaveText('24s');
+    await expect(barracks.unitTrainingTime('Guerreiro')).toHaveText('24 s');
   });
 
   test('nível 3 exibe tempo reduzido do guerreiro', async ({ page }) => {
     await openBarracks(page, 3);
-    await expect(barracks.unitTrainingTime('Guerreiro')).toHaveText('18s');
+    await expect(barracks.unitTrainingTime('Guerreiro')).toHaveText('18 s');
   });
 
   test('nível 2 exibe tempo reduzido do arqueiro', async ({ page }) => {
     await openBarracks(page, 2);
-    await expect(barracks.unitTrainingTime('Arqueiro')).toHaveText('36s');
+    await expect(barracks.unitTrainingTime('Arqueiro')).toHaveText('36 s');
   });
 
   test('nível 3 exibe tempo reduzido do lanceiro', async ({ page }) => {
     await openBarracks(page, 3);
-    await expect(barracks.unitTrainingTime('Lanceiro')).toHaveText('36s');
+    await expect(barracks.unitTrainingTime('Lanceiro')).toHaveText('36 s');
   });
 });

@@ -1,54 +1,51 @@
-import { useAtomValue, useSetAtom } from 'jotai';
-import { gameSpeedAtom } from '@/store/gameAtoms';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import type { GameSpeed } from '@/store/gameAtoms';
+import { useAtom } from 'jotai';
+import { Pause } from 'lucide-react';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { gameSpeedAtom, type GameSpeed } from '@/store/gameAtoms';
 
-const SPEED_OPTIONS: GameSpeed[] = [0.5, 1, 2, 4];
+const SPEED_OPTIONS: Exclude<GameSpeed, 0>[] = [0.5, 1, 2, 4];
+const PAUSED = '0';
+
+function speedLabel(speed: number): string {
+  return `${new Intl.NumberFormat('pt-BR').format(speed)}x`;
+}
 
 export function GameSpeedControls() {
-  const speed = useAtomValue(gameSpeedAtom);
-  const setSpeed = useSetAtom(gameSpeedAtom);
+  const [speed, setSpeed] = useAtom(gameSpeedAtom);
+
+  function handleChange(value: string) {
+    if (value === '') {
+      if (speed === 0) setSpeed(1);
+      return;
+    }
+    setSpeed(Number(value) as GameSpeed);
+  }
 
   return (
-    <div className="flex items-center gap-1">
-      <Button
+    <ToggleGroup
+      type="single"
+      aria-label="Velocidade do jogo"
+      value={String(speed)}
+      onValueChange={handleChange}
+    >
+      <ToggleGroupItem
+        value={PAUSED}
+        aria-label="Pausar"
         data-testid="speed-btn-pause"
         data-active={speed === 0}
-        size="icon"
-        variant="ghost"
-        onClick={() => setSpeed(speed === 0 ? 1 : 0)}
-        className={cn(
-          'w-11 h-11 md:w-8 md:h-8 rounded-none border',
-          speed === 0
-            ? 'bg-violet-700 border-violet-700 text-white hover:bg-violet-700 hover:text-white'
-            : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900'
-        )}
       >
-        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor">
-          <rect x="6" y="5" width="4" height="14" />
-          <rect x="14" y="5" width="4" height="14" />
-        </svg>
-      </Button>
-
-      {SPEED_OPTIONS.map((s) => (
-        <Button
-          key={s}
-          data-testid={`speed-btn-${s}x`}
-          data-active={speed === s && speed !== 0}
-          size="sm"
-          variant="ghost"
-          onClick={() => setSpeed(s)}
-          className={cn(
-            'h-11 md:h-8 rounded-none border text-xs font-semibold px-2 md:px-2.5',
-            speed === s && speed !== 0
-              ? 'bg-violet-700 border-violet-700 text-white hover:bg-violet-700 hover:text-white'
-              : 'bg-realm-900 border-realm-700 text-realm-400 hover:border-realm-600 hover:bg-realm-900 hover:text-realm-300'
-          )}
+        <Pause aria-hidden="true" />
+      </ToggleGroupItem>
+      {SPEED_OPTIONS.map((option) => (
+        <ToggleGroupItem
+          key={option}
+          value={String(option)}
+          data-testid={`speed-btn-${option}x`}
+          data-active={speed === option}
         >
-          {s}x
-        </Button>
+          {speedLabel(option)}
+        </ToggleGroupItem>
       ))}
-    </div>
+    </ToggleGroup>
   );
 }

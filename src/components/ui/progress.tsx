@@ -1,64 +1,56 @@
-import { Progress as ProgressPrimitive } from '@base-ui/react/progress';
+"use client";
 
-import { cn } from '@/lib/utils';
+import { Progress as ProgressPrimitive } from "radix-ui";
+import { useId, type ComponentProps, type ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
-function Progress({ className, children, value, ...props }: ProgressPrimitive.Root.Props) {
+export type ProgressProps = Omit<ComponentProps<typeof ProgressPrimitive.Root>, "value"> & {
+  value?: number | null;
+  label?: ReactNode;
+  showValue?: boolean;
+  valueText?: string;
+  size?: "sm" | "md";
+};
+
+export function Progress({ value = null, max = 100, label, showValue = false, valueText, size = "md", className, ...props }: ProgressProps) {
+  const labelId = useId();
+  const indeterminate = value === null;
+  const percent = indeterminate ? 0 : Math.min(100, Math.max(0, (value / max) * 100));
+
   return (
-    <ProgressPrimitive.Root
-      value={value}
-      data-slot="progress"
-      className={cn('flex flex-wrap gap-3', className)}
-      {...props}
-    >
-      {children}
-      <ProgressTrack>
-        <ProgressIndicator />
-      </ProgressTrack>
-    </ProgressPrimitive.Root>
-  );
-}
-
-function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
-  return (
-    <ProgressPrimitive.Track
-      className={cn(
-        'relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted',
-        className
+    <div data-slot="progress-wrapper" className={cn("flex flex-col gap-2", className)}>
+      {(label || showValue) && (
+        <div className="flex items-baseline justify-between gap-3 text-sm">
+          {label && (
+            <span id={labelId} className="text-ink-soft">
+              {label}
+            </span>
+          )}
+          {showValue && !indeterminate && (
+            <span aria-hidden="true" className="ml-auto font-mono text-mono-xs text-ink-muted">
+              {valueText ?? `${Math.round(percent)}%`}
+            </span>
+          )}
+        </div>
       )}
-      data-slot="progress-track"
-      {...props}
-    />
+      <ProgressPrimitive.Root
+        data-slot="progress"
+        value={value}
+        max={max}
+        aria-labelledby={label ? labelId : undefined}
+        getValueLabel={valueText === undefined ? undefined : () => valueText}
+        className={cn("relative w-full overflow-hidden rounded-full border border-line-strong bg-surface", size === "sm" ? "h-1.5" : "h-2.5")}
+        {...props}
+      >
+        <ProgressPrimitive.Indicator
+          data-slot="progress-indicator"
+          className={cn(
+            "h-full rounded-full bg-accent-line transition-[width] duration-slow ease-standard motion-reduce:transition-none",
+            indeterminate && "w-2/5 motion-safe:animate-mw-indeterminate motion-reduce:w-full motion-reduce:opacity-40",
+          )}
+          style={indeterminate ? undefined : { width: `${percent}%` }}
+        />
+      </ProgressPrimitive.Root>
+    </div>
   );
 }
-
-function ProgressIndicator({ className, ...props }: ProgressPrimitive.Indicator.Props) {
-  return (
-    <ProgressPrimitive.Indicator
-      data-slot="progress-indicator"
-      className={cn('h-full bg-primary transition-all', className)}
-      {...props}
-    />
-  );
-}
-
-function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
-  return (
-    <ProgressPrimitive.Label
-      className={cn('text-sm font-medium', className)}
-      data-slot="progress-label"
-      {...props}
-    />
-  );
-}
-
-function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
-  return (
-    <ProgressPrimitive.Value
-      className={cn('ml-auto text-sm text-muted-foreground tabular-nums', className)}
-      data-slot="progress-value"
-      {...props}
-    />
-  );
-}
-
-export { Progress, ProgressTrack, ProgressIndicator, ProgressLabel, ProgressValue };

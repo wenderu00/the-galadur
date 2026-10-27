@@ -6,17 +6,17 @@ Decisões técnicas e convenções deste projeto. Leia antes de contribuir.
 
 ## 1. Stack & Ferramentas
 
-| Ferramenta   | Versão mínima | Função             |
-| ------------ | ------------- | ------------------ |
-| React        | 18            | UI                 |
-| Vite         | 5             | Build / dev server |
-| TypeScript   | 5             | Tipagem estática   |
-| Tailwind CSS | 3             | Estilização        |
-| shadcn/ui    | —             | Componentes base   |
-| Jotai        | 2             | Estado global      |
-| Wouter       | 3             | Roteamento         |
-| ESLint       | 9             | Linting            |
-| Prettier     | 3             | Formatação         |
+| Ferramenta       | Versão mínima | Função                                           |
+| ---------------- | ------------- | ------------------------------------------------ |
+| Next.js          | 16            | App Router, export estático (`output: 'export'`) |
+| React            | 19            | UI                                               |
+| TypeScript       | 5             | Tipagem estática                                 |
+| Tailwind CSS     | 4             | Estilização                                      |
+| mwds (`@marcio`) | 0.16          | Design system: tokens, componentes, ícones, lint |
+| Jotai            | 2             | Estado global                                    |
+| ESLint           | 9             | Linting (Next + modo estrito do mwds)            |
+| Prettier         | 3             | Formatação                                       |
+| Node             | 26            | Versão fixada no `.nvmrc`                        |
 
 ---
 
@@ -25,26 +25,33 @@ Decisões técnicas e convenções deste projeto. Leia antes de contribuir.
 ```
 src/
 ├── app/
-│   ├── routes.tsx          # Declaração central de rotas
-│   └── providers.tsx       # Providers globais (Jotai, tema, etc.)
-├── components/             # Componentes verdadeiramente reutilizáveis
-│   └── ui/                 # Componentes shadcn gerados
+│   ├── layout.tsx          # Fontes, ThemeScript, TooltipProvider, Toaster
+│   ├── page.tsx            # Única página: renderiza o jogo
+│   ├── providers.tsx       # Providers globais (Jotai, game loop)
+│   ├── globals.css         # Tokens do mwds (gerado)
+│   └── mw-strict.css       # Modo estrito do mwds (gerado)
+├── components/
+│   ├── ui/                 # Componentes do mwds (gerados pelo registry)
+│   └── icons/              # Ícones autorais do mwds (gerados pelo registry)
+├── config/                 # Balanceamento: edifícios, unidades, inimigos
 ├── features/
-│   ├── auth/
-│   │   ├── components/     # LoginForm, AuthGuard...
-│   │   ├── hooks/          # useLogin, useSession...
-│   │   ├── store/          # atoms de auth
-│   │   └── types.ts
-│   └── dashboard/
-│       ├── components/
-│       ├── hooks/
-│       └── types.ts
+│   ├── game-engine/        # Engine pura + hooks do loop
+│   └── game/               # UI do jogo, dividida em sub-features
 ├── lib/
-│   └── http.ts             # Wrapper fino sobre fetch
-└── main.tsx
+│   ├── format.ts           # Números, taxas e durações em pt-BR
+│   └── utils.ts            # cn() (gerado)
+└── store/                  # Átomos Jotai
 ```
 
 Regra: nada de `features/X` importa de `features/Y`. Compartilhado vai em `components/` ou `lib/`.
+
+### Código gerado pelo design system
+
+Os arquivos instalados pelo registry do mwds (`src/components/ui/`, `src/components/icons/`, `src/app/globals.css`, `src/app/mw-strict.css`, `src/lib/utils.ts`, `eslint-rules/`, `eslint.mw.mjs`) **não seguem** o teto de 80 linhas, a proibição de comentários nem o Prettier (estão no `.prettierignore`). Não os edite à mão: atualize com `npx shadcn@latest add @marcio/<item> --diff` e depois `--overwrite`. Correção necessária num componente vai primeiro para o mwds.
+
+Exceção atual: `src/components/ui/dialog.tsx` tem `*:shrink-0` no `DialogContent` para os filhos não encolherem quando o diálogo atinge a altura máxima. A correção precisa ir para o mwds; até lá, um `--overwrite` do `dialog` a desfaz.
+
+Todo `add` reescreve o bloco de fontes de `src/app/layout.tsx`; rode `npm run format` depois.
 
 ---
 
@@ -117,45 +124,25 @@ export function useUsers() {
 
 ## 6. Roteamento
 
-Wouter. Todas as rotas declaradas em `src/app/routes.tsx`.
+Next.js App Router com export estático. O jogo é uma página só (`src/app/page.tsx`), carregada apenas no cliente por `features/game/GameClient.tsx` (`next/dynamic` com `ssr: false`), porque o save é lido do `localStorage` durante a renderização.
 
-```tsx
-import { Route, Switch } from 'wouter';
-import { LoginPage } from '@/features/auth/components/LoginPage';
-import { DashboardPage } from '@/features/dashboard/components/DashboardPage';
-
-export function Routes() {
-  return (
-    <Switch>
-      <Route path="/login" component={LoginPage} />
-      <Route path="/dashboard" component={DashboardPage} />
-    </Switch>
-  );
-}
-```
-
-- Alias `@/` mapeado para `src/` no `tsconfig` e `vite.config`.
-- Páginas ficam em `features/<feature>/components/<Nome>Page.tsx`.
+- A troca entre cidade e exército é feita pelo `activePageAtom`, não por rotas.
+- Alias `@/` mapeado para `src/` no `tsconfig`.
+- O `basePath` `/the-galadur` vale só no build de produção (GitHub Pages); dev e Playwright rodam na raiz.
 
 ---
 
 ## 7. Estilização
 
-- **Tailwind primeiro**: estilize diretamente com classes utilitárias.
-- **shadcn/ui** para componentes interativos complexos (Dialog, Select, Toast...). Gere com `npx shadcn@latest add <componente>`.
-- Não crie CSS customizado sem necessidade. Evite `style={{}}` inline.
+A identidade é a do design system [mwds](https://wenderu00.github.io/mwds/), à risca. Não há tema próprio do jogo.
 
-```tsx
-// Bom
-<button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
-  Salvar
-</button>
-
-// Evitar — crie um componente shadcn se precisar de variantes
-<button style={{ backgroundColor: '#6366f1', padding: '8px 16px' }}>
-  Salvar
-</button>
-```
+- **Componentes do mwds primeiro**: `npx shadcn@latest add @marcio/<componente>`. Só escreva markup próprio quando o DS não tiver o componente.
+- **Só tokens**: `bg-ground`, `text-ink`, `border-line`, `text-danger-text`, `category-N`... O modo estrito zera a paleta padrão do Tailwind, então `bg-red-500` ou `rounded-md` não geram CSS e o lint reprova.
+- **Ícones**: os do pacote `@marcio/icons-medieval` para o domínio e o lucide para o resto, em `size-4`, `size-5` ou `size-6`, com `aria-hidden` quando são decorativos. Ícone em destaque vai num `IconTile`.
+- **Cor de categoria nunca é a única pista**: sempre acompanhe com texto.
+- **Movimento**: sempre com `motion-safe:`. `animate-mw-flash` só em evento discreto (compra, saque), nunca no tick de produção; ação negada usa `animate-mw-glitch`.
+- **Escrita**: siga o guia [Escrita](https://wenderu00.github.io/mwds/escrita/): pt-BR, sem travessão, sem exclamação, números com `Intl` pt-BR (`src/lib/format.ts`), nomes de recurso traduzidos (`resourceNames.ts`).
+- Não crie CSS customizado. Evite `style={{}}` inline.
 
 ---
 
@@ -192,8 +179,9 @@ O código deve ser autoexplicativo: nomes de variáveis, funções e tipos descr
 ## 10. Linting
 
 ```bash
-npm run lint       # ESLint em todo o projeto
-npm run format     # Prettier (escreve)
+npm run lint          # ESLint em todo o projeto (inclui o modo estrito do mwds)
+npm run typecheck     # TypeScript sem emitir arquivos
+npm run format        # Prettier (escreve)
 npm run format:check  # Prettier (só verifica — usado no CI)
 ```
 
@@ -204,8 +192,9 @@ Regras críticas ativas no ESLint:
 - `react-hooks/exhaustive-deps` — **warn**
 - `no-console` — **warn** (remova antes de merge)
 - `import/no-cycle` — **error** (previne imports circulares entre features)
+- `mw/no-raw-color`, `mw/no-raw-token`, `mw/icon-size` — **error** (cores, forma, movimento, camadas e tamanho de ícone só por token)
 
-O CI falha se `lint` ou `format:check` retornar erro.
+O CI falha se `lint` ou `format:check` retornar erro. Passar no lint estrito é o critério de migração para o mwds concluída.
 
 ## 11. Modularização de Features Complexas
 
@@ -354,31 +343,45 @@ Nunca usar classes Tailwind como identificadores de componente ou de estado.
 
 Formato: `[componente]-[elemento]` ou `[componente]-[elemento]-[identificador]`
 
-| Padrão                        | Exemplo                      | Uso                                     |
-| ----------------------------- | ---------------------------- | --------------------------------------- |
-| `resource-bar-{kind}`         | `resource-bar-wood`          | container da barra de recurso (desktop) |
-| `resource-bar-{kind}-value`   | `resource-bar-wood-value`    | valor numérico do recurso               |
-| `resource-bar-{kind}-rate`    | `resource-bar-wood-rate`     | taxa de produção (+X/s)                 |
-| `resource-bar-{kind}-compact` | `resource-bar-wood-compact`  | container compacto (mobile)             |
-| `speed-btn-pause`             | —                            | botão de pausa                          |
-| `speed-btn-{speed}x`          | `speed-btn-2x`               | botão de velocidade                     |
-| `building-card-{id}`          | `building-card-castle`       | card de edifício                        |
-| `building-card-{id}-level`    | `building-card-castle-level` | texto de nível do edifício              |
-| `unit-card-{id}`              | `unit-card-warrior`          | card de unidade militar                 |
-| `unit-count-{id}`             | `unit-count-warrior`         | contador de unidades                    |
-| `unit-train-{id}`             | `unit-train-warrior`         | botão de treinar unidade                |
-| `unit-training-time-{id}`     | `unit-training-time-warrior` | tempo efetivo de treino da unidade      |
-| `mobile-nav`                  | —                            | nav inferior mobile                     |
-| `mobile-nav-tab-{tab}`        | `mobile-nav-tab-buildings`   | aba da nav mobile                       |
-| `desktop-sidebar`             | —                            | wrapper do sidebar desktop              |
-| `desktop-summary`             | —                            | wrapper do painel de resumo desktop     |
+| Padrão                         | Exemplo                           | Uso                                      |
+| ------------------------------ | --------------------------------- | ---------------------------------------- |
+| `game-hud`                     | —                                 | cabeçalho com dia, velocidade e recursos |
+| `game-day-value`               | —                                 | número do dia de jogo                    |
+| `resource-bar-{kind}`          | `resource-bar-wood`               | `Meter` do recurso (desktop)             |
+| `resource-bar-{kind}-rate`     | `resource-bar-wood-rate`          | taxa de produção (+X/s)                  |
+| `resource-bar-{kind}-compact`  | `resource-bar-wood-compact`       | `Meter` compacto (mobile)                |
+| `speed-btn-pause`              | —                                 | item de pausa do `ToggleGroup`           |
+| `speed-btn-{speed}x`           | `speed-btn-0.5x`                  | item de velocidade                       |
+| `building-card-{id}`           | `building-card-castle`            | card de edifício                         |
+| `building-card-{id}-level`     | `building-card-castle-level`      | texto de nível do edifício               |
+| `building-modal-level`         | —                                 | nível no modal de edifício               |
+| `unit-card-{id}`               | `unit-card-warrior`               | card de unidade militar                  |
+| `unit-count-{id}`              | `unit-count-warrior`              | contador de unidades                     |
+| `unit-train-{id}`              | `unit-train-warrior`              | botão de treinar unidade                 |
+| `unit-training-time-{id}`      | `unit-training-time-warrior`      | tempo efetivo de treino da unidade       |
+| `market-panel`                 | —                                 | painel de comércio                       |
+| `market-buy-{kind}`            | `market-buy-wood`                 | botão de comprar recurso                 |
+| `army-page`                    | —                                 | página do exército                       |
+| `mobilization-unit-{id}-count` | `mobilization-unit-warrior-count` | campo de quantidade na mobilização       |
+| `desktop-sidebar`              | —                                 | sidebar do `AppShell` (desktop)          |
+| `summary-panel`                | —                                 | `AppShellAside` com o resumo             |
+
+Elementos que vêm prontos do DS são buscados por papel e nome acessível, sem testid:
+
+- valor do recurso: `getByRole('meter', { name: 'Madeira' })` e o atributo `aria-valuenow`;
+- velocidade: `getByRole('radiogroup', { name: 'Velocidade do jogo' })` e itens `radio`;
+- navegação: `getByRole('navigation', { name: 'Principal' })` com botões "cidade" e "exército" (no mobile, só a barra inferior fica visível);
+- botões do `NumberInput`: `getByRole('button', { name: 'Aumentar guerreiros' })`;
+- tema: `getByRole('radiogroup', { name: 'Tema' })`.
+
+Tamanhos medidos logo após abrir um diálogo usam `offsetWidth`/`offsetHeight`, porque a animação de entrada do DS aplica `scale` e altera o `getBoundingClientRect`.
 
 ### Estado com `data-active`
 
 Para elementos com estado ativo/inativo, usar `data-active` ao invés de verificar classes CSS:
 
 ```tsx
-<Button data-testid="speed-btn-pause" data-active={speed === 0} ...>
+<ToggleGroupItem data-testid="speed-btn-pause" data-active={speed === 0} ...>
 ```
 
 ```typescript
