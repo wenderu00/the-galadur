@@ -12,7 +12,7 @@ Decisões técnicas e convenções deste projeto. Leia antes de contribuir.
 | React            | 19            | UI                                               |
 | TypeScript       | 5             | Tipagem estática                                 |
 | Tailwind CSS     | 4             | Estilização                                      |
-| mwds (`@marcio`) | 0.16          | Design system: tokens, componentes, ícones, lint |
+| mwds (`@marcio`) | 0.16          | Design system: tokens, componentes, lint         |
 | Jotai            | 2             | Estado global                                    |
 | ESLint           | 9             | Linting (Next + modo estrito do mwds)            |
 | Prettier         | 3             | Formatação                                       |
@@ -32,7 +32,6 @@ src/
 │   └── mw-strict.css       # Modo estrito do mwds (gerado)
 ├── components/
 │   ├── ui/                 # Componentes do mwds (gerados pelo registry)
-│   └── icons/              # Ícones autorais do mwds (gerados pelo registry)
 ├── config/                 # Balanceamento: edifícios, unidades, inimigos
 ├── features/
 │   ├── game-engine/        # Engine pura + hooks do loop
@@ -47,7 +46,7 @@ Regra: nada de `features/X` importa de `features/Y`. Compartilhado vai em `compo
 
 ### Código gerado pelo design system
 
-Os arquivos instalados pelo registry do mwds (`src/components/ui/`, `src/components/icons/`, `src/app/globals.css`, `src/app/mw-strict.css`, `src/lib/utils.ts`, `eslint-rules/`, `eslint.mw.mjs`) **não seguem** o teto de 80 linhas, a proibição de comentários nem o Prettier (estão no `.prettierignore`). Não os edite à mão: atualize com `npx shadcn@latest add @marcio/<item> --diff` e depois `--overwrite`. Correção necessária num componente vai primeiro para o mwds.
+Os arquivos instalados pelo registry do mwds (`src/components/ui/`, `src/app/globals.css`, `src/app/mw-strict.css`, `src/lib/utils.ts`, `eslint-rules/`, `eslint.mw.mjs`) **não seguem** o teto de 80 linhas, a proibição de comentários nem o Prettier (estão no `.prettierignore`). Não os edite à mão: atualize com `npx shadcn@latest add @marcio/<item> --diff` e depois `--overwrite`. Correção necessária num componente vai primeiro para o mwds.
 
 Exceção atual: `src/components/ui/dialog.tsx` tem `*:shrink-0` no `DialogContent` para os filhos não encolherem quando o diálogo atinge a altura máxima. A correção precisa ir para o mwds; até lá, um `--overwrite` do `dialog` a desfaz.
 
@@ -139,7 +138,7 @@ A identidade é a do design system [mwds](https://wenderu00.github.io/mwds/), à
 
 - **Componentes do mwds primeiro**: `npx shadcn@latest add @marcio/<componente>`. Só escreva markup próprio quando o DS não tiver o componente.
 - **Só tokens**: `bg-ground`, `text-ink`, `border-line`, `text-danger-text`, `category-N`... O modo estrito zera a paleta padrão do Tailwind, então `bg-red-500` ou `rounded-md` não geram CSS e o lint reprova.
-- **Ícones**: os do pacote `@marcio/icons-medieval` para o domínio e o lucide para o resto, em `size-4`, `size-5` ou `size-6`, com `aria-hidden` quando são decorativos. Ícone em destaque vai num `IconTile`.
+- **Ícones**: só do `lucide-react` (o pacote de ícones autorais do mwds não é usado), em `size-4`, `size-5` ou `size-6`, com `aria-hidden` quando são decorativos. Ícone em destaque vai num `IconTile`.
 - **Cor de categoria nunca é a única pista**: sempre acompanhe com texto.
 - **Movimento**: sempre com `motion-safe:`. `animate-mw-flash` só em evento discreto (compra, saque), nunca no tick de produção; ação negada usa `animate-mw-glitch`.
 - **Escrita**: siga o guia [Escrita](https://wenderu00.github.io/mwds/escrita/): pt-BR, sem travessão, sem exclamação, números com `Intl` pt-BR (`src/lib/format.ts`), nomes de recurso traduzidos (`resourceNames.ts`).

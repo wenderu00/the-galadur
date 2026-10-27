@@ -18,7 +18,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/components/ui/**', 'src/components/icons/**'],
+    files: ['src/components/ui/**'],
     rules: { 'no-console': 'off' },
   },
   ...mw,

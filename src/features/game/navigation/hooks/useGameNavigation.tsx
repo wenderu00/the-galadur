@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
 import { useAtom } from 'jotai';
-import { FlaskConical, Settings } from 'lucide-react';
-import { CrossedSwords } from '@/components/icons/base/crossed-swords';
-import { Castle } from '@/components/icons/medieval/castle';
+import { Castle, FlaskConical, Settings, Swords } from 'lucide-react';
 import { activePageAtom, type ActivePage } from '@/store/activePageAtom';
 
 export interface GameNavigationItem {
@@ -28,7 +26,7 @@ export function useGameNavigation(): GameNavigationItem[] {
 
   return [
     pageItem('cidade', 'cidade', <Castle aria-hidden="true" />),
-    pageItem('exercito', 'exército', <CrossedSwords aria-hidden="true" />),
+    pageItem('exercito', 'exército', <Swords aria-hidden="true" />),
     { label: 'pesquisa', icon: <FlaskConical aria-hidden="true" />, active: false, soon: true },
     { label: 'configurações', icon: <Settings aria-hidden="true" />, active: false, soon: true },
   ];

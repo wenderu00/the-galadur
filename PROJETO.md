@@ -14,18 +14,18 @@ O jogo roda inteiramente no navegador, sem backend. Todo estado é persistido no
 
 ## 2. Stack de Tecnologias
 
-| Ferramenta           | Versão | Função                                                    |
-| -------------------- | ------ | --------------------------------------------------------- |
-| Next.js (App Router) | 16     | Framework e build estático (`output: 'export'`)           |
-| React                | 19     | Biblioteca de UI                                          |
-| TypeScript           | 5      | Tipagem estática                                          |
-| Tailwind CSS         | 4      | Estilização via classes utilitárias e tokens              |
-| mwds (`@marcio`)     | 0.16   | Design system: tokens, componentes, ícones e lint estrito |
-| radix-ui             | 1      | Primitivos acessíveis usados pelos componentes do mwds    |
-| Jotai                | 2      | Gerenciamento de estado global                            |
-| lucide-react         | 1      | Ícones genéricos (os de domínio vêm do pacote medieval)   |
-| Vitest               | 4      | Testes unitários da engine e dos formatadores             |
-| Playwright           | 1      | Testes E2E com Page Objects                               |
+| Ferramenta           | Versão | Função                                                 |
+| -------------------- | ------ | ------------------------------------------------------ |
+| Next.js (App Router) | 16     | Framework e build estático (`output: 'export'`)        |
+| React                | 19     | Biblioteca de UI                                       |
+| TypeScript           | 5      | Tipagem estática                                       |
+| Tailwind CSS         | 4      | Estilização via classes utilitárias e tokens           |
+| mwds (`@marcio`)     | 0.16   | Design system: tokens, componentes e lint estrito      |
+| radix-ui             | 1      | Primitivos acessíveis usados pelos componentes do mwds |
+| Jotai                | 2      | Gerenciamento de estado global                         |
+| lucide-react         | 1      | Todos os ícones do jogo                                |
+| Vitest               | 4      | Testes unitários da engine e dos formatadores          |
+| Playwright           | 1      | Testes E2E com Page Objects                            |
 
 ---
 
@@ -50,7 +50,6 @@ galadur/
     │
     ├── components/
     │   ├── ui/                        ← Componentes do mwds (gerados, não editar à mão)
-    │   └── icons/                     ← Ícones autorais do mwds (pacotes base e medieval)
     │
     ├── config/                        ← Definições de edifícios, unidades e inimigos
     ├── lib/
@@ -503,16 +502,16 @@ O jogo é renderizado só no cliente (`GameClient` com `next/dynamic` e `ssr: fa
 
 A identidade é a do design system mwds, aplicada à risca: tokens semânticos (`bg-ground`, `text-ink`, `accent`...), temas claro e escuro, fontes Bricolage Grotesque, IBM Plex Sans e IBM Plex Mono. O modo estrito (`mw-strict.css` + regras `mw/*` no ESLint) zera a paleta padrão do Tailwind, então só tokens funcionam.
 
-Cada recurso tem um ícone do pacote medieval e uma cor de categoria, sempre acompanhada do nome (a cor nunca é a única pista):
+Cada recurso tem um ícone do lucide e uma cor de categoria, sempre acompanhada do nome (a cor nunca é a única pista):
 
-| Recurso | Ícone   | Categoria              |
-| ------- | ------- | ---------------------- |
-| Madeira | `Wood`  | `category-2` (verde)   |
-| Pedra   | `Stone` | `category-1` (azul)    |
-| Comida  | `Food`  | `category-4` (laranja) |
-| Ouro    | `Coin`  | `category-7` (amarelo) |
+| Recurso | Ícone      | Categoria              |
+| ------- | ---------- | ---------------------- |
+| Madeira | `TreePine` | `category-2` (verde)   |
+| Pedra   | `Mountain` | `category-1` (azul)    |
+| Comida  | `Wheat`    | `category-4` (laranja) |
+| Ouro    | `Coins`    | `category-7` (amarelo) |
 
-Serraria, mina, mercado, prefeitura e guerreiro ainda não têm ícone autoral no pacote medieval e usam o lucide (`Axe`, `Pickaxe`, `Store`, `Landmark`, `Sword`).
+Os edifícios usam `Castle`, `Tractor` (fazenda), `Axe` (serraria), `Pickaxe` (mina), `Store` (mercado), `Tent` (quartel) e `Landmark` (prefeitura). As unidades usam `Sword` (guerreiro), `BowArrow` (arqueiro) e `Shield` (lanceiro, porque o lucide não tem lança).
 
 ---
 
@@ -617,7 +616,7 @@ Regras:
 - **Estado global**: Jotai. Estado local de UI: `useState`
 - **Imports entre features**: proibido (`features/X` não importa de `features/Y`)
 - **UI**: componentes e tokens do mwds; nada de cor, raio, sombra ou curva fora dos tokens
-- **Exceção**: arquivos gerados pelo registry (`src/components/ui`, `src/components/icons`, `globals.css`, `lib/utils.ts`, `eslint-rules`) ficam fora do teto de linhas, da proibição de comentários e do Prettier
+- **Exceção**: arquivos gerados pelo registry (`src/components/ui`, `globals.css`, `lib/utils.ts`, `eslint-rules`) ficam fora do teto de linhas, da proibição de comentários e do Prettier
 
 ---
 
@@ -663,28 +662,28 @@ buildQueue: []
 
 ## 20. Resumo de Arquivos por Responsabilidade
 
-| Responsabilidade           | Arquivo(s)                                                    |
-| -------------------------- | ------------------------------------------------------------- |
-| Tipos do domínio           | `game-engine/types.ts`                                        |
-| Lógica pura do jogo        | `game-engine/engine.ts`                                       |
-| Loop de ticks              | `game-engine/hooks/useGameLoop.ts`                            |
-| Iniciar construção         | `game-engine/hooks/useUpgrade.ts`                             |
-| Estado global              | `store/gameAtoms.ts`                                          |
-| Log de eventos             | `store/eventLogAtom.ts`                                       |
-| Eventos de recurso (flash) | `store/resourceEventsAtom.ts`                                 |
-| Formatação pt-BR           | `lib/format.ts`, `game/resource/resourceNames.ts`             |
-| Definição de edifícios     | `config/buildings/*.ts`                                       |
-| Carregamento no cliente    | `game/GameClient.tsx`                                         |
-| Layout principal           | `game/components/GameLayout.tsx`                              |
-| Navegação                  | `game/navigation/hooks/useGameNavigation.tsx`                 |
-| Grade de edifícios         | `game/building/BuildingGrid.tsx`                              |
-| Modal de edifício          | `game/building/modal/components/BuildingModal.tsx`            |
-| Slider de ouro do castelo  | `game/building/castle/components/CastleGoldSlider.tsx`        |
-| Bônus da prefeitura        | `game/building/prefeitura/components/PrefeituraSpeedInfo.tsx` |
-| Extras do modal            | `game/building/BuildingExtra.tsx`                             |
-| HUD de recursos            | `game/resource/components/ResourceHUD.tsx`                    |
-| Controles de velocidade    | `game/resource/components/GameSpeedControls.tsx`              |
-| Fila de construção         | `game/construction/components/ConstructionQueue.tsx`          |
-| Status do império          | `game/empire/components/EmpireStats.tsx`                      |
-| Exército                   | `game/army/ArmyPage.tsx`                                      |
-| Ícones de domínio          | `components/icons/*` (mwds), `game/components/*Icon.tsx`      |
+| Responsabilidade           | Arquivo(s)                                                          |
+| -------------------------- | ------------------------------------------------------------------- |
+| Tipos do domínio           | `game-engine/types.ts`                                              |
+| Lógica pura do jogo        | `game-engine/engine.ts`                                             |
+| Loop de ticks              | `game-engine/hooks/useGameLoop.ts`                                  |
+| Iniciar construção         | `game-engine/hooks/useUpgrade.ts`                                   |
+| Estado global              | `store/gameAtoms.ts`                                                |
+| Log de eventos             | `store/eventLogAtom.ts`                                             |
+| Eventos de recurso (flash) | `store/resourceEventsAtom.ts`                                       |
+| Formatação pt-BR           | `lib/format.ts`, `game/resource/resourceNames.ts`                   |
+| Definição de edifícios     | `config/buildings/*.ts`                                             |
+| Carregamento no cliente    | `game/GameClient.tsx`                                               |
+| Layout principal           | `game/components/GameLayout.tsx`                                    |
+| Navegação                  | `game/navigation/hooks/useGameNavigation.tsx`                       |
+| Grade de edifícios         | `game/building/BuildingGrid.tsx`                                    |
+| Modal de edifício          | `game/building/modal/components/BuildingModal.tsx`                  |
+| Slider de ouro do castelo  | `game/building/castle/components/CastleGoldSlider.tsx`              |
+| Bônus da prefeitura        | `game/building/prefeitura/components/PrefeituraSpeedInfo.tsx`       |
+| Extras do modal            | `game/building/BuildingExtra.tsx`                                   |
+| HUD de recursos            | `game/resource/components/ResourceHUD.tsx`                          |
+| Controles de velocidade    | `game/resource/components/GameSpeedControls.tsx`                    |
+| Fila de construção         | `game/construction/components/ConstructionQueue.tsx`                |
+| Status do império          | `game/empire/components/EmpireStats.tsx`                            |
+| Exército                   | `game/army/ArmyPage.tsx`                                            |
+| Ícones de domínio          | `game/components/*Icon.tsx`, `resource/components/ResourceIcon.tsx` |
