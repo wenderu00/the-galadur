@@ -24,3 +24,8 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Next
+.next/
+out/
+next-env.d.ts

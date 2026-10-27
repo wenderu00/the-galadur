@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 import { gameStateAtom } from '@/store/gameAtoms';
 import { eventLogAtom } from '@/store/eventLogAtom';
+import { announceResourceEventAtom } from '@/store/resourceEventsAtom';
 import { resolveBattle } from '@/features/game-engine/combat-engine';
+import { RESOURCE_KINDS } from '@/features/game-engine/engine';
 import type { EnemyDefinition, BattleResult } from '@/features/game-engine/combat-types';
 import type { UnitId, MilitaryUnits } from '@/features/game-engine/types';
 
@@ -15,6 +17,7 @@ function resolveRng(): () => number {
 export function useArmyActions() {
   const [gameState, setGameState] = useAtom(gameStateAtom);
   const setEvents = useSetAtom(eventLogAtom);
+  const announceResourceEvent = useSetAtom(announceResourceEventAtom);
   const [selectedEnemy, setSelectedEnemy] = useState<EnemyDefinition | null>(null);
   const [mobilization, setMobilizationState] = useState<Partial<MilitaryUnits>>({});
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
@@ -39,8 +42,9 @@ export function useArmyActions() {
     setGameState(state);
     setBattleResult(result);
     setSelectedEnemy(null);
+    announceResourceEvent(RESOURCE_KINDS.filter((kind) => (result.lootGained[kind] ?? 0) > 0));
     const message = result.won
-      ? `Vitória contra ${selectedEnemy.name}! Saque recebido.`
+      ? `Vitória contra ${selectedEnemy.name}. Saque recebido.`
       : `Derrota contra ${selectedEnemy.name}. Unidades perdidas.`;
     setEvents((prev) => [...prev, { timestamp: Date.now(), message }]);
   }

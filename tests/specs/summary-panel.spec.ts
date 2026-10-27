@@ -11,7 +11,7 @@ test.describe('SummaryPanel', () => {
   });
 
   test('fila de construção exibe mensagem de fila vazia no estado inicial', async () => {
-    expect(await panel.isQueueEmpty()).toBe(true);
+    await expect(panel.emptyQueueMessage()).toBeVisible();
   });
 
   test('Total de Construções é 1 no estado inicial', async () => {

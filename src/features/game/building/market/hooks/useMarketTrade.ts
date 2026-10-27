@@ -1,7 +1,8 @@
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback } from 'react';
 import { gameStateAtom, buildingsAtom, resourcesAtom } from '@/store/gameAtoms';
+import { announceResourceEventAtom } from '@/store/resourceEventsAtom';
 import { executeTrade, getTradePreview } from '@/features/game-engine/engine';
 import type { TradeDirection, TradeResource } from '@/features/game-engine/engine';
 import type { ResourceStore } from '@/features/game-engine/types';
@@ -16,6 +17,7 @@ export interface MarketTradeState {
 export function useMarketTrade(): MarketTradeState {
   const buildings = useAtomValue(buildingsAtom);
   const resources = useAtomValue(resourcesAtom);
+  const announceResourceEvent = useSetAtom(announceResourceEventAtom);
   const marketLevel = buildings['market'].level;
 
   const preview = useCallback(
@@ -27,10 +29,15 @@ export function useMarketTrade(): MarketTradeState {
   );
 
   const trade = useAtomCallback(
-    useCallback((get, set, direction: TradeDirection, resource: TradeResource, amount: number) => {
-      const result = executeTrade(get(gameStateAtom), direction, resource, amount);
-      if (result.success) set(gameStateAtom, result.state);
-    }, [])
+    useCallback(
+      (get, set, direction: TradeDirection, resource: TradeResource, amount: number) => {
+        const result = executeTrade(get(gameStateAtom), direction, resource, amount);
+        if (!result.success) return;
+        set(gameStateAtom, result.state);
+        announceResourceEvent([resource, 'gold']);
+      },
+      [announceResourceEvent]
+    )
   );
 
   return { marketLevel, resources, preview, trade };

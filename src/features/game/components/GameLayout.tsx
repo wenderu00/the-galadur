@@ -1,41 +1,56 @@
 import { useAtomValue } from 'jotai';
-import { GameSidebar } from '../navigation/components/GameSidebar';
-import { ResourceHUD } from '../resource/components/ResourceHUD';
-import { BuildingGrid } from '../building/components/BuildingGrid';
-import { ArmyPage } from '../army/components/ArmyPage';
-import { GameSummaryPanel } from './GameSummaryPanel';
-import { MobileBottomNav } from './MobileBottomNav';
-import { MobileContentArea } from './MobileContentArea';
+import {
+  AppShell,
+  AppShellAside,
+  AppShellBody,
+  AppShellHeader,
+  AppShellMain,
+  AppShellNav,
+  AppShellNavItem,
+  AppShellSidebar,
+} from '@/components/ui/app-shell';
+import { Badge } from '@/components/ui/badge';
 import { activePageAtom } from '@/store/activePageAtom';
+import { ArmyPage } from '../army/ArmyPage';
+import { BuildingGrid } from '../building/BuildingGrid';
+import { GameBrand } from '../navigation/components/GameBrand';
+import { useGameNavigation } from '../navigation/hooks/useGameNavigation';
+import { ResourceHUD } from '../resource/components/ResourceHUD';
+import { GameSummaryPanel } from './GameSummaryPanel';
 
 export function GameLayout() {
   const activePage = useAtomValue(activePageAtom);
+  const navigation = useGameNavigation();
 
   return (
-    <div className="flex h-screen bg-realm-900 text-white overflow-hidden">
-      <div data-testid="desktop-sidebar" className="hidden md:flex w-56 flex-shrink-0">
-        <GameSidebar />
-      </div>
-
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <ResourceHUD />
-
-        <MobileContentArea>
-          {activePage === 'exercito' ? (
-            <ArmyPage />
-          ) : (
-            <main className="flex-1 overflow-y-auto px-4 py-4 md:px-6">
-              <BuildingGrid />
-            </main>
-          )}
-        </MobileContentArea>
-
-        <MobileBottomNav />
-      </div>
-
-      <div data-testid="desktop-summary" className="hidden md:flex w-64 flex-shrink-0">
-        <GameSummaryPanel />
-      </div>
-    </div>
+    <AppShell mobileNav="bottom" sidebarBreakpoint="md">
+      <AppShellSidebar data-testid="desktop-sidebar" brand={<GameBrand />}>
+        <AppShellNav>
+          {navigation.map((item) => (
+            <AppShellNavItem
+              key={item.label}
+              asChild
+              label={item.label}
+              icon={item.icon}
+              active={item.active}
+              badge={item.soon ? <Badge>em breve</Badge> : undefined}
+            >
+              <button type="button" disabled={item.soon} onClick={item.onSelect} />
+            </AppShellNavItem>
+          ))}
+        </AppShellNav>
+      </AppShellSidebar>
+      <AppShellBody>
+        <AppShellHeader data-testid="game-hud">
+          <ResourceHUD />
+        </AppShellHeader>
+        <AppShellMain key={activePage} className="motion-safe:animate-mw-fade-in">
+          {activePage === 'exercito' ? <ArmyPage /> : <BuildingGrid />}
+        </AppShellMain>
+        <AppShellAside aria-label="Resumo do império" data-testid="summary-panel">
+          <GameSummaryPanel />
+        </AppShellAside>
+      </AppShellBody>
+    </AppShell>
   );
 }

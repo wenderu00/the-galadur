@@ -1,24 +1,24 @@
 import { useAtomValue } from 'jotai';
 import { eventLogAtom } from '@/store/eventLogAtom';
+import { PanelSection } from '../../components/PanelSection';
+
+const VISIBLE_EVENTS = 5;
 
 export function RecentEvents() {
   const events = useAtomValue(eventLogAtom);
-  const recent = [...events].reverse().slice(0, 5);
+  const recent = [...events].reverse().slice(0, VISIBLE_EVENTS);
 
   if (recent.length === 0) return null;
 
   return (
-    <section className="p-3 md:p-4 border-b border-realm-800">
-      <h2 className="text-xs font-medieval uppercase tracking-widest text-realm-400 mb-3">
-        Eventos Recentes
-      </h2>
-      <ul className="space-y-1.5">
-        {recent.map((event, i) => (
-          <li key={i} className="text-xs text-realm-500 leading-relaxed">
+    <PanelSection title="Eventos recentes">
+      <ul className="flex flex-col gap-2">
+        {recent.map((event) => (
+          <li key={`${event.timestamp}-${event.message}`} className="text-sm text-ink-soft">
             {event.message}
           </li>
         ))}
       </ul>
-    </section>
+    </PanelSection>
   );
 }

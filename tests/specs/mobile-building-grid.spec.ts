@@ -14,17 +14,17 @@ test.describe('Mobile Building Grid', () => {
     await grid.resetState();
   });
 
-  test('exibe 1 coluna de cards em 390px', async ({ page }) => {
-    const firstArticle = page.locator('article').first();
+  test('exibe 1 coluna de cards em 390px', async () => {
+    const firstCard = grid.cards().first();
     const viewportWidth = 390;
-    const articleWidth = await firstArticle.evaluate((el) => el.getBoundingClientRect().width);
-    expect(articleWidth).toBeGreaterThan(viewportWidth * 0.7);
+    const cardWidth = await firstCard.evaluate((el) => el.getBoundingClientRect().width);
+    expect(cardWidth).toBeGreaterThan(viewportWidth * 0.7);
   });
 
   test('modal ocupa ≥ 90% da largura em 390px', async () => {
     await grid.clickCard('Castelo');
     await expect(modal.dialog).toBeVisible();
-    const dialogWidth = await modal.dialog.evaluate((el) => el.getBoundingClientRect().width);
+    const dialogWidth = await modal.dialog.evaluate((el) => (el as HTMLElement).offsetWidth);
     expect(dialogWidth).toBeGreaterThanOrEqual(390 * 0.9);
   });
 
@@ -39,7 +39,7 @@ test.describe('Mobile Building Grid', () => {
     await grid.clickCard('Castelo');
     await expect(modal.dialog).toBeVisible();
     const upgradeBtn = modal.upgradeButton();
-    const height = await upgradeBtn.evaluate((el) => el.getBoundingClientRect().height);
+    const height = await upgradeBtn.evaluate((el) => (el as HTMLElement).offsetHeight);
     expect(height).toBeGreaterThanOrEqual(44);
   });
 

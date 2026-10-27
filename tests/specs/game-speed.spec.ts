@@ -5,7 +5,7 @@ test.describe('GameSpeedControls', () => {
   let controls: GameSpeedControlsPage;
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:5173');
+    await page.goto('/');
     controls = new GameSpeedControlsPage(page);
   });
 

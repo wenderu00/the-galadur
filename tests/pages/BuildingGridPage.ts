@@ -1,5 +1,8 @@
 import { Page, Locator } from '@playwright/test';
 
+const CARD_TEST_ID = /^building-card-[a-z]+$/;
+const LEVEL_TEST_ID = /^building-card-[a-z]+-level$/;
+
 export class BuildingGridPage {
   constructor(private readonly page: Page) {}
 
@@ -8,21 +11,23 @@ export class BuildingGridPage {
     await this.page.reload();
   }
 
-  async cardCount(): Promise<number> {
-    return this.page.locator('article[data-testid^="building-card-"]').count();
+  cards(): Locator {
+    return this.page.getByTestId(CARD_TEST_ID);
   }
 
   cardByName(name: string): Locator {
-    return this.page
-      .locator('article[data-testid^="building-card-"]')
-      .filter({ has: this.page.locator('h3', { hasText: name }) });
+    return this.cards().filter({ has: this.page.getByRole('heading', { name }) });
+  }
+
+  levelOf(name: string): Locator {
+    return this.cardByName(name).getByTestId(LEVEL_TEST_ID);
   }
 
   async getLevelText(name: string): Promise<string> {
-    return (await this.cardByName(name).locator('[data-testid$="-level"]').textContent()) ?? '';
+    return (await this.levelOf(name).textContent()) ?? '';
   }
 
   async clickCard(name: string): Promise<void> {
-    await this.cardByName(name).click();
+    await this.cardByName(name).getByRole('button', { name, exact: true }).click();
   }
 }

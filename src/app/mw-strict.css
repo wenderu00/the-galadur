@@ -1,0 +1,12 @@
+/* Modo estrito do @mw/ui: tira as cores, raios, sombras e curvas padrão do Tailwind.
+   Precisa ser importado logo depois de @import "tailwindcss" e antes dos tokens. */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --ease-*: initial;
+}

@@ -1,3 +1,5 @@
+'use client';
+
 import type { PropsWithChildren } from 'react';
 import { Provider } from 'jotai';
 import { useGameLoop } from '@/features/game-engine/hooks/useGameLoop';

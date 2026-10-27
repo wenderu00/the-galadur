@@ -13,7 +13,7 @@ test.describe('BuildingGrid', () => {
   });
 
   test('exibe 7 cards de edifício no carregamento', async () => {
-    expect(await grid.cardCount()).toBe(7);
+    await expect(grid.cards()).toHaveCount(7);
   });
 
   test('Castelo aparece com Nível 1', async () => {

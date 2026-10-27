@@ -77,9 +77,7 @@ test.describe('UpgradeFlow', () => {
         { buildingId: 'castle', targetLevel: 2, startedAt: past, completesAt: past + 45_000 },
       ];
       await injectState(page, { buildQueue: entry, lastSavedAt: past });
-      await expect(grid.cardByName('Castelo').locator('p', { hasText: /^Nível 2/ })).toBeVisible({
-        timeout: 5000,
-      });
+      await expect(grid.levelOf('Castelo')).toHaveText(/^Nível 2/, { timeout: 5000 });
     });
 
     test('Castelo está no nível 2', async () => {

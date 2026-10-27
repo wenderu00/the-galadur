@@ -1,37 +1,31 @@
+import { PanelSection } from '@/features/game/components/PanelSection';
 import { useBarracksPanel } from '../hooks/useBarracksPanel';
-import { UnitCard } from './UnitCard';
 import { TrainingProgress } from './TrainingProgress';
+import { UnitCard } from './UnitCard';
 
 export function BarracksPanel() {
   const { barracksLevel, units, activeTraining, isTraining } = useBarracksPanel();
 
   if (barracksLevel === 0) {
     return (
-      <section className="pt-2 border-t border-realm-800">
-        <p className="text-xs text-realm-400">
-          Construa o Quartel para treinar unidades militares.
-        </p>
-      </section>
+      <p className="text-sm text-ink-soft">Construa o Quartel para treinar unidades militares.</p>
     );
   }
 
   return (
-    <section className="space-y-3 pt-3 border-t border-realm-800">
-      <p className="text-xs font-medieval uppercase tracking-widest text-realm-500">
-        Unidades Disponíveis
-      </p>
-
-      {units.length > 0 ? (
-        <ul className="space-y-2">
-          {units.map((u) => (
-            <UnitCard key={u.def.id} data={u} isTraining={isTraining} />
-          ))}
-        </ul>
-      ) : (
-        <p className="text-xs text-realm-400">Nenhuma unidade desbloqueada neste nível.</p>
-      )}
-
+    <>
+      <PanelSection title="Unidades disponíveis" headingLevel="h3">
+        {units.length > 0 ? (
+          <ul className="flex flex-col gap-3">
+            {units.map((unit) => (
+              <UnitCard key={unit.def.id} data={unit} isTraining={isTraining} />
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-ink-soft">Nenhuma unidade liberada neste nível.</p>
+        )}
+      </PanelSection>
       {activeTraining && <TrainingProgress entry={activeTraining} />}
-    </section>
+    </>
   );
 }

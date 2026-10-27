@@ -6,7 +6,7 @@ export class BarracksPage {
 
   constructor(private readonly page: Page) {
     this.dialog = page.getByRole('dialog');
-    this.panel = this.dialog.locator('section', { hasText: 'Unidades Disponíveis' });
+    this.panel = this.dialog.getByRole('region', { name: 'Unidades disponíveis' });
   }
 
   unitList(): Locator {
@@ -14,27 +14,27 @@ export class BarracksPage {
   }
 
   unitCard(name: string): Locator {
-    return this.panel.locator('[data-testid^="unit-card-"]').filter({ hasText: name });
+    return this.panel.getByTestId(/^unit-card-/).filter({ hasText: name });
   }
 
   trainButton(unitName: string): Locator {
-    return this.unitCard(unitName).locator('[data-testid^="unit-train-"]');
+    return this.unitCard(unitName).getByTestId(/^unit-train-/);
   }
 
   unitCount(unitName: string): Locator {
-    return this.unitCard(unitName).locator('[data-testid^="unit-count-"]');
+    return this.unitCard(unitName).getByTestId(/^unit-count-/);
   }
 
   trainingSection(): Locator {
-    return this.dialog.locator('section', { hasText: 'Treinando' }).last();
+    return this.dialog.getByRole('region', { name: 'Treinando' });
   }
 
   unitTrainingTime(unitName: string): Locator {
-    return this.unitCard(unitName).locator('[data-testid^="unit-training-time-"]');
+    return this.unitCard(unitName).getByTestId(/^unit-training-time-/);
   }
 
   notBuiltMessage(): Locator {
-    return this.dialog.locator('p', { hasText: 'Construa o Quartel' });
+    return this.dialog.getByText('Construa o Quartel para treinar unidades militares.');
   }
 
   async clickTrain(unitName: string): Promise<void> {

@@ -16,11 +16,11 @@ export class BuildingModalPage {
   }
 
   async getLevel(): Promise<string> {
-    return (await this.dialog.locator('p', { hasText: /^Nível/ }).textContent()) ?? '';
+    return (await this.dialog.getByTestId('building-modal-level').textContent()) ?? '';
   }
 
   upgradeButton(): Locator {
-    return this.dialog.getByRole('button', { name: /Upar para Nível/ });
+    return this.dialog.getByRole('button', { name: /^Evoluir para nível/ });
   }
 
   async isUpgradeEnabled(): Promise<boolean> {
@@ -40,6 +40,6 @@ export class BuildingModalPage {
   }
 
   async closeByOverlay(): Promise<void> {
-    await this.page.locator('[data-slot="dialog-overlay"]').click({ position: { x: 50, y: 50 } });
+    await this.page.mouse.click(5, 5);
   }
 }

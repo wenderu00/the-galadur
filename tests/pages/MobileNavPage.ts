@@ -1,5 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 
+type Box = { x: number; y: number; width: number; height: number };
+
 export class MobileNavPage {
   constructor(private readonly page: Page) {}
 
@@ -9,31 +11,40 @@ export class MobileNavPage {
     await this.page.waitForLoadState('networkidle');
   }
 
-  private bottomNav(): Locator {
-    return this.page.getByTestId('mobile-nav');
+  visibleNavs(): Locator {
+    return this.page.getByRole('navigation', { name: 'Principal' });
   }
 
-  async goToBuildings(): Promise<void> {
-    await this.page.getByRole('button', { name: 'Edifícios' }).click();
+  sidebar(): Locator {
+    return this.page.getByTestId('desktop-sidebar');
   }
 
-  async goToNavigation(): Promise<void> {
-    await this.page.getByRole('button', { name: 'Navegação' }).click();
+  sidebarNav(): Locator {
+    return this.sidebar().getByRole('navigation', { name: 'Principal' });
   }
 
-  async goToSummary(): Promise<void> {
-    await this.page.getByRole('button', { name: 'Resumo' }).click();
+  summary(): Locator {
+    return this.page.getByTestId('summary-panel');
   }
 
-  async isBottomNavVisible(): Promise<boolean> {
-    return this.bottomNav().isVisible();
+  async goTo(label: 'Cidade' | 'Exército'): Promise<void> {
+    await this.visibleNavs().getByRole('button', { name: label }).click();
   }
 
-  async isDesktopSidebarVisible(): Promise<boolean> {
-    return this.page.getByTestId('desktop-sidebar').isVisible();
+  private async boxes(): Promise<{ main: Box; summary: Box } | null> {
+    const main = await this.page.getByRole('main').boundingBox();
+    const summary = await this.summary().boundingBox();
+    if (main === null || summary === null) return null;
+    return { main, summary };
   }
 
-  async isDesktopSummaryVisible(): Promise<boolean> {
-    return this.page.getByTestId('desktop-summary').isVisible();
+  async isSummaryBelowContent(): Promise<boolean> {
+    const found = await this.boxes();
+    return found !== null && found.summary.y >= found.main.y + found.main.height - 1;
+  }
+
+  async isSummaryBesideContent(): Promise<boolean> {
+    const found = await this.boxes();
+    return found !== null && found.summary.x >= found.main.x + found.main.width - 1;
   }
 }
