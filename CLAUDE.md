@@ -129,6 +129,7 @@ Next.js App Router com export estático. O jogo é uma página só (`src/app/pag
 - A troca entre cidade e exército é feita pelo `activePageAtom`, não por rotas.
 - Alias `@/` mapeado para `src/` no `tsconfig`.
 - O `basePath` `/the-galadur` vale só no build de produção (GitHub Pages); dev e Playwright rodam na raiz.
+- Deploy: o workflow `.github/workflows/pages.yml` publica `out/` no GitHub Pages a cada push no `main` (ou manualmente pela aba Actions). Não há deploy manual.
 
 ---
 
