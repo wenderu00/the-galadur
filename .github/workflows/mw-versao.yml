@@ -4,7 +4,7 @@ name: Versão do @mw/ui
 # neste repositório enquanto houver versão nova. Rode à mão na aba Actions para conferir agora.
 on:
   schedule:
-    - cron: "0 12 * * 1"
+    - cron: '0 12 * * 1'
   workflow_dispatch:
 
 permissions:
