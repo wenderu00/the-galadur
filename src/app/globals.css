@@ -159,124 +159,81 @@
     --font-plex-mono: var(--font-plex-mono);
   @keyframes mw-border-blink {
   50% {
-    border-color: transparent;
-        }
-    }
+    border-color: transparent;}}
   @keyframes mw-fade-in {
   from {
-    opacity: 0;
-        }
-    }
+    opacity: 0;}}
   @keyframes mw-pop-in {
   from {
     opacity: 0;
-    scale: 0.97;
-        }
-    }
+    scale: 0.97;}}
   @keyframes mw-slide-in {
   from {
     opacity: 0;
-    translate: 0 var(--mw-distance-md);
-        }
-    }
+    translate: 0 var(--mw-distance-md);}}
   @keyframes mw-flash {
   from {
-    background-color: var(--color-accent-soft);
-        }
-    }
+    background-color: var(--color-accent-soft);}}
   @keyframes mw-shift {
   from {
-    translate: calc(var(--mw-distance-sm) * -1) 0;
-        }
-    }
+    translate: calc(var(--mw-distance-sm) * -1) 0;}}
   @keyframes mw-pulse {
   50% {
-    opacity: 0.45;
-        }
-    }
+    opacity: 0.45;}}
   @keyframes mw-sheet-right {
   from {
-    translate: 100% 0;
-        }
-    }
+    translate: 100% 0;}}
   @keyframes mw-sheet-left {
   from {
-    translate: -100% 0;
-        }
-    }
+    translate: -100% 0;}}
   @keyframes mw-sheet-top {
   from {
-    translate: 0 -100%;
-        }
-    }
+    translate: 0 -100%;}}
   @keyframes mw-sheet-bottom {
   from {
-    translate: 0 100%;
-        }
-    }
+    translate: 0 100%;}}
   @keyframes mw-collapse-down {
   from {
-    height: 0;
-        }
+    height: 0;}
   to {
-    height: var(--mw-content-height);
-        }
-    }
+    height: var(--mw-content-height);}}
   @keyframes mw-collapse-up {
   from {
-    height: var(--mw-content-height);
-        }
+    height: var(--mw-content-height);}
   to {
-    height: 0;
-        }
-    }
+    height: 0;}}
   @keyframes mw-indeterminate {
   from {
-    translate: -100% 0;
-        }
+    translate: -100% 0;}
   to {
-    translate: 250% 0;
-        }
-    }
+    translate: 250% 0;}}
   @keyframes mw-blink {
   50% {
-    opacity: 0;
-        }
-    }
+    opacity: 0;}}
   @keyframes mw-type {
   from {
-    width: 0;
-        }
-    }
+    width: 0;}}
   @keyframes mw-drift {
   0%, 100% {
-    mask-position: 70% 30%;
-        }
+    mask-position: 70% 30%;}
   33% {
-    mask-position: 20% 60%;
-        }
+    mask-position: 20% 60%;}
   66% {
-    mask-position: 55% 90%;
-        }
-    }
+    mask-position: 55% 90%;}}
   @keyframes mw-glitch {
   0%, 100% {
     translate: 0;
-    text-shadow: none;
-        }
+    text-shadow: none;}
   20% {
     translate: -2px 0;
-    text-shadow: 2px 0 var(--color-mutant), -2px 0 var(--color-accent);
-        }
+    text-shadow: 2px 0 var(--color-mutant), -2px 0 var(--color-accent);}
   40% {
     translate: 2px 0;
-    text-shadow: -2px 0 var(--color-mutant), 2px 0 var(--color-accent);
-        }
+    text-shadow: -2px 0 var(--color-mutant), 2px 0 var(--color-accent);}
   60% {
     translate: -1px 0;
-    text-shadow: 1px 0 var(--color-mutant);
-        }
-    }
+    text-shadow: 1px 0 var(--color-mutant);}}
+  --tracking-display: -0.02em
 }
   :root {
     --mw-accent-50: #fbfbee;
@@ -570,6 +527,8 @@
   @media (prefers-reduced-motion: no-preference) {
     animation: mw-blink var(--mw-duration-blink) step-end infinite;
     }
+  @media (prefers-reduced-motion: no-preference) {
+    animation: mw-blink var(--mw-duration-blink) step-end infinite;}
 }
 
 @utility mw-dot-grid {
@@ -611,6 +570,12 @@
     animation: mw-type var(--mw-type-duration, var(--mw-duration-type)) steps(var(--mw-chars)) var(--mw-type-delay, 0ms) both,
       mw-border-blink var(--mw-duration-blink) step-end infinite;
     }
+  @media (prefers-reduced-motion: no-preference) {
+    overflow: hidden;
+    width: calc(var(--mw-chars) * 1ch + 0.6ch);
+    border-right: 0.6ch solid var(--color-accent-line);
+    animation: mw-type var(--mw-type-duration, var(--mw-duration-type)) steps(var(--mw-chars)) var(--mw-type-delay, 0ms) both,
+      mw-border-blink var(--mw-duration-blink) step-end infinite;}
 }
   html {
     background: var(--color-ground);

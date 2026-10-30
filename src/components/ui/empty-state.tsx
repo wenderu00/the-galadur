@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { CodeComment } from "@/components/ui/code-comment";
 import { DotGrid } from "@/components/ui/dot-grid";
 
 export type EmptyStateProps = Omit<ComponentProps<"div">, "title"> & {
@@ -34,12 +35,7 @@ export function EmptyState({
     >
       {decorated && <DotGrid />}
       {icon && <div className="text-accent-text [&_svg]:size-6">{icon}</div>}
-      {comment && (
-        <p className="font-mono text-mono-xs text-ink-muted">
-          <span aria-hidden="true">{"// "}</span>
-          {comment}
-        </p>
-      )}
+      {comment && <CodeComment>{comment}</CodeComment>}
       <Heading className="font-display text-display-sm font-extrabold text-ink">{title}</Heading>
       {description && <p className="max-w-md text-base text-ink-soft">{description}</p>}
       {actions && <div className="mt-2 flex flex-wrap justify-center gap-3">{actions}</div>}

@@ -25,7 +25,7 @@ export function DescriptionList({ items, orientation = "vertical", columns = 1, 
           key={index}
           className={cn(
             "flex min-w-0 flex-col gap-1",
-            horizontal && "border-t border-line py-3 first:border-t-0 sm:grid sm:grid-cols-[minmax(10rem,1fr)_2fr] sm:gap-6",
+            horizontal && "border-t border-line py-cell-y first:border-t-0 sm:grid sm:grid-cols-[minmax(10rem,1fr)_2fr] sm:gap-6",
           )}
         >
           <dt className="font-mono text-mono-xs text-ink-muted">{item.term}</dt>

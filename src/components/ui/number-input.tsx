@@ -11,7 +11,7 @@ function decimalsOf(step: number) {
   return text.includes(".") ? text.split(".")[1]!.length : 0;
 }
 
-// Aceita o formato pt-BR (1.234,5) e o ponto como decimal quando não há vírgula (1234.5).
+/** Aceita o formato pt-BR (1.234,5) e o ponto como decimal quando não há vírgula (1234.5). */
 export function parseNumber(text: string) {
   const clean = text.replace(/[^\d,.-]/g, "");
   if (!/\d/.test(clean)) return null;

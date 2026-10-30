@@ -9,7 +9,7 @@ export const spinnerVariants = cva(
       size: {
         sm: "size-3.5 border-2",
         md: "size-4 border-2",
-        lg: "size-6 border-[3px]",
+        lg: "size-6 border-3",
       },
     },
     defaultVariants: { size: "md" },

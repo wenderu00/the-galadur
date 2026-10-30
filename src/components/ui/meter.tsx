@@ -9,7 +9,8 @@ export type MeterProps = Omit<ComponentProps<"div">, "children"> & {
   max?: number;
   icon?: ReactNode;
   rate?: ReactNode;
-  size?: "md" | "compact";
+  /** sm esconde o rótulo, que continua para o leitor de tela. compact é o nome antigo de sm, descontinuado, e sai na 0.23. */
+  size?: "sm" | "md" | "compact";
   highlightKey?: string | number;
   formatOptions?: Intl.NumberFormatOptions;
 };
@@ -26,7 +27,7 @@ export function Meter({ label, value, max, icon, rate, size = "md", highlightKey
   const format = new Intl.NumberFormat("pt-BR", formatOptions);
   const bounded = max !== undefined && max > 0;
   const percent = bounded ? Math.min(100, Math.max(0, (value / max) * 100)) : 0;
-  const compact = size === "compact";
+  const compact = size === "sm" || size === "compact";
 
   return (
     <div data-slot="meter" className={cn("flex flex-col gap-1", className)} {...props}>

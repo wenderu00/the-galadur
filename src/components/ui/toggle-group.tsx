@@ -18,7 +18,7 @@ const itemVariants = cva(
   },
 );
 
-type ToggleGroupSize = VariantProps<typeof itemVariants>["size"];
+export type ToggleGroupSize = VariantProps<typeof itemVariants>["size"];
 
 const SizeContext = createContext<ToggleGroupSize>("md");
 
