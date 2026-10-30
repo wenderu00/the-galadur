@@ -1,0 +1,16 @@
+name: Versão do @mw/ui
+
+# Toda semana, compara o components.json com o último release do @mw/ui e mantém uma issue
+# neste repositório enquanto houver versão nova. Rode à mão na aba Actions para conferir agora.
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verificar:
+    uses: wenderu00/mwds/.github/workflows/verificar-versao.yml@main
