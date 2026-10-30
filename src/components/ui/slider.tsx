@@ -63,7 +63,7 @@ export function Slider({
           aria-invalid={ariaInvalid}
           aria-required={ariaRequired}
           aria-valuetext={formatValue(thumbValue)}
-          className="block size-5 cursor-grab rounded-full border-2 border-accent-line bg-accent transition-colors duration-fast hover:bg-accent-hover active:cursor-grabbing data-[disabled]:cursor-not-allowed"
+          className="block size-5 cursor-grab rounded-full border-2 border-accent-edge bg-accent transition-colors duration-fast hover:bg-accent-hover active:cursor-grabbing data-[disabled]:cursor-not-allowed"
         />
       ))}
     </SliderPrimitive.Root>

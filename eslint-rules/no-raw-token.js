@@ -17,8 +17,10 @@ const forbidden = [
   /^-?z-/,
   /^(drop-|inset-)?shadow(-|$)/,
   new RegExp(`^-?(p[xytrblse]?|m[xytrblse]?|gap(-[xy])?|space-[xy])-${length}$`),
-  new RegExp(`^(max-w|size|w|h)-${length}$`),
+  new RegExp(`^(min-w|max-w|min-h|max-h|size|w|h)-${length}$`),
+  new RegExp(`^border(-[xytrblse])?-${length}$`),
   /^text-\[.+\]$/,
+  /^tracking-\[.+\]$/,
 ];
 
 const noRawToken = classRule({

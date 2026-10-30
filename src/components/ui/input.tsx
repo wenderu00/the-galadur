@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 export const fieldClasses =
   "w-full min-w-0 rounded-control border border-line-control bg-ground px-3 text-base text-ink transition-colors duration-base ease-standard placeholder:text-ink-muted disabled:cursor-not-allowed disabled:opacity-50 read-only:bg-band aria-invalid:border-danger-text";
 
-// Mesmas alturas do Button: sm 36px, md segue a densidade (h-control), lg 48px.
+/** Mesmas alturas do Button: sm 36px, md segue a densidade (h-control), lg 48px. */
 export const controlHeights = { sm: "h-9", md: "h-control", lg: "h-12" } as const;
 
 export type ControlSize = keyof typeof controlHeights;
 
-// Gatilho de Select, Combobox e DateRangePicker: um botão com cara de campo.
+/** Gatilho de Select, Combobox e DateRangePicker: um botão com cara de campo. */
 export const triggerClasses =
   "flex w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-control border border-line-control bg-ground px-3 text-left text-base text-ink transition-colors duration-base ease-standard hover:border-accent-line disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-danger-text data-[placeholder]:text-ink-muted";
 
@@ -36,7 +36,6 @@ export function Input({ className, type = "text", size = "md", start, end, ...pr
     );
   }
 
-  // Com slots, a borda e o foco ficam no contorno; className continua indo para o input.
   return (
     <div
       data-slot="input-group"

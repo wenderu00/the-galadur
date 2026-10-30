@@ -7,7 +7,7 @@ export function isClassContext(node, attributes) {
       const callee = current.callee;
       if (callee.type === "Identifier" && classFunctions.has(callee.name)) return true;
     }
-    if (current.type === "VariableDeclarator" && current.id.type === "Identifier" && /class(es|Name)?$/i.test(current.id.name)) {
+    if (current.type === "VariableDeclarator" && current.id.type === "Identifier" && /(class(es|Name)?|sizes|heights|tones)$/i.test(current.id.name)) {
       return true;
     }
   }

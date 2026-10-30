@@ -36,7 +36,7 @@ export function DialogContent({ className, children, closeLabel = "Fechar", show
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-dialog flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-6 overflow-y-auto rounded-card *:shrink-0 border border-line-strong bg-surface p-6 text-ink motion-safe:data-[state=open]:animate-mw-pop-in",
+          "fixed top-1/2 left-1/2 z-dialog flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-6 overflow-y-auto rounded-card border border-line-strong bg-surface p-6 text-ink motion-safe:data-[state=open]:animate-mw-pop-in",
           dialogSizes[size],
           className,
         )}

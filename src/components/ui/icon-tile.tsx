@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-const categories = {
+const categoryClasses = {
   1: "bg-category-1-soft text-category-1-text",
   2: "bg-category-2-soft text-category-2-text",
   3: "bg-category-3-soft text-category-3-text",
@@ -19,7 +19,7 @@ const sizes = {
 
 export type IconTileProps = Omit<ComponentProps<"span">, "aria-hidden"> & {
   size?: keyof typeof sizes;
-  category?: keyof typeof categories;
+  category?: keyof typeof categoryClasses;
 };
 
 export function IconTile({ size = "md", category, className, ...props }: IconTileProps) {
@@ -30,7 +30,7 @@ export function IconTile({ size = "md", category, className, ...props }: IconTil
       className={cn(
         "inline-flex shrink-0 items-center justify-center rounded-control [&_svg]:size-6 [&_svg]:shrink-0",
         sizes[size],
-        category ? categories[category] : "bg-surface text-ink-soft",
+        category ? categoryClasses[category] : "bg-surface text-ink-soft",
         className,
       )}
       {...props}

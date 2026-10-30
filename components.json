@@ -20,6 +20,6 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@marcio": "https://wenderu00.github.io/mwds/r/{name}.json"
+    "@marcio": "https://github.com/wenderu00/mwds/releases/download/v0.22.1/{name}.json"
   }
 }

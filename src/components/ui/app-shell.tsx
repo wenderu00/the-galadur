@@ -46,14 +46,14 @@ function writeCollapsed(collapsed: boolean) {
   window.dispatchEvent(new Event(sidebarEvent));
 }
 
-const breakpoints = {
+const breakpointClasses = {
   md: { sidebar: "md:flex", menu: "md:hidden", toggle: "md:inline-flex", bottomNav: "md:hidden", body: "md:pb-0" },
   lg: { sidebar: "lg:flex", menu: "lg:hidden", toggle: "lg:inline-flex", bottomNav: "lg:hidden", body: "lg:pb-0" },
 };
 
 type AppShellContextValue = {
   mobileNav: "sheet" | "bottom";
-  breakpoint: keyof typeof breakpoints;
+  breakpoint: keyof typeof breakpointClasses;
   inBottomNav: boolean;
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
@@ -71,7 +71,6 @@ export function useAppShell() {
   return context;
 }
 
-// Conta os AppShellNavItem escritos direto na árvore. Um item embrulhado em outro componente não é contado.
 function countNavItems(node: ReactNode): number {
   return Children.toArray(node).reduce<number>((count, child) => {
     if (!isValidElement<{ children?: ReactNode }>(child)) return count;
@@ -84,7 +83,7 @@ export type AppShellProps = ComponentProps<"div"> & {
   skipLinkLabel?: string;
   mainId?: string;
   mobileNav?: "sheet" | "bottom";
-  sidebarBreakpoint?: keyof typeof breakpoints;
+  sidebarBreakpoint?: keyof typeof breakpointClasses;
 };
 
 export function AppShell({
@@ -169,7 +168,7 @@ export function AppShellSidebar({ brand, footer, mobileTitle = "Menu", className
         data-slot="app-shell-sidebar"
         className={cn(
           "sticky top-0 hidden h-dvh shrink-0 flex-col border-r border-line bg-band transition-[width] duration-base ease-standard motion-reduce:transition-none",
-          breakpoints[shell.breakpoint].sidebar,
+          breakpointClasses[shell.breakpoint].sidebar,
           shell.collapsed ? "w-16" : "w-64",
           className,
         )}
@@ -182,7 +181,7 @@ export function AppShellSidebar({ brand, footer, mobileTitle = "Menu", className
           data-slot="app-shell-bottom-nav"
           className={cn(
             "fixed inset-x-0 bottom-0 z-sticky border-t border-line bg-band pb-[env(safe-area-inset-bottom)]",
-            breakpoints[shell.breakpoint].bottomNav,
+            breakpointClasses[shell.breakpoint].bottomNav,
           )}
         >
           <AppShellContext.Provider value={{ ...shell, collapsed: false, inBottomNav: true }}>
@@ -260,7 +259,7 @@ export function AppShellNavItem({ icon, label, active = false, badge, asChild = 
       className={cn(
         inBottomNav
           ? "relative flex h-full min-h-control flex-col items-center justify-center gap-1 px-1 font-mono text-mono-xs text-ink-soft no-underline transition-colors duration-base hover:bg-surface hover:text-ink [&_svg]:size-5 [&_svg]:shrink-0"
-          : "relative flex h-10 items-center gap-3 rounded-control px-3 text-sm font-medium text-ink-soft no-underline transition-colors duration-base hover:bg-surface hover:text-ink [&_svg]:size-5 [&_svg]:shrink-0",
+          : "relative flex h-control items-center gap-3 rounded-control px-3 text-sm font-medium text-ink-soft no-underline transition-colors duration-base hover:bg-surface hover:text-ink [&_svg]:size-5 [&_svg]:shrink-0",
         active &&
           (inBottomNav
             ? "bg-accent-soft text-ink before:absolute before:inset-x-3 before:top-0 before:h-0.5 before:rounded-full before:bg-accent-line hover:bg-accent-soft"
@@ -317,7 +316,7 @@ export function AppShellHeader({
       {...props}
     >
       {mobileNav === "sheet" && (
-        <IconButton aria-label={menuLabel} size="sm" onClick={() => setMobileOpen(true)} className={cn("[&_svg]:size-5", breakpoints[breakpoint].menu)}>
+        <IconButton aria-label={menuLabel} size="sm" onClick={() => setMobileOpen(true)} className={cn("[&_svg]:size-5", breakpointClasses[breakpoint].menu)}>
           <Menu aria-hidden="true" />
         </IconButton>
       )}
@@ -327,7 +326,7 @@ export function AppShellHeader({
         aria-expanded={!collapsed}
         size="sm"
         onClick={() => setCollapsed(!collapsed)}
-        className={cn("hidden [&_svg]:size-5", breakpoints[breakpoint].toggle)}
+        className={cn("hidden [&_svg]:size-5", breakpointClasses[breakpoint].toggle)}
       >
         {collapsed ? <PanelLeftOpen aria-hidden="true" /> : <PanelLeftClose aria-hidden="true" />}
       </IconButton>
@@ -344,7 +343,7 @@ export function AppShellBody({ className, ...props }: ComponentProps<"div">) {
       className={cn(
         "flex min-w-0 flex-1 flex-col",
         "lg:has-[>[data-slot=app-shell-aside]]:grid lg:has-[>[data-slot=app-shell-aside]]:grid-cols-[minmax(0,1fr)_auto] lg:has-[>[data-slot=app-shell-aside]]:grid-rows-[auto_1fr]",
-        mobileNav === "bottom" && ["pb-[calc(4rem+env(safe-area-inset-bottom))]", breakpoints[breakpoint].body],
+        mobileNav === "bottom" && ["pb-[calc(4rem+env(safe-area-inset-bottom))]", breakpointClasses[breakpoint].body],
         className,
       )}
       {...props}
@@ -367,7 +366,7 @@ export function AppShellAside({ className, ...props }: AppShellAsideProps) {
 }
 
 export type AppShellMainProps = ComponentProps<"main"> & {
-  // div quando o AppShell está dentro de uma página que já tem o próprio main.
+  /** div quando o AppShell está dentro de uma página que já tem o próprio main. */
   as?: "main" | "div";
 };
 
